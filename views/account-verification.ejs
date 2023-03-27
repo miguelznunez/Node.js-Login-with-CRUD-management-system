@@ -1,0 +1,23 @@
+<%- include("partials/header.ejs") %>
+
+  <section>
+    <div class="container">
+      <div class="subcontainer">
+        <div class="content-padding">
+          <% if (typeof success !="undefined" && success) { %>
+            <div class="server-message success">
+              <p> <%= message %> </p>
+            </div>
+          <% } else { %>
+            <div class="server-message error">
+              <p> <%= message %> </p>
+            </div>
+          <% } %>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <script src="/js/script.js"></script>
+
+  <%- include("partials/footer.ejs") %>

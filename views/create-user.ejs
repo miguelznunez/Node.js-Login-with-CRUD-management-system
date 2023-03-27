@@ -1,0 +1,44 @@
+<%- include("partials/header.ejs") %>
+
+  <div class="container">
+
+    <div class="server-message"></div>
+
+    <div class="flex">
+      <a href="/admin">Admin</a> / <p>Create User</p>
+    </div>
+    
+    <form id="create-user-form">
+      <div>
+        <input type="text" id="fName" maxlength="100" placeholder="First name" value="" required>
+      </div>
+      <div>
+        <input type="text" id="lName" maxlength="100" placeholder="Last name" value="" required>
+      </div>
+      <div>
+        <input type="email" id="email" maxlength="100" placeholder="Email" value="" required>
+      </div>
+      <div id="password-container">
+        <input type="password" id="password" maxlength="60" placeholder="Password" value="" required>
+        <p id="password-strength-text"></p>
+      </div>
+      <div>
+        <input type="password" id="confirm-password" maxlength="60" placeholder="Confirm password" required>
+      </div>
+      <div id="show-password-container">
+        <div>
+          <input type="checkbox" id="show-password">
+          <label for="show-password">Show password</label>
+        </div>
+      </div>
+      <div>
+        <button id="account-btn">Add User</button>
+      </div>
+    </form>
+
+  </div>
+
+  <script src="/js/create-user.js"></script>
+  <script src="/js/script.js"></script>
+
+<%- include("partials/footer.ejs") %>
