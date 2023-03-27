@@ -4,7 +4,7 @@
 
     <div class="container">
 
-      <% if(flashMessage != "") { %>
+      <% if(typeof flashMessage != "undefined" && flashMessage != "") { %>
         <div class="server-message success">
           <%= flashMessage %>
         </div>
@@ -12,10 +12,10 @@
         <div class="margin"></div>
       <% } %>
 
-      <form action="/admin/find-user" method="POST">
+      <form action="/user-management/find-user" method="POST">
         <div class="db-search">
           <div>
-            <h2>User Management System</h2>
+            <h2>User Management</h2>
           </div>
           <div>
             <input type="text" name="search" placeholder="Search"><button>Search</button>
@@ -26,9 +26,9 @@
       <div class="db-search">
         <div style="width:fit-content; display: flex; gap: 10px;">
           <% if (typeof success !="undefined" && success) { %>
-            <a href="/admin" class="view"><i class="fa-solid fa-eye"></i> View Users</a>
+            <a href="/user-management" class="view"><i class="fa-solid fa-eye"></i> View Users</a>
           <% } %>
-          <a href="/admin/create-user" class="create"><i class="fa-solid fa-user-plus"></i> Create User</a>
+          <a href="/user-management/create-user" class="create"><i class="fa-solid fa-user-plus"></i> Create User</a>
         </div>
       </div>
       
@@ -60,10 +60,10 @@
               <%= rows[i].status %>
             </td>
             <td class="text-end">
-              <a href="/admin/view-user/<%= rows[i].id %>" class="view"><i class="fa-solid fa-eye"></i> View</a>
+              <a href="/user-management/view-user/<%= rows[i].id %>" class="view"><i class="fa-solid fa-eye"></i> View</a>
               <% if(user.id !=rows[i].id) { %>
-                <a href="/admin/edit-user/<%= rows[i].id %>" class="edit"><i class="fa-solid fa-pencil"></i> Edit</a>
-                <a href="/admin/delete-user/<%= rows[i].id %>" class="delete"><i class="fa-solid fa-user-minus"></i> Delete</a>
+                <a href="/user-management/edit-user/<%= rows[i].id %>" class="edit"><i class="fa-solid fa-pencil"></i> Edit</a>
+                <a href="/user-management/delete-user/<%= rows[i].id %>" class="delete"><i class="fa-solid fa-user-minus"></i> Delete</a>
               <% } %>
             </td>
           </tr>
@@ -80,10 +80,10 @@
         <%= message %>
       </div>
       
-      <form action="/admin/find-user" method="POST">
+      <form action="/user-management/find-user" method="POST">
         <div class="db-search">
           <div>
-            <h2>User Management System</h2>
+            <h2>User Management</h2>
           </div>
           <div>
             <input type="text" name="search" placeholder="Search"><button>Search</button>

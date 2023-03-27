@@ -23,7 +23,9 @@ createUserForm.addEventListener("submit", (e) => {
   password = document.querySelector("#password").value,
   cPassword = document.querySelector("#confirm-password").value;
 
-  fetch("/admin/create-user", {
+  console.log("hey")
+
+  fetch("/user-management/create-user", {
     method: "POST",
     headers: {
       "Accept": "application/json, text/plain, */*",

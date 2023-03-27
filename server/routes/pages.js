@@ -103,7 +103,6 @@ router.get("/password-update/:id/:token", authController.isLoggedIn, async (req,
 // USER MUST BE LOGGED IN TO USE THE ROUTES BELOW
 
 router.get("/profile", authController.isLoggedIn, (req, res) => {
-  // If user IS logged in show the page otherwise redirect to the home page
   if(req.user && !checkBrowser(req.headers)) {
     return res.status(200).render("profile", {title:"Profile", user:req.user} )
   } else { 
@@ -111,17 +110,27 @@ router.get("/profile", authController.isLoggedIn, (req, res) => {
   }
 })
 
+// STORE MANAGEMENT SYSTEM
 
-// ADMIN CRUD SYSTEM =======================================================================
+router.get("/eCommerce-management", authController.isLoggedIn, (req, res) => {
+  if(req.user && req.user.admin === "Yes" && !checkBrowser(req.headers)) {
+    return res.status(200).render("store", {title:"Store", user:req.user} )
+  } else { 
+    return res.redirect("/login")
+  }
+})
 
-router.get("/admin", authController.isLoggedIn, (req, res) => {
+
+// USER MANAGEMENT SYSTEM =======================================================================
+
+router.get("/user-management", authController.isLoggedIn, (req, res) => {
   if(req.user && req.user.admin === "Yes" && !checkBrowser(req.headers)) {
     db.query("SELECT * FROM users WHERE status != 'Deleted'", (err, rows) => {
       if(!err) { 
         const flashMessage = req.flash("message")
-        return res.status(200).render("admin", {title:"Admin" , user:req.user, rows:rows, flashMessage})
+        return res.status(200).render("user-management", {title:"User Management" , user:req.user, rows:rows, flashMessage})
       } else {
-        return res.status(500).render("admin", {title:"Admin", user:req.user, message:"Internal server error."})
+        return res.status(500).render("user-management", {title:"User Management", user:req.user, message:"Internal server error."})
       }
     })
   } else { 
@@ -129,7 +138,7 @@ router.get("/admin", authController.isLoggedIn, (req, res) => {
   }
 })
 
-router.get("/admin/view-user/:id", authController.isLoggedIn, (req, res) => {
+router.get("/user-management/view-user/:id", authController.isLoggedIn, (req, res) => {
   if(req.user && req.user.admin === "Yes" && !checkBrowser(req.headers)){
     db.query("SELECT * FROM users WHERE id = ?",[req.params.id], (err, rows) => {
       if(err) { // DATABASE ERROR
@@ -146,7 +155,7 @@ router.get("/admin/view-user/:id", authController.isLoggedIn, (req, res) => {
   }
 })
 
-router.get("/admin/edit-user/:id", authController.isLoggedIn, (req, res) => {
+router.get("/user-management/edit-user/:id", authController.isLoggedIn, (req, res) => {
   if(req.user && req.user.admin === "Yes" && !checkBrowser(req.headers)) {
     db.query("SELECT * FROM users WHERE id = ?",[req.params.id], (err, rows) => {
       if(err) { // DATABASE ERROR
@@ -164,7 +173,7 @@ router.get("/admin/edit-user/:id", authController.isLoggedIn, (req, res) => {
   }
 })
 
-router.get("/admin/create-user", authController.isLoggedIn, (req, res) => {
+router.get("/user-management/create-user", authController.isLoggedIn, (req, res) => {
   if(req.user && req.user.admin === "Yes" && !checkBrowser(req.headers)) {
     return res.render("create-user", {title:"Create User", user:req.user})
   } else { 
@@ -172,14 +181,14 @@ router.get("/admin/create-user", authController.isLoggedIn, (req, res) => {
   }
 })
 
-router.get("/admin/delete-user/:id", authController.isLoggedIn, (req, res) => {
+router.get("/user-management/delete-user/:id", authController.isLoggedIn, (req, res) => {
   if(req.user && req.user.admin === "Yes" && !checkBrowser(req.headers)) {
     db.query("UPDATE users SET email = ?, status = ? WHERE id = ?", [null, "Deleted", req.params.id], (err, rows) => {
       if(!err) { 
-        req.flash("message", `User #${req.params.id} has been deleted.`)
-        return res.redirect("/admin")
+        req.flash("message", `User has been deleted successfully.`)
+        return res.redirect("/user-management")
       } else { 
-        return res.status(500).render("admin", {title:"Admin", user:req.user, message:"Internal server error."})
+        return res.status(500).render("user-management", {title:"User Management", user:req.user, message:"Internal server error."})
       }
     })
   } else { 

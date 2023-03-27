@@ -1,71 +1,76 @@
 <%- include("partials/header.ejs") %>
 
-  <div class="container">
-
     <% if(typeof message == "undefined") { %>
-      <div class="server-message"></div>
 
-      <div class="flex">
-        <a href="/admin">Admin</a> / <p>Edit User</p>
+      <div class="container">
+
+        <div class="server-message"></div>
+
+        <div class="flex">
+          <a href="/user-management">User Management</a> / <p>Edit User</p>
+        </div>
+        
+        <form id="update-user-form">
+          <div>
+            <input type="hidden" id="id" value="<%= rows[0].id %>">
+          </div>
+          <div>
+            <input type="text" id="fName" maxlength="25" placeholder="First name" value="<%= rows[0].fName %>" required>
+          </div>
+          <div>
+            <input type="text" id="lName" maxlength="25" placeholder="Last name" value="<%= rows[0].lName %>" required>
+          </div>
+          <div>
+            <input type="email" id="email" maxlength="100" placeholder="Email" value="<%= rows[0].email %>" required>
+          </div>
+        
+          <div class="admin-user-radios">
+            <div>
+              <label><i class="fas fa-exclamation-triangle"></i> Make this user an
+                admin?</label>
+            </div>
+            <div>
+              <% if(rows[0].admin == "Yes") { %>
+                <input type="radio" name="admin" value="Yes" checked required>
+                <label for="Yes">Yes</label>
+                <br>
+                <input type="radio" name="admin" value="No" required>
+                <label for="No">No</label>
+              <% } else { %>
+                <input type="radio" name="admin" value="Yes" required>
+                <label for="Yes">Yes</label>
+                <br>
+                <input type="radio" name="admin" value="No" checked required>
+                <label for="No">No</label>
+              <% } %>
+            </div>
+          </div>
+        
+          <div>
+            <button id="account-btn">Update</button>
+          </div>
+
+        </form>
+
       </div>
-      
-      <form id="update-user-form">
-        <div>
-          <input type="hidden" id="id" value="<%= rows[0].id %>">
-        </div>
-        <div>
-          <input type="text" id="fName" maxlength="25" placeholder="First name" value="<%= rows[0].fName %>" required>
-        </div>
-        <div>
-          <input type="text" id="lName" maxlength="25" placeholder="Last name" value="<%= rows[0].lName %>" required>
-        </div>
-        <div>
-          <input type="email" id="email" maxlength="100" placeholder="Email" value="<%= rows[0].email %>" required>
-        </div>
-      
-        <div class="admin-user-radios">
-          <div>
-            <label><i class="fas fa-exclamation-triangle"></i> Make this user an
-              admin?</label>
-          </div>
-          <div>
-            <% if(rows[0].admin == "Yes") { %>
-              <input type="radio" name="admin" value="Yes" checked required>
-              <label for="Yes">Yes</label>
-              <br>
-              <input type="radio" name="admin" value="No" required>
-              <label for="No">No</label>
-            <% } else { %>
-              <input type="radio" name="admin" value="Yes" required>
-              <label for="Yes">Yes</label>
-              <br>
-              <input type="radio" name="admin" value="No" checked required>
-              <label for="No">No</label>
-            <% } %>
-          </div>
-        </div>
-      
-        <div>
-          <button id="account-btn">Update</button>
-        </div>
-
-      </form>
 
       <script src="/js/update-user.js"></script>
 
     <% } else { %>
 
-      <div class="server-message error">
-        <%= message %>
-      </div>
-
-      <div class="flex">
-        <a href="/admin">Admin</a> / <p>Edit User</p>
+      <div class="container">
+        <div class="server-message error">
+          <%= message %>
+        </div>
+        
+        <div class="flex">
+          <a href="/user-management">User Management</a> / <p>Edit User</p>
+        </div>
       </div>
 
     <% } %>
 
-  </div>
+
 
   <script src="/js/script.js"></script>
 

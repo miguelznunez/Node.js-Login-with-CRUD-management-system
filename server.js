@@ -25,7 +25,8 @@ app.use(flash())
 app.set("view engine", "ejs")
 
 app.use("/auth", require("./server/routes/auth"))
-app.use("/admin", require("./server/routes/admin"))
+// app.use("/eCommerce-management-system", require("./server/routes/eCommerce-management"))
+app.use("/user-management", require("./server/routes/user-management"))
 app.use("/", require("./server/routes/pages"))
 
 

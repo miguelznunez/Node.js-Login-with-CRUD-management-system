@@ -1,16 +1,17 @@
 <%- include("partials/header.ejs") %>
 
-  <div class="container">
+  <% if (typeof message == "undefined") { %>
 
-    <% if (typeof message == "undefined") { %>
+    <div class="container">
+      
       <div class="margin"></div>
 
       <div class="flex">
-        <a href="/admin">Admin</a> / <p>View User</p>
+        <a href="/user-management">User Management</a> / <p>View User</p>
       </div>
 
       <br>
-      
+    
       <table>
         <tr>
           <th>First Name</th>
@@ -44,19 +45,23 @@
         <% } %>
       </table>
 
-    <% } else { %>
+    </div>
+
+  <% } else { %>
+
+    <div class="container">
 
       <div class="server-message error">
         <%= message %>
       </div>
-
+      
       <div class="flex">
-        <a href="/admin">Admin</a> / <p>View User</p>
+        <a href="/user-management">User Management</a> / <p>View User</p>
       </div>
 
-    <% } %>
+    </div>
 
-  </div>
+  <% } %>
 
   <script src="/js/script.js"></script>
 

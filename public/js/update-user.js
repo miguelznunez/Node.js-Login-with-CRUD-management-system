@@ -9,7 +9,7 @@ updateUserForm.addEventListener("submit", (e) => {
   email = document.querySelector("#email").value,
   admin = document.querySelector("input[name=admin]:checked").value;
 
-  fetch(`/admin/update-user`, {
+  fetch(`/user-management/update-user`, {
     method: "POST",
     headers: {
       "Accept": "application/json, text/plain, */*",

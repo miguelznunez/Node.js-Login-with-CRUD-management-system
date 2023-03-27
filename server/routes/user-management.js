@@ -1,12 +1,12 @@
 const express = require("express"),
-adminController = require("../controllers/adminController"),
+userManagementController = require("../controllers/user-management-controller"),
 authController = require("../controllers/authController"),
 {check} = require("express-validator"),
 router = express.Router();
 
 // ADMIN POST ROUTES  ============================================================
 
-router.post("/find-user", authController.isLoggedIn, adminController.findUser)
+router.post("/find-user", authController.isLoggedIn, userManagementController.findUser)
 
 router.post("/create-user",
 [
@@ -26,7 +26,7 @@ router.post("/create-user",
     return value;
   }
  })
-], adminController.createUser)
+], userManagementController.createUser)
 
 router.post("/update-user", [
   check("fName", "First name field cannot be empty.").not().isEmpty(),
@@ -35,6 +35,6 @@ router.post("/update-user", [
   check("lName", "Last name must be less than 25 characters long.").isLength({min:0, max:25}), 
   check("email", "The email you entered is invalid, please try again.").isEmail().normalizeEmail(),
   check("email", "Email address must be between 4-100 characters long, please try again.").isLength({min:4, max:100}).normalizeEmail(), 
-], adminController.updateUser)
+], userManagementController.updateUser)
 
 module.exports = router;

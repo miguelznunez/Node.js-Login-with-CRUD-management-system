@@ -243,7 +243,7 @@ exports.passwordUpdate = (req, res) => {
       var data = { token: null, token_expires: null, password: hash};
       db.query("UPDATE users SET ? WHERE id = ?", [data, id], (err, result) => {
         if(!err) { 
-          res.statusMessage = "Your password has been changed."
+          res.statusMessage = "Your password has been updated successfully. Please login with your new password."
           return res.status(200).end()
         } else { 
           res.statusMessage = "Internal server error."
