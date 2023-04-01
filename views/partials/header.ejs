@@ -17,7 +17,7 @@
   <div class="container">
     <div class="navbar">
 
-      <a href="/" class="nav-branding" style="font-size: 2rem;font-weight: bold;">DEV.</a>
+      <a href="/" class="nav-branding" style="font-size: 2rem;font-weight: bold;">MWD</a>
       
       <ul class="nav-menu">
         <!-- If user is logged in and is an admin show this -->
@@ -27,7 +27,7 @@
               <button class="link" data-dropdown-button >Admin <i class="fa-solid fa-caret-down"
                   data-dropdown-button></i></button>
               <div class="dropdown-menu">
-                <a href="/user-management">
+                <a href="/user-management/active-users">
                   <div class="dropdown-links">
                     <h3>User Management</h3>
                   </div>
@@ -78,10 +78,10 @@
           </li>
         <% } else { %>
           <li class="nav-item">
-            <a href="/login" class="nav-link">Login</a>
+            <a href="/auth/login" class="nav-link">Log in</a>
           </li>
           <li class="nav-item">
-            <a href="/register" class="nav-link">Register</a>
+            <a href="/auth/register" class="nav-link">Register</a>
           </li>
         <% } %>
       </ul>

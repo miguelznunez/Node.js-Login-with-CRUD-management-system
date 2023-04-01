@@ -1,5 +1,5 @@
 const mysql = require("mysql"),
-db = require("../../db.js"),
+db = require("../config/db-setup.js"),
 bcrypt = require("bcrypt"),
 saltRounds = 10,
 {validationResult} = require("express-validator");
@@ -13,13 +13,35 @@ function get_date(){
   return yourDate.toISOString().split('T')[0]
 }
 
-exports.findUser = (req, res) => {
+exports.findActiveUsers = (req, res) => {
   const searchTerm = req.body.search
-  db.query("SELECT * FROM users WHERE (fName LIKE ? OR lName LIKE ? OR email LIKE ?) && status != 'Deleted'", ["%" + searchTerm + "%", "%" + searchTerm + "%", "%" + searchTerm + "%"], (err, rows) => {
+  db.query("SELECT * FROM users WHERE (fName LIKE ? OR lName LIKE ? OR email LIKE ?) && status = 'Active'", ["%" + searchTerm + "%", "%" + searchTerm + "%", "%" + searchTerm + "%"], (err, rows) => {
     if(!err) { 
-      return res.status(200).render("user-management", {title:"User Management" , user:req.user, rows:rows, success:true})
+      return res.status(200).render("user-management", {title:"User Management - Active Users" , user:req.user, rows:rows})
     } else { 
-      return res.status(500).render("user-management", {title:"User Management" , user:req.user, success:false, message:"Internal server error."})
+      return res.status(500).render("user-management", {title:"User Management - Active Users" , user:req.user, success:false, message:"Internal server error."})
+    }
+  })
+}
+
+exports.findBannedUsers = (req, res) => {
+  const searchTerm = req.body.search
+  db.query("SELECT * FROM users WHERE (fName LIKE ? OR lName LIKE ? OR email LIKE ?) && status = 'Banned'", ["%" + searchTerm + "%", "%" + searchTerm + "%", "%" + searchTerm + "%"], (err, rows) => {
+    if(!err) { 
+      return res.status(200).render("banned-users", {title:"User Management - Banned Users" , user:req.user, rows:rows})
+    } else { 
+      return res.status(500).render("banned-users", {title:"User Management - Banned Users" , user:req.user, success:false, message:"Internal server error."})
+    }
+  })
+}
+
+exports.findDeletedUsers = (req, res) => {
+  const searchTerm = req.body.search
+  db.query("SELECT * FROM users WHERE (fName LIKE ? OR lName LIKE ? OR email LIKE ?) && status = 'Deleted'", ["%" + searchTerm + "%", "%" + searchTerm + "%", "%" + searchTerm + "%"], (err, rows) => {
+    if(!err) { 
+      return res.status(200).render("deleted-users", {title:"User Management - Deleted Users" , user:req.user, rows:rows})
+    } else { 
+      return res.status(500).render("deleted-users", {title:"User Management - Deleted Users" , user:req.user, success:false, message:"Internal server error."})
     }
   })
 }
@@ -48,7 +70,7 @@ exports.createUser = (req, res) => {
           db.query("INSERT INTO users (fName, lName, email, password, member_since, status) VALUES (?,?,?,?,?,?)", [fName, lName, email, hash, member_since, "Active"],
             async (err, results) => {
               if (!err) {
-                res.statusMessage = `User has been successfully created.`
+                res.statusMessage = `A new user with an email of ${email} has been successfully created.`
                 return res.status(200).end()
               // DATABASE ERROR
               } else { 
@@ -75,9 +97,11 @@ exports.updateUser = (req, res) => {
     return res.status(401).end()
   }
 
-  const {id, fName, lName, email, admin} = req.body
+  const {id, fName, lName, email, banned, admin} = req.body
 
-  db.query("UPDATE users SET fName = ?, lName = ?, email = ?, admin = ? WHERE id = ?", [fName, lName, email, admin, id], async (err, results) => {
+  const status = banned == "Yes" ? "Banned" : "Active"
+
+  db.query("UPDATE users SET fName = ?, lName = ?, email = ?, status = ?, admin = ? WHERE id = ?", [fName, lName, email, status, admin, id], async (err, results) => {
     if (!err) {
       res.statusMessage = "User has been successfully updated."
       return res.status(200).end()

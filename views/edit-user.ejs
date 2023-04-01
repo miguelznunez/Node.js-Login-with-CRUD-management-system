@@ -7,7 +7,7 @@
         <div class="server-message"></div>
 
         <div class="flex">
-          <a href="/user-management">User Management</a> / <p>Edit User</p>
+          <a href="/user-management/active-users">User Management</a> / <p>Edit User</p>
         </div>
         
         <form id="update-user-form">
@@ -15,18 +15,44 @@
             <input type="hidden" id="id" value="<%= rows[0].id %>">
           </div>
           <div>
-            <input type="text" id="fName" maxlength="25" placeholder="First name" value="<%= rows[0].fName %>" required>
+            <input type="text" id="fName" maxlength="25" placeholder="First name" value="<%= rows[0].fName %>" required disabled>
           </div>
           <div>
-            <input type="text" id="lName" maxlength="25" placeholder="Last name" value="<%= rows[0].lName %>" required>
+            <input type="text" id="lName" maxlength="25" placeholder="Last name" value="<%= rows[0].lName %>" required disabled>
           </div>
           <div>
-            <input type="email" id="email" maxlength="100" placeholder="Email" value="<%= rows[0].email %>" required>
+            <input type="email" id="email" maxlength="100" placeholder="Email" value="<%= rows[0].email %>" required disabled>
           </div>
+
+          <div class="admin-user-radios">
+            <% if(rows[0].status != "Banned" ) { %>
+              <div>
+                <label>Ban this user?</label>
+              </div>
+              <div>
+                <input type="radio" name="banned" value="Yes" required>
+                <label for="Yes">Yes</label>
+                <br>
+                <input type="radio" name="banned" value="No" checked required>
+                <label for="No">No</label>
+              </div>
+            <% } else { %>
+              <div>
+                <label>Unban this user?</label>
+              </div>
+              <div>
+                <input type="radio" name="banned" value="No" required>
+                <label for="No">Yes</label>
+                <br>
+                <input type="radio" name="banned" value="Yes" checked required>
+                <label for="Yes">No</label>
+              </div>
+              <% } %>
+            </div>
         
           <div class="admin-user-radios">
             <div>
-              <label><i class="fas fa-exclamation-triangle"></i> Make this user an
+              <label>Make this user an
                 admin?</label>
             </div>
             <div>
@@ -64,7 +90,7 @@
         </div>
         
         <div class="flex">
-          <a href="/user-management">User Management</a> / <p>Edit User</p>
+          <a href="/user-management/active-users">User Management</a> / <p>Edit User</p>
         </div>
       </div>
 

@@ -1,4 +1,5 @@
 const express = require("express"),
+passportSetup = require("./server/config/passport-setup"),
 path = require("path"),
 cookieParser = require("cookie-parser"),
 session = require('express-session'),
@@ -24,10 +25,10 @@ app.use(flash())
 
 app.set("view engine", "ejs")
 
-app.use("/auth", require("./server/routes/auth"))
+app.use("/auth", require("./server/routes/auth-routes"))
 // app.use("/eCommerce-management-system", require("./server/routes/eCommerce-management"))
-app.use("/user-management", require("./server/routes/user-management"))
-app.use("/", require("./server/routes/pages"))
+app.use("/user-management", require("./server/routes/user-management-routes"))
+app.use("/", require("./server/routes/page-routes"))
 
 
 const PORT = process.env.PORT || 5000

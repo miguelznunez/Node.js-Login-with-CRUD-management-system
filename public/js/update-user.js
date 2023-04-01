@@ -7,6 +7,7 @@ updateUserForm.addEventListener("submit", (e) => {
   fName = document.querySelector("#fName").value,
   lName = document.querySelector("#lName").value,
   email = document.querySelector("#email").value,
+  banned = document.querySelector("input[name=banned]:checked").value,
   admin = document.querySelector("input[name=admin]:checked").value;
 
   fetch(`/user-management/update-user`, {
@@ -15,7 +16,7 @@ updateUserForm.addEventListener("submit", (e) => {
       "Accept": "application/json, text/plain, */*",
       "Content-type": "application/json"
     },
-    body: JSON.stringify({ id: id, fName: fName, lName: lName, email: email, admin:admin})
+    body: JSON.stringify({ id: id, fName: fName, lName: lName, email: email, banned:banned, admin:admin})
   })
 
   .then( response => {

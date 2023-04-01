@@ -5,30 +5,40 @@
 
     <div class="server-message"></div>
 
+    <div class="title">
+      <h2>Welcome</h2>
+    </div>
+
+    <div class="passport-login">
+      <a href="/auth/google"><button class="auth-btn"><i class="fa-brands fa-google"></i> Log in with Google</button></a>
+    </div>
+
+    <div class="margin center" >
+      <p>Have a password? Continue with your email address</p>
+    </div>
+    
     <form id="login-form">
-      <div class="title">
-        <h2>Login</h2>
-      </div>
       <div>
         <input type="text" id="email" placeholder="Email" maxlength="100" required>
       </div>
-      <div id="password-container">
+      <div>
         <input type="password" id="password" placeholder="Password" maxlength="60" required>
       </div>
-      <div id="show-password-container-login">
+      <div class="show-password-login">
         <div>
           <input type="checkbox" id="show-password">
           <label for="show-password">Show password</label>
         </div>
         <div>
-          <a href="/password-reset">Forgot password?</a>
+          <a href="/auth/password-reset">Forgot password?</a>
         </div>
       </div>
+
       <div>
-        <button id="login-btn">Let's go</button>
+        <button class="auth-btn">Log in</button>
       </div>
       <div id="register-account">
-        <a href="/register">Not a member? Register</a>
+        <a href="/auth/register">Not a member? Register</a>
       </div>
     </form>
 

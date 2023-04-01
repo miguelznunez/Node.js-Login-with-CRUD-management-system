@@ -26,7 +26,7 @@ a{
 i{ color: black;}
 
 input{
-  width: 375px;
+  width: 400px;
   padding: 12px;
   border: none;
   border-radius: 5px;
@@ -125,6 +125,15 @@ th{
 
 .margin {
   margin: 25px 0;
+}
+
+.center {
+  text-align: center;
+}
+
+.center p{
+  text-align: center;
+  font-size: 0.9rem;
 }
 
 /* SERVER MESSAGERS */
@@ -318,43 +327,40 @@ th{
 .fa-search:hover{ color: lightgray;}
 
 /* LOGIN/ REGISTER */
-#password-container{
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
-}
 
-#show-password-container, #show-password-container-login{
+
+.show-password-register,
+.show-password-login{
   width: 375px;
   display: flex;
   justify-content: flex-start;
   align-items: center;
 }
 
-#show-password-container-login{
+.show-password-login{
   justify-content: space-between;
 }
 
-#show-password-container label{ font-size: 0.9rem;}
-
-#password-strength-text{ font-size: 0.8rem;}
-
-#login-account, #register-account{
+.passport-login{
   width: 100%;
   text-align: center;
 }
 
-#account-btn,
-#login-btn,
-#link-btn,
-#update-password{
-  width: 375px;
+.auth-btn{
+  width: 400px;
   color: white;
   background-color: black;
 }
 
-/* ADMIN.EJS */
-.db-search{
+.auth-btn i{
+  color: white;
+  margin: 0 10px;
+}
+/* USER MANAGEMENT */
+
+.user-management,
+.create-user,
+.view-users{
   width: 100%;
   min-height: 50px;
   display: flex;
@@ -363,7 +369,9 @@ th{
   align-items: center;
 }
 
-.db-search input{
+.user-management input,
+.create-user input,
+.view-users input {
   width: 300px;
   padding: 10px;
   font-size: inherit;
@@ -371,7 +379,9 @@ th{
   border-bottom-right-radius: 0px;
 }
 
-.db-search button{
+.user-management button,
+.create-user button,
+.view-users button {
   padding: 10px;
   font-size: inherit;
   border-top-left-radius: 0px;
@@ -383,34 +393,23 @@ th{
   max-width: 250px;
 }
 
-.text-end a, .db-search a{
+.text-end a,
+.user-management a,
+.create-user a,
+.view-users a {
   border-radius: 5px;
   padding: 4px 6px;
-  color: white;
+  background-color: #f2f2f2;
   border: none;
 }
 
-.view i,
-.create i,
-.edit i,
-.delete i{
-   color: white;
+.view-users .active-user i{
+  color: white;
 }
 
-.view{ 
-  background-color: #5bc0de;
-}
-
-.create{ 
-  background-color: #f0ad4e;
-}
-
-.edit{ 
-  background-color: #5cb85c;
-}
-
-.delete{ 
-  background-color: #d9534f;
+.view-users .active-user {
+  color: white;
+  background-color: dodgerblue;
 }
 
 /* ADD-USER */
@@ -444,17 +443,12 @@ th{
   padding: 10px;
 }
 
-.admin-user-radios label{
-  color: red;
-}
-
-@media(max-width:1320px){
-  .container{
-    width: 100%;
-  }
-}
 
 @media(max-width:1024px){
+.container {
+    width: 100%;
+  }
+
   .hamburger{
     display: block;
   }

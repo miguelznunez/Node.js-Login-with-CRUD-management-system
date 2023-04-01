@@ -1,9 +1,9 @@
 const mysql = require("mysql"),
-db = require("../../db.js"),
+db = require("../config/db-setup.js"),
 jwt = require("jsonwebtoken"),
 bcrypt = require("bcrypt"),
 saltRounds = 10,
-mail = require("../../mail.js"),
+mail = require("../config/mail-setup.js"),
 {promisify} = require("util"),
 {validationResult} = require("express-validator");
 
@@ -42,7 +42,7 @@ exports.register = (req, res) => {
       return res.status(401).end()
     // ELSE CREATE A NEW USER
     } else if(!err && results[0] === undefined){
-        var token = randomstring.generate(20);
+        var token = randomstring.generate(40)
         bcrypt.hash(password, saltRounds, (err, hash) => {
           db.query("INSERT INTO users (fName, lName, email, password, token, member_since) VALUES (?,?,?,?,?,?)", [fName, lName, email, hash, token, member_since],
             async (err, results) => {
@@ -90,6 +90,7 @@ exports.login = async (req, res) => {
   const {email, password} = req.body
 
   db.query("SELECT * FROM users WHERE email = ?", [email], async (err, results) => {
+
     // IF EMAIL IS NOT IN THE DATABASE OR PASSWORDS DO NOT MATCH
     if(!err && (results == "" || !(await bcrypt.compare(password, results[0].password.toString())))){
       res.statusMessage = "The email or password is incorrect."
@@ -97,6 +98,10 @@ exports.login = async (req, res) => {
     // ELSE IF ACCOUNT IS INACTIVE
     } else if (!err && results[0].status === "Inactive") {
       res.statusMessage = "This account has not been verified."
+      return res.status(400).end()
+    // ELSE IF ACCOUNT IS BANNED
+    } else if (!err && results[0].status === "Banned") {
+      res.statusMessage = "This account has been banned."
       return res.status(400).end()
     // ELSE ALLOW USER TO LOGIN
     } else if (!err && results[0].status === "Active"){
@@ -185,7 +190,7 @@ exports.passwordReset = (req, res) => {
       // EMAIL FOUND
       if(!err && results[0] != undefined) {
         const id = results[0].id
-        const token = randomstring.generate(20)
+        const token = randomstring.generate(40)
         const token_expires = Date.now() + 3600000
         const data = { token: token, token_expires: token_expires}
 

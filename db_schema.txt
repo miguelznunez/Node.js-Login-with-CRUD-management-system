@@ -1,15 +1,26 @@
-CREATE TABLE `login`.`users` (
-  `id` INT UNSIGNED AUTO_INCREMENT,
-  `fName` VARCHAR(25),
-  `lName` VARCHAR(25),
-  `email` VARCHAR(100),
-  `password` BINARY(60),
-  `token` VARCHAR(20),
-  `token_expires` BINARY(13),
-  `member_since` VARCHAR(10),
-  `status` VARCHAR(8) DEFAULT 'Inactive', 
-  `admin` VARCHAR(3) DEFAULT 'No',
+CREATE TABLE users (
+    id INT UNSIGNED AUTO_INCREMENT,
+    fName VARCHAR(25),
+    lName VARCHAR(25),
+    email VARCHAR(100),
+    password BINARY(60),
+    token VARCHAR(40),
+    token_expires BINARY(13),
+    member_since VARCHAR(10),
+    status VARCHAR(8) DEFAULT 'Inactive',  
+    admin VARCHAR(3) DEFAULT 'No',
+    
+    PRIMARY KEY(id),
+    UNIQUE INDEX id_UNIQUE (id ASC) VISIBLE,
+    UNIQUE INDEX email_UNIQUE (email ASC) VISIBLE );
+    
+ CREATE TABLE federated_credentials (
+    id INT,
+    user_id INT NOT NULL,
+    provider VARCHAR(255) NOT NULL,
+    subject VARCHAR(255) NOT NULL,
 
-  PRIMARY KEY (`id`),
-  UNIQUE INDEX `id_UNIQUE` (`id` ASC) VISIBLE,
-  UNIQUE INDEX `email_UNIQUE` (`email` ASC) VISIBLE);
+    PRIMARY KEY(id),
+    UNIQUE INDEX provider_UNIQUE (provider ASC) VISIBLE,
+    UNIQUE INDEX subject_UNIQUE (subject ASC) VISIBLE );
+    

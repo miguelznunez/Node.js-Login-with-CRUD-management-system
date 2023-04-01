@@ -1,0 +1,98 @@
+<%- include("partials/header.ejs") %>
+
+  <% if (typeof message=="undefined" ) { %>
+
+    <div class="container">
+
+      <div class="margin"></div>
+
+      <form action="/user-management/find-deleted-users" method="POST">
+        <div class="user-management">
+          <div>
+            <h2>User Management</h2>
+          </div>
+          <div>
+            <input type="text" name="search" placeholder="Search deleted users..."><button>Search</button>
+          </div>
+        </div>
+      </form>
+
+      <div class="create-user">
+        <div>
+          <a href="/user-management/create-user"><i class="fa-solid fa-user-plus"></i> Create
+            User</a>
+        </div>
+      </div>
+
+      <br>
+
+      <div class="view-users">
+        <h4>Viewing Deleted Users</h4>
+        <div>
+          <a href="/user-management/active-users"><i class="fa-solid fa-user"></i> View All Active Users</a>
+          <a href="/user-management/banned-users"><i class="fa-solid fa-user-slash"></i> View All Banned
+            Users</a>
+          <a href="/user-management/deleted-users" class="active-user"><i class="fa-solid fa-user-xmark"></i> View All Deleted Users</a>
+        </div>
+      </div>
+
+      <br>
+
+      <table>
+        <tr>
+          <th>#</th>
+          <th>First Name</th>
+          <th>Last Name</th>
+          <th>Status</th>
+          <th class="text-end">Action</th>
+        </tr>
+        <% for(let i=0;i < rows.length;i++) { %>
+          <tr>
+            <td>
+              <%= rows[i].id %>
+            </td>
+            <td>
+              <%= rows[i].fName %>
+            </td>
+            <td>
+              <%= rows[i].lName %>
+            </td>
+            <td>
+              <%= rows[i].status %>
+            </td>
+            <td class="text-end">
+              <a href="/user-management/view-user/<%= rows[i].id %>"><i class="fa-solid fa-eye"></i>
+                View</a>
+            </td>
+          </tr>
+          <% } %>
+      </table>
+
+    </div>
+
+    <% } else { %>
+
+      <div class="container">
+
+        <div class="server-message error">
+          <%= message %>
+        </div>
+
+        <form action="/user-management/find-deleted-users" method="POST">
+          <div class="user-management">
+            <div>
+              <h2>User Management</h2>
+            </div>
+            <div>
+              <input type="text" name="search" placeholder="Search"><button>Search</button>
+            </div>
+          </div>
+        </form>
+
+      </div>
+
+    <% } %>
+
+  <script src="/js/script.js"></script>
+
+  <%- include("partials/footer.ejs") %></br>
