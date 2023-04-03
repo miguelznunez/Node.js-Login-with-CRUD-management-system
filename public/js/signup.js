@@ -1,7 +1,7 @@
 const showPassword = document.querySelector("#show-password"),
 passwordField = document.querySelector("#password"),
 passwordMatchField = document.querySelector("#confirm-password"),
-registerForm = document.querySelector("#register-form"),
+signupForm = document.querySelector("#signup-form"),
 serverMessage = document.querySelector(".server-message");
 
 showPassword.addEventListener("click", function (e) {
@@ -15,7 +15,7 @@ showPassword.addEventListener("click", function (e) {
   }
 })
 
-registerForm.addEventListener("submit", (e) => {
+signupForm.addEventListener("submit", (e) => {
   e.preventDefault()
   const fName = document.querySelector("#fName").value,
   lName = document.querySelector("#lName").value,
@@ -23,7 +23,7 @@ registerForm.addEventListener("submit", (e) => {
   password = document.querySelector("#password").value,
   cPassword = document.querySelector("#confirm-password").value;
 
-  fetch("/auth/register", {
+  fetch("/auth/signup", {
     method: "POST",
     headers: {
       "Accept": "application/json, text/plain, */*",

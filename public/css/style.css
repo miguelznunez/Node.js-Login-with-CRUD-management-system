@@ -327,10 +327,10 @@ th{
 
 .fa-search:hover{ color: lightgray;}
 
-/* LOGIN/ REGISTER */
+/* LOG IN/ SIGN UP */
 
 
-.show-password-register,
+.show-password-signup,
 .show-password-login,
 .show-password-create-user{
   width: 375px;

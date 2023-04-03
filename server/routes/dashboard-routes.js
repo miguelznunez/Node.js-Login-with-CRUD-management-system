@@ -1,4 +1,4 @@
-const express = require("express")
+const express = require("express"),
 authController = require("../controllers/auth-controller"),
 router = express.Router();
 
@@ -18,18 +18,12 @@ function checkBrowser(headers){
   else return false
 }
 
-// PAGE GET ROUTES ==============================================================
-
-router.get("/", authController.isLoggedIn,(req, res) => {
-  if(!checkBrowser(req.headers)) {
-    return res.status(200).render("index", {title: "Unsupported", user:req.user})
-  } else {
-    return res.render("unsupported", {title:"Unsupported", user:req.user})
+router.get("/profile", authController.isLoggedIn, (req, res) => {
+  if(req.user && !checkBrowser(req.headers)) {
+    return res.status(200).render("profile", {title:"Profile", user:req.user} )
+  } else { 
+    return res.redirect("/auth/login")
   }
 })
 
-router.get("*", authController.isLoggedIn, (req, res) => {
-  return res.render("error", {title: "Error 404 ", user:req.user})
-})
-
-module.exports = router
+module.exports = router;

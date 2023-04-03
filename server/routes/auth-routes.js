@@ -24,9 +24,9 @@ function checkBrowser(headers){
 
 // AUTH GET ROUTES ==============================================================
 
-router.get("/register", authController.isLoggedIn, (req, res) => {
+router.get("/signup", authController.isLoggedIn, (req, res) => {
   if(!req.user && !checkBrowser(req.headers)){
-    return res.status(200).render("register", {title:"Register"});
+    return res.status(200).render("signup", {title:"Sign up"});
   } else {
     return res.redirect("/")
   }
@@ -106,7 +106,7 @@ router.get("/password-update/:id/:token", authController.isLoggedIn, async (req,
 
 // AUTH POST ROUTES  ============================================================
 
-router.post("/register",
+router.post("/signup",
 [
   check("fName", "First name field cannot be empty.").not().isEmpty(),
   check("fName", "First name must be only alphabetical characters.").isAlpha(),
@@ -126,7 +126,7 @@ router.post("/register",
     return value;
   }
  })
-], authController.register)
+], authController.signup)
 
 router.post("/login",[
   check("email", "Email field cannot be empty.").not().isEmpty(),

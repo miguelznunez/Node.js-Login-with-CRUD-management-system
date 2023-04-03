@@ -20,10 +20,10 @@ function get_date(){
 }
 
 
-// REGISTER -------------------------------------------------------
+// SIGN UP -------------------------------------------------------
 
 
-exports.register = (req, res) => {
+exports.signup = (req, res) => {
 
   const errors = validationResult(req),
   allErrors = JSON.stringify(errors),
