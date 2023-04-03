@@ -17,11 +17,11 @@
   <div class="container">
     <div class="navbar">
 
-      <a href="/" class="nav-branding" style="font-size: 2rem;font-weight: bold;">MWD</a>
+      <a href="/" class="nav-branding" style="font-size: 2rem;font-weight: bold;">COMP.</a>
       
       <ul class="nav-menu">
         <!-- If user is logged in and is an admin show this -->
-        <% if (typeof user !="undefined" && user && user.admin === "Yes") { %>
+        <% if (typeof user !="undefined" && user.admin === "Yes") { %>
           <li class="nav-item">
             <div class="dropdown" data-dropdown>
               <button class="link" data-dropdown-button >Admin <i class="fa-solid fa-caret-down"
@@ -56,10 +56,10 @@
             <a href="/store" class="nav-link">Store</a>
           </li>
           <li class="nav-item">
-            <a href="/auth/logout" class="nav-link">Logout</a>
+            <a href="/auth/logout" class="nav-link">Log out</a>
           </li>
         <!-- Else show this -->
-        <% } else if (typeof user !="undefined" && user && user.admin === "No") { %>
+        <% } else if (typeof user !="undefined" && user.admin === "No") { %>
           <li class="nav-item">
             <div class="dropdown" data-dropdown>
               <button class="link" data-dropdown-button>Dashboard <i class="fa-solid fa-caret-down"
@@ -74,14 +74,14 @@
             </div>
           </li>
           <li class="nav-item">
-            <a href="/auth/logout" class="nav-link">Logout</a>
+            <a href="/auth/logout" class="nav-link">Log out</a>
           </li>
         <% } else { %>
           <li class="nav-item">
             <a href="/auth/login" class="nav-link">Log in</a>
           </li>
           <li class="nav-item">
-            <a href="/auth/register" class="nav-link">Register</a>
+            <a href="/auth/register" class="nav-link">Sign up</a>
           </li>
         <% } %>
       </ul>

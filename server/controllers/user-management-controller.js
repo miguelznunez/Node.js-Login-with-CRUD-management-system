@@ -62,7 +62,7 @@ exports.createUser = (req, res) => {
   db.query("SELECT email FROM users WHERE email = ?", [email], async (err, results) => {
     // CHECK IF EMAIL ALREADY EXISTS IN DATABASE
     if (!err && results != "") {
-      res.statusMessage = "An account with that email already exists"
+      res.statusMessage = "An account with that email address already exists."
       return res.status(401).end()
     // ELSE CREATE A NEW USER
     } else if(!err && results[0] === undefined){
@@ -70,7 +70,7 @@ exports.createUser = (req, res) => {
           db.query("INSERT INTO users (fName, lName, email, password, member_since, status) VALUES (?,?,?,?,?,?)", [fName, lName, email, hash, member_since, "Active"],
             async (err, results) => {
               if (!err) {
-                res.statusMessage = `A new user with an email of ${email} has been successfully created.`
+                res.statusMessage = `A new user with an email address of ${email} has been successfully created.`
                 return res.status(200).end()
               // DATABASE ERROR
               } else { 
@@ -89,21 +89,13 @@ exports.createUser = (req, res) => {
 
 exports.updateUser = (req, res) => {
 
-  const errors = validationResult(req),
-  allErrors = JSON.stringify(errors),
-  allParsedErrors = JSON.parse(allErrors);
-  if(!errors.isEmpty()){
-    res.statusMessage = allParsedErrors.errors[0].msg
-    return res.status(401).end()
-  }
-
-  const {id, fName, lName, email, banned, admin} = req.body
+  const {id, banned, admin} = req.body
 
   const status = banned == "Yes" ? "Banned" : "Active"
 
-  db.query("UPDATE users SET fName = ?, lName = ?, email = ?, status = ?, admin = ? WHERE id = ?", [fName, lName, email, status, admin, id], async (err, results) => {
+  db.query("UPDATE users SET status = ?, admin = ? WHERE id = ?", [status, admin, id], async (err, results) => {
     if (!err) {
-      res.statusMessage = "User has been successfully updated."
+      res.statusMessage = `User has been successfully updated.`
       return res.status(200).end()
     } else {
       res.statusMessage = "Internal server error."

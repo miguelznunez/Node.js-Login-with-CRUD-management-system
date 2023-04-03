@@ -4,8 +4,9 @@ jwt = require("jsonwebtoken"),
 bcrypt = require("bcrypt"),
 saltRounds = 10,
 mail = require("../config/mail-setup.js"),
-{promisify} = require("util"),
-{validationResult} = require("express-validator");
+{promisify} = require("util");
+
+const {validationResult} = require("express-validator");
 
 var request = require("request")
 var randomstring = require("randomstring");
@@ -38,7 +39,8 @@ exports.register = (req, res) => {
   db.query("SELECT email FROM users WHERE email = ?", [email], async (err, results) => {
     // CHECK IF EMAIL ALREADY EXISTS IN DATABASE
     if (!err && results != "") {
-      res.statusMessage = "An account with that email already exists"
+      console.log(results)
+      res.statusMessage = "An account with that email address already exists."
       return res.status(401).end()
     // ELSE CREATE A NEW USER
     } else if(!err && results[0] === undefined){
@@ -47,14 +49,14 @@ exports.register = (req, res) => {
           db.query("INSERT INTO users (fName, lName, email, password, token, member_since) VALUES (?,?,?,?,?,?)", [fName, lName, email, hash, token, member_since],
             async (err, results) => {
               if (!err) {
-                mail.activateAccountEmail(email, results.insertId, token, (error, data) => {
-                  if(!error) {
-                    res.statusMessage = `We have sent an email to ${email}, please click the link included to verify your email address.`
+                mail.activateAccountEmail(email, results.insertId, token, (err, data) => {
+                  if(!err) {
+                    res.statusMessage = `We sent an email to ${email}, please click the link included to verify your email address.`
                     return res.status(200).end()
                   } else {
                     // MAILGUN ERROR
-                    res.statusMessage = error.message
-                    return res.status(error.status).end()
+                    res.statusMessage = err.message
+                    return res.status(err.status).end()
                   }
                 })
               // DATABASE ERROR
@@ -66,6 +68,7 @@ exports.register = (req, res) => {
         });//bcrypt
     // DATABASE ERROR
     } else{ 
+        console.log("this one?")
         res.statusMessage = "Internal server error."
         return res.status(500).end()
      } 
@@ -75,7 +78,6 @@ exports.register = (req, res) => {
 
 
 // LOGIN -------------------------------------------------------
-
 
 exports.login = async (req, res) => {
 
@@ -90,9 +92,18 @@ exports.login = async (req, res) => {
   const {email, password} = req.body
 
   db.query("SELECT * FROM users WHERE email = ?", [email], async (err, results) => {
+    // IF EMAIL IS INVALID
+    if(!err && results == ""){
+      res.statusMessage = "The email or password is incorrect."
+      return res.status(401).end()
+    }
 
+    // IF EMAIL IS IN THE DATABASE BUT PASSWORD IS NULL
+    if(!err && (results[0].email != null && results[0].password == null)){
+      res.statusMessage = "A Google account exists with this email address, please use Google to login."
+      return res.status(401).end()
     // IF EMAIL IS NOT IN THE DATABASE OR PASSWORDS DO NOT MATCH
-    if(!err && (results == "" || !(await bcrypt.compare(password, results[0].password.toString())))){
+    } else if(!err && (results[0].email == null || !(await bcrypt.compare(password, results[0].password.toString())))){
       res.statusMessage = "The email or password is incorrect."
       return res.status(401).end()
     // ELSE IF ACCOUNT IS INACTIVE
@@ -104,11 +115,11 @@ exports.login = async (req, res) => {
       res.statusMessage = "This account has been banned."
       return res.status(400).end()
     // ELSE ALLOW USER TO LOGIN
-    } else if (!err && results[0].status === "Active"){
+    } else if(!err && results[0].status === "Active") {
       const id = results[0].id;
       const token = jwt.sign({ id: id}, process.env.JWT_SECRET, {
         expiresIn: process.env.JWT_EXPIRES_IN
-      });
+      })
       const cookieOptions = {
         expires: new Date(
           Date.now() + process.env.JWT_COOKIE_EXPIRES * 24 * 60 * 60 * 1000
@@ -118,11 +129,11 @@ exports.login = async (req, res) => {
       res.cookie("jwt", token, cookieOptions);
       return res.status(200).end();
     // DATABASE ERROR
-    } else{
+    } else {
       res.statusMessage = "Internal server error."
       return res.status(500).end()
     }
-  });
+  })
 }
 
 // IS USER LOGGED IN? -------------------------------------------------------
@@ -151,12 +162,20 @@ exports.isLoggedIn = async (req, res, next) => {
 // LOGOUT -------------------------------------------------------
 
 
-exports.logout = async (req, res) => {
-  res.cookie("jwt", "logout", {
-    expires: new Date(Date.now() + 2*1000),
+exports.logout = async (req, res, next) => {
+
+  if(req.cookies.jwt){
+    res.cookie("jwt", "logout", {
+    expires: new Date(Date.now() + 2 * 1000),
     httpOnly: true
-  });
-  return res.status(200).redirect("/");
+    })
+    return res.status(200).redirect("/auth/login");
+  } else {
+    req.logout(function(err) {
+      if (err) { return next(err);}
+      return res.status(200).redirect("/auth/login");    
+    })
+  }
 }
 
 
@@ -186,7 +205,7 @@ exports.passwordReset = (req, res) => {
     const email = req.body.email
 
     // CHECK IF EMAIL EXISTS  
-    db.query("SELECT id, email FROM users WHERE email = ?", [email] , (err, results) => {    
+    db.query("SELECT id, email FROM users WHERE email = ? && password != ?", [email, "null"] , (err, results) => {    
       // EMAIL FOUND
       if(!err && results[0] != undefined) {
         const id = results[0].id
@@ -248,7 +267,7 @@ exports.passwordUpdate = (req, res) => {
       var data = { token: null, token_expires: null, password: hash};
       db.query("UPDATE users SET ? WHERE id = ?", [data, id], (err, result) => {
         if(!err) { 
-          res.statusMessage = "Your password has been updated successfully. Please login with your new password."
+          res.statusMessage = "Your password has been updated successfully, please login with your new password."
           return res.status(200).end()
         } else { 
           res.statusMessage = "Internal server error."

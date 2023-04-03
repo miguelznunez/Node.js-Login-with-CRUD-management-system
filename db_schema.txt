@@ -16,9 +16,9 @@ CREATE TABLE users (
     
  CREATE TABLE federated_credentials (
     id INT,
-    user_id INT NOT NULL,
-    provider VARCHAR(255) NOT NULL,
-    subject VARCHAR(255) NOT NULL,
+    user_id INT,
+    provider VARCHAR(255),
+    subject VARCHAR(255),
 
     PRIMARY KEY(id),
     UNIQUE INDEX provider_UNIQUE (provider ASC) VISIBLE,

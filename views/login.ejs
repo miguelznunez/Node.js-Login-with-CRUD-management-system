@@ -3,26 +3,32 @@
 
   <div class="container">
 
-    <div class="server-message"></div>
+    <% if(typeof flash !="undefined" && flash !="" ) { %>
+      <div class="server-message error">
+        <%= flash %>
+      </div>
+    <% } else { %>
+        <div class="server-message"></div>
+    <% } %>
 
     <div class="title">
-      <h2>Welcome</h2>
+      <h2>Welcome, please log in.</h2>
     </div>
 
     <div class="passport-login">
-      <a href="/auth/google"><button class="auth-btn"><i class="fa-brands fa-google"></i> Log in with Google</button></a>
+      <a href="/auth/google"><button class="auth-btn google"><i class="fa-brands fa-google"></i> Log in with Google</button></a>
     </div>
 
     <div class="margin center" >
-      <p>Have a password? Continue with your email address</p>
+      <p>Have a password? Log in with your email address.</p>
     </div>
     
     <form id="login-form">
       <div>
-        <input type="text" id="email" placeholder="Email" maxlength="100" required>
+        <input type="text" id="email" placeholder="Email" maxlength="100">
       </div>
       <div>
-        <input type="password" id="password" placeholder="Password" maxlength="60" required>
+        <input type="password" id="password" placeholder="Password" maxlength="60">
       </div>
       <div class="show-password-login">
         <div>
@@ -38,7 +44,7 @@
         <button class="auth-btn">Log in</button>
       </div>
       <div id="register-account">
-        <a href="/auth/register">Not a member? Register</a>
+        <a href="/auth/register">Not a member? Sign up</a>
       </div>
     </form>
 

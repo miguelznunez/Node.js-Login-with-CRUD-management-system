@@ -302,6 +302,7 @@ th{
 /* END DROPDOWN MENU */
 
 /* INDEX.EJS */
+
 .home-container{
   width: 100%;
   height: calc(100vh - 50px);
@@ -330,13 +331,15 @@ th{
 
 
 .show-password-register,
-.show-password-login{
+.show-password-login,
+.show-password-create-user{
   width: 375px;
   display: flex;
   justify-content: flex-start;
   align-items: center;
 }
 
+.show-password-login,
 .show-password-login{
   justify-content: space-between;
 }
@@ -355,6 +358,11 @@ th{
 .auth-btn i{
   color: white;
   margin: 0 10px;
+}
+
+.google{
+  background-color: #DB4437;
+  border: 1px solid #DB4437;
 }
 /* USER MANAGEMENT */
 
@@ -409,7 +417,7 @@ th{
 
 .view-users .active-user {
   color: white;
-  background-color: dodgerblue;
+  background-color: #4285F4;
 }
 
 /* ADD-USER */

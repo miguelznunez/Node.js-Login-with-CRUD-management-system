@@ -1,8 +1,9 @@
 const express = require("express"),
-passportSetup = require("./server/config/passport-setup"),
+googlePassportSetup = require("./server/config/google-passport-setup"),
 path = require("path"),
 cookieParser = require("cookie-parser"),
 session = require('express-session'),
+passport = require("passport"),
 flash = require('connect-flash');
 
 require("dotenv").config()
@@ -16,14 +17,18 @@ app.use(express.json())
 
 app.use(cookieParser())
 app.use(session({ 
-  secret: 'SecretStringForSession',
-  cookie: { maxAge: 60000 },
-  resave: true,
-  saveUninitialized: true
+  secret: 'keyboard cat',
+  resave: false, // dont't save session if unmodified
+  saveUninitialized: false, // don't create session until something stored
+  cookie: { maxAge: 90 * 24 * 60 * 60 * 1000 }
 }))
+
 app.use(flash())
 
 app.set("view engine", "ejs")
+
+app.use(passport.initialize())
+app.use(passport.session())
 
 app.use("/auth", require("./server/routes/auth-routes"))
 // app.use("/eCommerce-management-system", require("./server/routes/eCommerce-management"))

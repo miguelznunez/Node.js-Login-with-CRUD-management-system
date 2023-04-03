@@ -38,23 +38,23 @@ dbConnection.connect(function(err){
   let federated_credentials = `      
     CREATE TABLE federated_credentials (
     id INT UNSIGNED AUTO_INCREMENT,
-    user_id INT UNSIGNED NOT NULL,
-    provider VARCHAR(255) NOT NULL,
-    googleId VARCHAR(255) NOT NULL,
+    user_id INT UNSIGNED,
+    provider VARCHAR(255),
+    subject VARCHAR(255),
 
     PRIMARY KEY(id),
     FOREIGN KEY(user_id) REFERENCES users(id),
-    UNIQUE INDEX googleId_UNIQUE (googleId ASC) VISIBLE );`
+    UNIQUE INDEX subject_UNIQUE (subject ASC) VISIBLE );`
 
   dbConnection.query(users, (err, results) => {
     if (!err) {
-      console.log("MYSQL users table created successfully.")
+      console.log("users table created...")
     }
   })
 
   dbConnection.query(federated_credentials, (err, results) => {
     if (!err) {
-      console.log("MYSQL federated_credentials table created successfully.")
+      console.log("federated_credentials table created...")
     }
   })
 

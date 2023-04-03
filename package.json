@@ -14,6 +14,7 @@
     "colors": "^1.4.0",
     "connect-flash": "^0.1.1",
     "cookie-parser": "^1.4.5",
+    "cookie-session": "^2.0.0",
     "dotenv": "^10.0.0",
     "ejs": "^3.1.6",
     "express": "^4.17.1",
@@ -25,6 +26,7 @@
     "nodemailer-mailgun-transport": "^2.1.3",
     "passport": "^0.6.0",
     "passport-google-oauth20": "^2.0.0",
+    "passport-local": "^1.0.0",
     "randomstring": "^1.2.2",
     "req-flash": "^0.0.3",
     "request": "^2.88.2"

@@ -4,9 +4,9 @@
 
     <div class="container">
 
-      <% if(typeof flashMessage != "undefined" && flashMessage != "") { %>
+      <% if(typeof flash != "undefined" && flash != "") { %>
         <div class="server-message success">
-          <%= flashMessage %>
+          <%= flash %>
         </div>
       <% } else { %>
         <div class="margin"></div>
@@ -32,7 +32,7 @@
       <br>
 
       <div class="view-users">
-        <h4>Viewing Active Users</h4>
+        <h4>Viewing - Active Users</h4>
         <div>
           <a href="/user-management/active-users" class="active-user"><i class="fa-solid fa-user"></i> View All Active Users</a>
           <a href="/user-management/banned-users"><i class="fa-solid fa-user-slash"></i> View All Banned Users</a>

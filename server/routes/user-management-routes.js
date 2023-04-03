@@ -27,14 +27,14 @@ router.get("/active-users", authController.isLoggedIn, (req, res) => {
   if(req.user && req.user.admin === "Yes" && !checkBrowser(req.headers)) {
     db.query("SELECT * FROM users WHERE status = 'Active'", (err, rows) => {
       if(!err) { 
-        const flashMessage = req.flash("message")
-        return res.status(200).render("active-users", {title:"User Management - Active Users" , user:req.user, rows:rows, flashMessage})
+        const flash = req.flash("message")
+        return res.status(200).render("active-users", {title:"User Management - Active Users" , user:req.user, rows:rows, flash})
       } else {
         return res.status(500).render("active-users", {title:"User Management - Active Users", user:req.user, message:"Internal server error."})
       }
     })
   } else { 
-    return res.redirect("/login")
+    return res.redirect("/auth/login")
   }
 })
 
@@ -42,14 +42,14 @@ router.get("/banned-users", authController.isLoggedIn, (req, res) => {
   if(req.user && req.user.admin === "Yes" && !checkBrowser(req.headers)) {
     db.query("SELECT * FROM users WHERE status = 'Banned'", (err, rows) => {
       if(!err) { 
-        const flashMessage = req.flash("message")
-        return res.status(200).render("banned-users", {title:"User Management - Banned Users" , user:req.user, rows:rows, flashMessage})
+        const flash = req.flash("message")
+        return res.status(200).render("banned-users", {title:"User Management - Banned Users" , user:req.user, rows:rows, flash})
       } else {
         return res.status(500).render("banned-users", {title:"User Management - Banned Users", user:req.user, message:"Internal server error."})
       }
     })
   } else { 
-    return res.redirect("/login")
+    return res.redirect("/auth/login")
   }
 })
 
@@ -63,7 +63,7 @@ router.get("/deleted-users", authController.isLoggedIn, (req, res) => {
       }
     })
   } else { 
-    return res.redirect("/login")
+    return res.redirect("/auth/login")
   }
 })
 
@@ -80,7 +80,7 @@ router.get("/view-user/:id", authController.isLoggedIn, (req, res) => {
       }
     })
   } else { 
-    return res.redirect("/login")
+    return res.redirect("/auth/login")
   }
 })
 
@@ -98,7 +98,7 @@ router.get("/edit-user/:id", authController.isLoggedIn, (req, res) => {
     })
   }
   else { 
-    res.redirect("/login")
+    res.redirect("/auth/login")
   }
 })
 
@@ -106,37 +106,90 @@ router.get("/create-user", authController.isLoggedIn, (req, res) => {
   if(req.user && req.user.admin === "Yes" && !checkBrowser(req.headers)) {
     return res.render("create-user", {title:"Create User", user:req.user})
   } else { 
-    return res.redirect("/login")
+    return res.redirect("/auth/login")
   }
 })
 
 router.get("/delete-active-user/:id", authController.isLoggedIn, (req, res) => {
   if(req.user && req.user.admin === "Yes" && !checkBrowser(req.headers)) {
-    db.query("UPDATE users SET email = ?, status = ? WHERE id = ?", [null, "Deleted", req.params.id], (err, rows) => {
-      if(!err) { 
-        req.flash("message", `User has been deleted successfully.`)
-        return res.redirect("/user-management/active-users")
-      } else { 
+
+    db.query("SELECT * FROM federated_credentials WHERE user_id = ?", [req.params.id], (err, row) => {
+      // IF USER EXISTS IN FEDERATED CREDENTIALS
+      if(!err && row){
+        // REMOVE
+        db.query("UPDATE federated_credentials SET subject = ? WHERE user_id = ?", [null, req.params.id], (err, rows) => {
+          if(!err) { 
+            db.query("UPDATE users SET email = ?, status = ? WHERE id = ?", [null, "Deleted", req.params.id], (err, rows) => {
+              if(!err) { 
+                req.flash("message", `Account has been deleted successfully.`)
+                return res.redirect("/user-management/active-users")
+              } else { 
+                return res.status(500).render("active-users", {title:"User Management - Active Users", user:req.user, message:"Internal server error."})
+              }
+           })
+          } else { 
+            return res.status(500).render("active-users", {title:"User Management - Active Users", user:req.user, message:"Internal server error."})
+          }
+        })
+      // IF THEY DONT: DELETE FROM USERS TABLE ONLY
+      } else if(!err && !row) {
+        db.query("UPDATE users SET email = ?, status = ? WHERE id = ?", [null, "Deleted", req.params.id], (err, rows) => {
+          if(!err) { 
+            req.flash("message", `Account has been deleted successfully.`)
+            return res.redirect("/user-management/active-users")
+          } else { 
+            return res.status(500).render("active-users", {title:"User Management - Active Users", user:req.user, message:"Internal server error."})
+          }
+        })
+      // DB ERROR
+      } else {
         return res.status(500).render("active-users", {title:"User Management - Active Users", user:req.user, message:"Internal server error."})
       }
     })
   } else { 
-    return res.redirect("/login")
+    return res.redirect("/auth/login")
   }
 })
-
+// DELETE GOOGLE USER PROVIDER
 router.get("/delete-banned-user/:id", authController.isLoggedIn, (req, res) => {
   if(req.user && req.user.admin === "Yes" && !checkBrowser(req.headers)) {
-    db.query("UPDATE users SET email = ?, status = ? WHERE id = ?", [null, "Deleted", req.params.id], (err, rows) => {
-      if(!err) { 
-        req.flash("message", `User has been deleted successfully.`)
-        return res.redirect("/banned-users")
-      } else { 
+
+    db.query("SELECT * FROM federated_credentials WHERE user_id = ?", [req.params.id], (err, row) => {
+      // IF USER EXISTS IN FEDERATED CREDENTIALS
+      if(!err && row){
+        // REMOVE
+        db.query("UPDATE federated_credentials SET subject = ? WHERE user_id = ?", [null, req.params.id], (err, rows) => {
+          if(!err) { 
+            db.query("UPDATE users SET email = ?, status = ? WHERE id = ?", [null, "Deleted", req.params.id], (err, rows) => {
+              if(!err) { 
+                req.flash("message", `User has been deleted successfully.`)
+                return res.redirect("/user-management/banned-users")
+              } else { 
+                return res.status(500).render("banned-users", {title:"User Management - Banned Users", user:req.user, message:"Internal server error."})
+              }
+           })
+          } else { 
+            return res.status(500).render("banned-users", {title:"User Management - Banned Users", user:req.user, message:"Internal server error."})
+          }
+        })
+      // IF THEY DONT: DELETE FROM USERS TABLE ONLY
+      } else if(!err && !row) {
+        db.query("UPDATE users SET email = ?, status = ? WHERE id = ?", [null, "Deleted", req.params.id], (err, rows) => {
+          if(!err) { 
+            req.flash("message", `User has been deleted successfully.`)
+            return res.redirect("/user-management/banned-users")
+          } else { 
+            return res.status(500).render("banned-users", {title:"User Management - Banned Users", user:req.user, message:"Internal server error."})
+          }
+        })
+      // DB ERROR
+      } else {
         return res.status(500).render("banned-users", {title:"User Management - Banned Users", user:req.user, message:"Internal server error."})
       }
     })
+
   } else { 
-    return res.redirect("/login")
+    return res.redirect("/auth/login")
   }
 })
 
@@ -158,8 +211,8 @@ router.post("/create-user",
   check("lName", "Last name must be between 1 - 25 characters.").isLength({min:1, max:25}),  
   check("email", "The email you entered is invalid, please try again.").isEmail().normalizeEmail(),
   check("email", "Email address must be between 4-100 characters long, please try again.").isLength({min:4, max:100}).normalizeEmail(), 
-  // check("password", "Password must be between 8-60 characters long.").isLength({min:8, max:60}),
-  // check("password", "Password must include one lowercase character, one uppercase character, a number, and a special character.").matches(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.* )(?=.*[^a-zA-Z0-9]).{8,}$/, "i"),
+  check("password", "Password must be between 8-60 characters long.").isLength({min:8, max:60}),
+  check("password", "Password must include one lowercase character, one uppercase character, a number, and a special character.").matches(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.* )(?=.*[^a-zA-Z0-9]).{8,}$/, "i"),
   check("cPassword", "Password confirm field cannot be empty.").not().isEmpty(),
   check("password", "Password don't match, please try again.").custom(( value, { req, res, next } ) => {
   if (value !== req.body.cPassword) {
@@ -170,15 +223,6 @@ router.post("/create-user",
  })
 ], userManagementController.createUser)
 
-router.post("/update-user", [
-  check("fName", "First name field cannot be empty.").not().isEmpty(),
-  check("fName", "First name must be only alphabetical characters.").isAlpha(),
-  check("fName", "First name must be between 1 - 25 characters.").isLength({min:1, max:25}),
-  check("lName", "Last name field cannot be empty.").not().isEmpty(),
-  check("lName", "Last name must be only alphabetical characters.").isAlpha(),
-  check("lName", "Last name must be between 1 - 25 characters.").isLength({min:1, max:25}),  
-  check("email", "The email you entered is invalid, please try again.").isEmail().normalizeEmail(),
-  check("email", "Email address must be between 4-100 characters long, please try again.").isLength({min:4, max:100}).normalizeEmail(), 
-], userManagementController.updateUser)
+router.post("/update-user", userManagementController.updateUser)
 
 module.exports = router;
