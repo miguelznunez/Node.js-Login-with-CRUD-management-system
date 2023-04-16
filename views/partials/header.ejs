@@ -5,6 +5,10 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+  <script src="//code.jquery.com/jquery-2.1.1.min.js"></script>
+
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css">
   <link rel="stylesheet" href="/css/style.css">
   <script src="https://www.google.com/recaptcha/api.js" async defer></script>
@@ -14,76 +18,92 @@
 <body>
 
 <header id="header">
-  <div class="container">
+  <!-- <div class="container"> -->
     <div class="navbar">
 
-      <a href="/" class="nav-branding" style="font-size: 2rem;font-weight: bold;">COMP.</a>
+      <a href="/" class="nav-branding" style="font-size: 2rem;font-weight: bold;">MWD</a>
       
       <ul class="nav-menu">
         <!-- If user is logged in and is an admin show this -->
-        <% if (typeof user !="undefined" && user.admin === "Yes") { %>
+        
           <li class="nav-item">
             <div class="dropdown" data-dropdown>
-              <button class="link" data-dropdown-button >Admin <i class="fa-solid fa-caret-down"
-                  data-dropdown-button></i></button>
+
+              <% if (typeof user !="undefined") { %>
+                <button class="link" data-dropdown-button>Hello, <%= user.fName %> <i class="fa-solid fa-angle-down" data-dropdown-button style="color:white"></i></button>
+              <% } else { %>
+                <button class="link" data-dropdown-button>Menu <i class="fa-solid fa-caret-down" data-dropdown-button
+                    style="color:white"></i></button>
+              <% } %>
+
               <div class="dropdown-menu">
-                <a href="/user-management/active-users">
-                  <div class="dropdown-links">
-                    <h3>User Management</h3>
-                  </div>
-                </a>
-                <a href="/eCommerce-management">
-                  <div class="dropdown-links">
-                    <h3>eCommerce Management</h3>
-                  </div>
-                </a>
+                <% if (typeof user !="undefined" && user.admin === "Yes" ) { %>
+                  <a href="/">
+                    <div class="dropdown-links">
+                      <h3>Home</h3>
+                    </div>
+                  </a>
+                  <a href="/user-management/active-users">
+                    <div class="dropdown-links">
+                      <h3>User Management</h3>
+                    </div>
+                  </a>
+                  <a href="/ecommerce-management/dashboard">
+                    <div class="dropdown-links">
+                      <h3>eCommerce Management</h3>
+                    </div>
+                  </a>
+                  <a href="/profile-management/profile">
+                    <div class="dropdown-links">
+                      <h3>Profile</h3>
+                    </div>
+                  </a>
+                  <a href="/auth/logout">
+                    <div class="dropdown-links">
+                      <h3>Log out</h3>
+                    </div>
+                  </a>
+                <% } %>
+
+                <% if (typeof user !="undefined" && user.admin === "No") { %>
+                  <a href="/">
+                    <div class="dropdown-links">
+                      <h3>Home</h3>
+                    </div>
+                  </a>
+                  <a href="/profile-management/profile">
+                    <div class="dropdown-links">
+                      <h3>Profile</h3>
+                    </div>
+                  </a>
+                  <a href="/auth/logout">
+                    <div class="dropdown-links">
+                      <h3>Log out</h3>
+                    </div>
+                  </a>
+                <% } %>
+
+                <% if (typeof user === "undefined") { %>
+                  <a href="/">
+                    <div class="dropdown-links">
+                      <h3>Home</h3>
+                    </div>
+                  </a>
+                  <a href="/auth/login">
+                    <div class="dropdown-links">
+                      <h3>Log in</h3>
+                    </div>
+                  </a>
+                  <a href="/auth/signup">
+                    <div class="dropdown-links">
+                      <h3>Sign up</h3>
+                    </div>
+                  </a>
+                <% } %>
+
               </div>
             </div>
           </li>
-          <li class="nav-item">
-            <div class="dropdown" data-dropdown>
-              <button class="link" data-dropdown-button>Dashboard <i class="fa-solid fa-caret-down" data-dropdown-button></i></button>
-              <div class="dropdown-menu">
-                <a href="/dashboard/profile">
-                  <div class="dropdown-links">
-                    <h3>Profile</h3>
-                  </div>
-                </a>
-              </div>
-            </div>
-          </li>
-          <li class="nav-item">
-            <a href="/store" class="nav-link">Store</a>
-          </li>
-          <li class="nav-item">
-            <a href="/auth/logout" class="nav-link">Log out</a>
-          </li>
-        <!-- Else show this -->
-        <% } else if (typeof user !="undefined" && user.admin === "No") { %>
-          <li class="nav-item">
-            <div class="dropdown" data-dropdown>
-              <button class="link" data-dropdown-button>Dashboard <i class="fa-solid fa-caret-down"
-                  data-dropdown-button></i></button>
-              <div class="dropdown-menu">
-                <a href="/dashboard/profile">
-                  <div class="dropdown-links">
-                    <h3>Profile</h3>
-                  </div>
-                </a>
-              </div>
-            </div>
-          </li>
-          <li class="nav-item">
-            <a href="/auth/logout" class="nav-link">Log out</a>
-          </li>
-        <% } else { %>
-          <li class="nav-item">
-            <a href="/auth/login" class="nav-link">Log in</a>
-          </li>
-          <li class="nav-item">
-            <a href="/auth/signup" class="nav-link">Sign up</a>
-          </li>
-        <% } %>
       </ul>
       <div class="hamburger">
         <span class="bar"></span>
@@ -91,6 +111,6 @@
         <span class="bar"></span>
       </div>
     </div>
-  </div>
+  <!-- </div> -->
   
 </header>

@@ -121,7 +121,7 @@ router.get("/delete-active-user/:id", authController.isLoggedIn, (req, res) => {
           if(!err) { 
             db.query("UPDATE users SET email = ?, status = ? WHERE id = ?", [null, "Deleted", req.params.id], (err, rows) => {
               if(!err) { 
-                req.flash("message", `Account has been deleted successfully.`)
+                req.flash("message", `User has been deleted successfully.`)
                 return res.redirect("/user-management/active-users")
               } else { 
                 return res.status(500).render("active-users", {title:"User Management - Active Users", user:req.user, message:"Internal server error."})

@@ -17,9 +17,9 @@ exports.findActiveUsers = (req, res) => {
   const searchTerm = req.body.search
   db.query("SELECT * FROM users WHERE (fName LIKE ? OR lName LIKE ? OR email LIKE ?) && status = 'Active'", ["%" + searchTerm + "%", "%" + searchTerm + "%", "%" + searchTerm + "%"], (err, rows) => {
     if(!err) { 
-      return res.status(200).render("user-management", {title:"User Management - Active Users" , user:req.user, rows:rows})
+      return res.status(200).render("active-users", {title:"User Management - Active Users" , user:req.user, rows:rows})
     } else { 
-      return res.status(500).render("user-management", {title:"User Management - Active Users" , user:req.user, success:false, message:"Internal server error."})
+      return res.status(500).render("active-users", {title:"User Management - Active Users" , user:req.user, success:false, message:"Internal server error."})
     }
   })
 }

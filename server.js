@@ -30,8 +30,8 @@ app.use(passport.initialize())
 app.use(passport.session())
 
 app.use("/auth", require("./server/routes/auth-routes"))
-app.use("/dashboard", require("./server/routes/dashboard-routes"))
-// app.use("/eCommerce-management-system", require("./server/routes/eCommerce-management"))
+app.use("/profile-management", require("./server/routes/profile-management-routes"))
+app.use("/ecommerce-management", require("./server/routes/ecommerce-management-routes"))
 app.use("/user-management", require("./server/routes/user-management-routes"))
 app.use("/", require("./server/routes/page-routes"))
 

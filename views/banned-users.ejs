@@ -2,85 +2,136 @@
 
   <% if (typeof message == "undefined") { %>
 
-    <div class="container">
+    <div class="app">
 
-      <% if(typeof flash !="undefined" && flash !="" ) { %>
-        <div class="server-message success">
-          <%= flash %>
+      <aside class="sidebar-menu">
+        <div class="menu">
+          <ul id="menu">
+            <li id="menu-home"><a href="/"><i class="fa fa-home"></i><span>Home</span></a></li>
+            <li id="menu-comunicacao"><a href="#"><i class="fa fa-users"></i><span>User Management</span><span
+                  class="fa fa-angle-double-right" style="float: right"></span></a>
+              <ul id="menu-comunicacao-sub">
+                <li id="menu-mensagens" style="width: 140px">
+                  <p>Find Users<i class="fa fa-angle-right" style="float: right; margin-right: -8px; margin-top: 2px;"></i>
+                  </p>
+                  <ul id="menu-mensagens-sub">
+                    <li id="menu-mensagens-enviadas"><a href="/user-management/active-users">Active</a></li>
+                    <li id="menu-mensagens-recebidas"><a href="/user-management/banned-users">Banned</a></li>
+                    <li id="menu-mensagens-nova"><a href="/user-management/deleted-users">Deleted</a></li>
+                  </ul>
+                </li>
+                <li id="menu-arquivos"><a href="/user-management/create-user">Create User</a></li>
+              </ul>
+            </li>
+            <li id="menu-academico"><a href="#"><i class="fa fa-graduation-cap"></i><span>Acadêmico</span><span
+                  class="fa fa-angle-right" style="float: right"></span></a>
+              <ul id="menu-academico-sub">
+                <li id="menu-academico-avaliacoes"><a href="#">Avaliações</a></li>
+                <li id="menu-academico-boletim"><a href="#">Boletim</a></li>
+              </ul>
+            </li>
+            <li><a href="#"><i class="fa fa-table"></i><span>Agenda</span><span class="fa fa-angle-right"
+                  style="float: right"></span></a>
+              <ul>
+                <li><a href="#">Avaliações Agendadas</a></li>
+                <li><a href="#">Faltas</a></li>
+                <li><a href="#">Calendário</a></li>
+              </ul>
+            </li>
+            <li><a href="#"><i class="fa fa-history"></i><span>Rematrícula</span></a></li>
+            <li><a href="#"><i class="fa fa-gears"></i><span>Dados Cadastrais</span></a></li>
+            <li><a href="#"><i class="fa fa-institution"></i><span>Instituição</span><span class="fa fa-angle-right"
+                  style="float: right"></span></a>
+              <ul>
+                <li><a href="#">Relação de Alunos</a></li>
+                <li><a href="#">Relação de Professores</a></li>
+                <li><a href="#">Plano de Ensino</a></li>
+                <li><a href="#">Pagamentos Pendentes</a></li>
+                <li><a href="#">Mapa</a></li>
+              </ul>
+            </li>
+          </ul>
         </div>
-      <% } else { %>
-        <div class="margin"></div>
-      <% } %>
+      </aside>
 
-      <form action="/user-management/find-banned-users" method="POST">
-        <div class="user-management">
-          <div>
-            <h2>User Management</h2>
-          </div>
-          <div>
-            <input type="text" name="search" placeholder="Search blocked users..."><button>Search</button>
-          </div>
-        </div>
-      </form>
-
-      <div class="create-user">
-        <div>
-          <a href="/user-management/create-user"><i class="fa-solid fa-user-plus"></i> Create User</a>
-        </div>
-      </div>
+      <main class="content">
       
-      <br>
-
-      <div class="view-users">
-        <h4>Viewing - Blocked Users</h4>
-        <div>
-          <a href="/user-management/active-users"><i class="fa-solid fa-user"></i> View All Active Users</a>
-          <a href="/user-management/banned-users" class="active-user"><i class="fa-solid fa-user-slash"></i> View All Banned Users</a>
-          <a href="/user-management/deleted-users"><i class="fa-solid fa-user-xmark"></i> View All Deleted
-            Users</a>
+        <div class="sidebar-hamburger">
+          <span class="sbar"></span>
+          <span class="sbar"></span>
+          <span class="sbar"></span>
         </div>
-      </div>
 
-      <br>
+        <br>
+      
+        <% if(typeof flash !="undefined" && flash !="" ) { %>
+          <div class="server-message success">
+            <%= flash %>
+          </div>
+        <% } %>
+          
+        <br>
+      
+        <h3>Banned users: <%= rows.length %>
+        </h3>
+      
+        <br>
+      
+        <form action="/user-management/find-banned-users" method="POST">
+          <div class="user-management">
+            <input type="text" name="search" placeholder="Search banned users..."><button>Search</button>
+          </div>
+        </form>
 
-      <table>
-        <tr>
-          <th>#</th>
-          <th>First Name</th>
-          <th>Last Name</th>
-          <th>Email</th>
-          <th>Status</th>
-          <th class="text-end">Action</th>
-        </tr>
-        <% for(let i=0;i < rows.length;i++) { %>
+        <br>
+      
+        <table>
           <tr>
-            <td>
-              <%= rows[i].id %>
-            </td>
-            <td>
-              <%= rows[i].fName %>
-            </td>
-            <td>
-              <%= rows[i].lName %>
-            </td>
-            <td>
-              <%= rows[i].email %>
-            </td>
-            <td>
-              <%= rows[i].status %>
-            </td>
-            <td class="text-end">
-              <a href="/user-management/view-user/<%= rows[i].id %>"><i class="fa-solid fa-eye"></i> View</a>
-              <% if(user.id !=rows[i].id) { %>
-                <a href="/user-management/edit-user/<%= rows[i].id %>"><i class="fa-solid fa-pencil"></i> Edit</a>
-                <a href="/user-management/delete-banned-user/<%= rows[i].id %>"><i class="fa-solid fa-user-minus"></i> Delete</a>
-              <% } %>
-            </td>
+            <th>#</th>
+            <th>First</th>
+            <th>Last</th>
+            <th>Email</th>
+
+            <th class="text-end">Action</th>
           </tr>
-          <% } %>
-      </table>
+          <% for(let i=0;i < rows.length;i++) { %>
+            <tr>
+              <td>
+                <%= rows[i].id %>
+              </td>
+              <td>
+                <%= rows[i].fName %>
+              </td>
+              <td>
+                <%= rows[i].lName %>
+              </td>
+              <td>
+                <%= rows[i].email %>
+              </td>
+              <td class="text-end">
+                <a href="/user-management/view-user/<%= rows[i].id %>"><i class="fa-solid fa-eye"></i> View</a>
+                <% if(user.id !=rows[i].id) { %>
+                  <a href="/user-management/edit-user/<%= rows[i].id %>"><i class="fa-solid fa-pencil"></i> Edit</a>
+                  <a href="/user-management/delete-banned-user/<%= rows[i].id %>"><i class="fa-solid fa-user-minus"></i>
+                    Delete</a>
+                <% } %>
+              </td>
+            </tr>
+            <% } %>
+        </table>
+      </main>
 
     </div>
+
+    <script>
+      const sidebarHamburger = document.querySelector(".sidebar-hamburger")
+      const sidebarMenu = document.querySelector(".sidebar-menu")
+
+      sidebarHamburger.addEventListener("click", () => {
+        sidebarHamburger.classList.toggle("active")
+        sidebarMenu.classList.toggle("active")
+      })
+    </script>
 
   <% } else { %>
 

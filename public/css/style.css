@@ -172,6 +172,8 @@ th{
 
 /* Header / Navbar */
 .navbar{
+  width: 95%;
+  margin: auto;
   min-height: 80px;
   display: flex;
   justify-content: space-between;
@@ -370,17 +372,17 @@ th{
 .create-user,
 .view-users{
   width: 100%;
-  min-height: 50px;
   display: flex;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  align-items: center;
+}
+
+.fa-arrow-left{
+  font-size: 1.2rem;
 }
 
 .user-management input,
 .create-user input,
 .view-users input {
-  width: 300px;
+  width: 95%;
   padding: 10px;
   font-size: inherit;
   border-top-right-radius: 0px;
@@ -411,21 +413,29 @@ th{
   border: none;
 }
 
-.view-users .active-user i{
-  color: white;
-}
 
-.view-users .active-user {
-  color: white;
-  background-color: #4285F4;
-}
 
-/* ADD-USER */
+/* CREATE-USER */
 
 #create-user-form,
 #update-user-form {
-  width: 375px;
-  margin: auto;
+  width: 500px;
+}
+
+#create-user-form input[type="text"],
+#create-user-form input[type="email"],
+#create-user-form input[type="password"],
+#update-user-form input[type="text"],
+#update-user-form input[type="email"] {
+  width: 100%;
+}
+
+#create-user-form .auth-btn{
+  width: 100%;
+}
+
+#update-user-form button{
+  width: 100%;
 }
 
 #delete-user-form{
@@ -446,15 +456,158 @@ th{
   display: flex;
   flex-direction: column;
   gap: 10px;
-  background-color: #ffe6e6;
+  border: 1px solid red;
   border-radius: 5px;
   padding: 10px;
 }
 
+.show-password-create-user {
+  width: 100%;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 5px;
+}
+
+/* SIDEMENU */
+.app {
+  display: flex;
+  min-height: 100vh;
+}
+
+.sidebar-menu {
+  width: 280px;
+  background-color: #303641;
+  color: white;
+  z-index: 1;
+  box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.5);
+}
+
+.sidebar-menu i{
+  color: white;
+}
+
+#menu {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  margin-bottom: 20px;
+}
+
+#menu li {
+  position: relative;
+  margin: 0;
+  font-size: 12px;
+  border-bottom: 1px solid rgba(69, 74, 84, 0.7);
+  padding: 0;
+}
+
+#menu ul {
+  opacity: 0;
+  height: 0px;
+}
+
+#menu li a,
+#menu li p {
+  font-style: normal;
+  font-weight: 400;
+  position: relative;
+  display: block;
+  padding: 10px 20px;
+  color: #aaabae;
+  white-space: nowrap;
+  z-index: 2;
+}
+
+#menu li p {
+  font-size: 0.9rem;
+}
+
+#menu li a:hover,
+#menu li p:hover {
+  color: #ffffff;
+  background-color: #333944;
+  transition: color 250ms ease-in-out, background-color 250ms ease-in-out;
+}
+
+#menu li.active>a,
+#menu li.active>p {
+  background-color: #2b303a;
+  color: #ffffff;
+}
+
+#menu ul li {
+  background-color: #2b303a;
+}
+
+#menu ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+#menu li ul {
+  position: absolute;
+  visibility: hidden;
+  left: 100%;
+  top: -1px;
+  background-color: #2b303a;
+  box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.5);
+  opacity: 0;
+  transition: opacity 0.1s linear;
+  border-top: 1px solid rgba(69, 74, 84, 0.7);
+}
+
+#menu li:hover>ul {
+  visibility: visible;
+  opacity: 1;
+}
+
+#menu li li ul {
+  left: 100%;
+  visibility: hidden;
+  top: -1px;
+  opacity: 0;
+  transition: opacity 0.1s linear;
+}
+
+#menu li li:hover ul {
+  visibility: visible;
+  opacity: 1;
+}
+
+#menu .fa {
+  margin-right: 5px;
+}
+
+.sidebar-hamburger {
+  float: right;
+  cursor: pointer;
+  border-radius: 50%;
+  background-color: #303641;
+  padding: 8px 10px;
+  display: none;
+}
+
+.sbar {
+  display: block;
+  width: 25px;
+  height: 3px;
+  margin: 5px auto;
+  -webkit-transition: all 0.3s ease;
+  transition: all 0.3s ease;
+  background-color: white;
+}
+
+.content {
+  flex-grow: 1;
+  padding: 20px;
+}
+
 
 @media(max-width:1024px){
-.container {
-    width: 100%;
+  .container {
+    max-width: 100%;
   }
 
   .hamburger{
@@ -477,11 +630,11 @@ th{
     top: 70px;
     gap: 0;
     flex-direction: column;
-    background-color: #262626;
+    background-color: black;
     width: 100%;
     text-align: center;
     transition: 0.3s;
-    z-index: 1;
+    z-index: 2;
   }
 
   .nav-item{
@@ -491,5 +644,37 @@ th{
   .nav-menu.active{
     left: 0;
   }
-}
 
+  .sidebar-hamburger{
+    display: block;
+  }
+
+  .sidebar-hamburger.active .sbar:nth-child(2) {
+    opacity: 0;
+  }
+
+  .sidebar-hamburger.active .sbar:nth-child(1) {
+    transform: translateY(8px) rotate(45deg);
+  }
+
+  .sidebar-hamburger.active .sbar:nth-child(3) {
+    transform: translateY(-8px) rotate(-45deg);
+  }
+
+  .sidebar-menu {
+    position: absolute;
+    left: -280px;
+    min-height: 100vh;
+    width: 280px;
+    transition: 0.2s linear;
+  }
+
+  .sidebar-menu.active {
+    left: 0;
+  }
+
+    #create-user-form,
+    #update-user-form {
+      width: 100%;
+    }
+}
