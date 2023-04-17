@@ -46,6 +46,17 @@ exports.findDeletedUsers = (req, res) => {
   })
 }
 
+exports.findAdminUsers = (req, res) => {
+  const searchTerm = req.body.search
+  db.query("SELECT * FROM users WHERE (fName LIKE ? OR lName LIKE ? OR email LIKE ?) && admin = 'Yes'", ["%" + searchTerm + "%", "%" + searchTerm + "%", "%" + searchTerm + "%"], (err, rows) => {
+    if(!err) { 
+      return res.status(200).render("admin-users", {title:"User Management - Admin Users" , user:req.user, rows:rows})
+    } else { 
+      return res.status(500).render("admin-users", {title:"User Management - Admin Users" , user:req.user, success:false, message:"Internal server error."})
+    }
+  })
+}
+
 exports.createUser = (req, res) => {
 
   const errors = validationResult(req),
@@ -70,7 +81,7 @@ exports.createUser = (req, res) => {
           db.query("INSERT INTO users (fName, lName, email, password, member_since, status) VALUES (?,?,?,?,?,?)", [fName, lName, email, hash, member_since, "Active"],
             async (err, results) => {
               if (!err) {
-                res.statusMessage = `A new user with an email address of ${email} has been successfully created.`
+                res.statusMessage = `A new user with an email address of ${email} has been created successfully.`
                 return res.status(200).end()
               // DATABASE ERROR
               } else { 
@@ -95,7 +106,7 @@ exports.updateUser = (req, res) => {
 
   db.query("UPDATE users SET status = ?, admin = ? WHERE id = ?", [status, admin, id], async (err, results) => {
     if (!err) {
-      res.statusMessage = `User has been successfully updated.`
+      res.statusMessage = `User has been updated successfully .`
       return res.status(200).end()
     } else {
       res.statusMessage = "Internal server error."

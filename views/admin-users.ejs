@@ -1,0 +1,104 @@
+<%- include("partials/header.ejs") %>
+
+  <div class="app">
+
+    <%- include("partials/sidebar-menu.ejs") %>
+
+      <% if (typeof message=="undefined" ) { %>
+
+        <main class="content">
+
+          <div class="sidebar-hamburger">
+            <span class="sbar"></span>
+            <span class="sbar"></span>
+            <span class="sbar"></span>
+          </div>
+
+          <br>
+
+          <% if(typeof flash !="undefined" && flash !="" ) { %>
+            <div class="server-message success">
+              <%= flash %>
+            </div>
+            <% } %>
+
+          <br>
+
+          <h3>User management</h3>
+
+          <br>
+
+          <h4>Admin users: <%= rows.length %>
+          </h4>
+
+          <br>
+
+          <form action="/user-management/find-admin-users" method="POST">
+            <div class="user-management">
+              <input type="text" name="search" placeholder="Search admin users..."><button>Search</button>
+            </div>
+          </form>
+
+          <br>
+
+          <table>
+            <tr>
+              <th>#</th>
+              <th>First</th>
+              <th>Last</th>
+              <th>Email</th>
+              <th class="text-end">Action</th>
+            </tr>
+            <% for(let i=0;i < rows.length;i++) { %>
+              <tr>
+                <td>
+                  <%= rows[i].id %>
+                </td>
+                <td>
+                  <%= rows[i].fName %>
+                </td>
+                <td>
+                  <%= rows[i].lName %>
+                </td>
+                <td>
+                  <%= rows[i].email %>
+                </td>
+                <td class="text-end">
+                  <a href="/user-management/view-user/<%= rows[i].id %>"><i class="fa-solid fa-eye"></i> View</a>
+                  <% if(user.id !=rows[i].id) { %>
+                    <a href="/user-management/edit-user/<%= rows[i].id %>"><i class="fa-solid fa-pencil"></i>
+                      Edit</a>
+                    <a href="/user-management/delete-active-user/<%= rows[i].id %>"><i
+                        class="fa-solid fa-user-minus"></i>
+                      Delete</a>
+                    <% } %>
+                </td>
+              </tr>
+            <% } %>
+        </table>
+      </main>
+
+    <% } else { %>
+
+      <main class="content">
+
+        <div class="sidebar-hamburger">
+          <span class="sbar"></span>
+          <span class="sbar"></span>
+          <span class="sbar"></span>
+        </div>
+
+        <div class="server-message error">
+          <%= message %>
+        </div>
+
+      </main>
+
+    <% } %>
+
+  </div>
+
+  <script src="/js/sidebar-menu.js"></script>
+  <script src="/js/script.js"></script>
+
+<%- include("partials/footer.ejs") %>

@@ -57,25 +57,30 @@
             </div>
         
           <div class="admin-user-radios">
-            <div>
-              <label>Make this user an
-                admin?</label>
-            </div>
-            <div>
-              <% if(rows[0].admin == "Yes") { %>
-                <input type="radio" name="admin" value="Yes" checked required>
-                <label for="Yes">Yes</label>
-                <br>
-                <input type="radio" name="admin" value="No" required>
-                <label for="No">No</label>
-              <% } else { %>
+            <% if(rows[0].admin == "No") { %>
+              <div>
+                <label>Make this user an
+                  admin?</label>
+              </div>
+              <div>
                 <input type="radio" name="admin" value="Yes" required>
                 <label for="Yes">Yes</label>
                 <br>
                 <input type="radio" name="admin" value="No" checked required>
                 <label for="No">No</label>
-              <% } %>
-            </div>
+              </div>
+            <% } else { %>
+              <div>
+                <label>Remove admin priveleges from this user?</label>
+              </div>
+              <div>
+                <input type="radio" name="admin" value="No" required>
+                <label for="No">Yes</label>
+                <br>
+                <input type="radio" name="admin" value="Yes" checked required>
+                <label for="Yes">No</label>
+              </div>
+            <% } %>
           </div>
           <button class="auth-btn">Update</button>
         </form>

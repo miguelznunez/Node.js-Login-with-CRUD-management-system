@@ -67,6 +67,20 @@ router.get("/deleted-users", authController.isLoggedIn, (req, res) => {
   }
 })
 
+router.get("/admin-users", authController.isLoggedIn, (req, res) => {
+  if(req.user && req.user.admin === "Yes" && !checkBrowser(req.headers)) {
+    db.query("SELECT * FROM users WHERE admin = 'Yes'", (err, rows) => {
+      if(!err) { 
+        return res.status(200).render("admin-users", {title:"User Management - Admin Users" , user:req.user, rows:rows})
+      } else {
+        return res.status(500).render("admin-users", {title:"User Management - Admin Users", user:req.user, message:"Internal server error."})
+      }
+    })
+  } else { 
+    return res.redirect("/auth/login")
+  }
+})
+
 router.get("/view-user/:id", authController.isLoggedIn, (req, res) => {
   if(req.user && req.user.admin === "Yes" && !checkBrowser(req.headers)){
     db.query("SELECT * FROM users WHERE id = ?",[req.params.id], (err, rows) => {
@@ -200,6 +214,8 @@ router.post("/find-active-users", authController.isLoggedIn, userManagementContr
 router.post("/find-banned-users", authController.isLoggedIn, userManagementController.findBannedUsers)
 
 router.post("/find-deleted-users", authController.isLoggedIn, userManagementController.findDeletedUsers)
+
+router.post("/find-admin-users", authController.isLoggedIn, userManagementController.findAdminUsers)
 
 router.post("/create-user",
 [
