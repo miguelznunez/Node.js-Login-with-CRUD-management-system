@@ -1,0 +1,123 @@
+<%- include("partials/header.ejs") %>
+
+  <div class="app">
+
+    <%- include("partials/sidebar-menu.ejs") %>
+
+    <main class="content">
+
+      <div class="sidebar-hamburger">
+        <span class="sbar"></span>
+        <span class="sbar"></span>
+        <span class="sbar"></span>
+      </div>
+
+      <div class="server-message"></div>
+
+      <h3>eCommerce management</h3>
+
+      <br>
+
+      <h4>Create product</h4>
+
+      <br>          
+      
+      <div class="queued-image"></div>
+
+      <br>
+      
+      <div class="input-image">
+        <p><span class="browse">Select image</span></p>
+        <input type="file" class="file" accept="image/jpeg, image/png, image/jpg" required>
+      </div>
+
+      <br>
+
+      <form id="create-product-form">
+        <input type="text" id="pName" maxlength="100" placeholder="Name" value="" required>
+        <input type="number" id="pPrice" maxlength="100" placeholder="Price" step="any" value="" required>
+        <input type="number" id="pQuantity" maxlength="100" placeholder="Quantity available" value="" required>
+        <textarea id="pDescription" placeholder="Description" required></textarea>
+        <button class="auth-btn">Create</button>
+      </form>
+
+    </main>
+
+  </div>
+
+  <script src="/js/sidebar-menu.js"></script>
+  <script src="/js/script.js"></script>
+  <script>
+    const createProductForm = document.querySelector("#create-product-form"),
+      queuedImage = document.querySelector('.queued-image'),
+      inputImage = document.querySelector('.input-image'),
+      input = document.querySelector('.input-image input'),
+      serverMessage = document.querySelector('.server-message');
+
+    let queuedImageArray = []
+
+    function displayQueuedImage() {
+      let images = "";
+      queuedImageArray.forEach((image, index) => {
+        images += `<div class="image">
+                  <img src="${URL.createObjectURL(image)}" alt="image">
+                  <span onclick="deleteQueuedImage(${index})">&times;</span>
+                </div>`;
+      })
+      queuedImage.innerHTML = images;
+    }
+
+    function deleteQueuedImage(index) {
+      queuedImageArray.splice(index, 1);
+      displayQueuedImage();
+    }
+
+    input.addEventListener("change", () => {
+      const files = input.files;
+      for (let i = 0; i < files.length; i++) {
+        queuedImageArray[0] = files[i]
+      }
+      // createProductForm.reset();
+      displayQueuedImage()
+    })
+
+    createProductForm.addEventListener("submit", (e) => {
+      e.preventDefault()
+      sendQueuedImageToServer()
+    });
+
+    function sendQueuedImageToServer() {
+      const formData = new FormData(createProductForm),
+        pName = document.querySelector("#pName").value,
+        pPrice = document.querySelector("#pPrice").value,
+        pQuantity = document.querySelector("#pQuantity").value,
+        pDescription = document.querySelector("#pDescription").value;
+
+      formData.append("pImage", queuedImageArray[0])
+      formData.append("pName", pName)
+      formData.append("pPrice", pPrice)
+      formData.append("pQuantity", pQuantity)
+      formData.append("pDescription", pDescription)
+
+      fetch("/ecommerce-management/create-product", {
+        method: "POST",
+        body: formData
+      })
+
+      .then(response => {
+        if (response.status !== 200) throw Error(response.statusText)
+        createProductForm.reset()
+        queuedImage.innerHTML = ""
+        serverMessage.innerHTML = response.statusText
+        serverMessage.style.cssText = "background-color: #d4edda; color:#1b5e20; padding: 16px;"
+      })
+
+      .catch(error => {
+        serverMessage.innerHTML = error
+        serverMessage.style.cssText = "background-color: #f8d7da; color:#b71c1c; padding: 16px;"
+      });
+
+    }
+  </script>
+
+  <%- include("partials/footer.ejs") %>

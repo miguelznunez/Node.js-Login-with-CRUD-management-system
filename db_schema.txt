@@ -23,4 +23,16 @@ CREATE TABLE users (
     PRIMARY KEY(id),
     UNIQUE INDEX provider_UNIQUE (provider ASC) VISIBLE,
     UNIQUE INDEX subject_UNIQUE (subject ASC) VISIBLE );
+
+ CREATE TABLE products (
+    product_id INT,
+    user_id INT,
+    pImage VARCHAR(255),
+    pName VARCHAR(255),
+    pPrice VARCHAR(255),
+    pQuantity VARCHAR(255),
+    pDescription(255),
+
+    PRIMARY KEY(product_id),
+    FOREIGN KEY(user_id) REFERENCES users (id) );
     

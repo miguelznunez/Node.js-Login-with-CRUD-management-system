@@ -46,6 +46,17 @@ dbConnection.connect(function(err){
     FOREIGN KEY(user_id) REFERENCES users(id),
     UNIQUE INDEX subject_UNIQUE (subject ASC) VISIBLE );`
 
+  let products = `
+    CREATE TABLE products (
+    product_id INT UNSIGNED AUTO_INCREMENT,
+    pImage VARCHAR(255),
+    pName VARCHAR(255),
+    pPrice VARCHAR(255),
+    pQuantity VARCHAR(255),
+    pDescription TEXT,
+
+    PRIMARY KEY(product_id) );`
+
   dbConnection.query(users, (err, results) => {
     if (!err) {
       console.log("users table created...")
@@ -55,6 +66,12 @@ dbConnection.connect(function(err){
   dbConnection.query(federated_credentials, (err, results) => {
     if (!err) {
       console.log("federated_credentials table created...")
+    }
+  })
+
+  dbConnection.query(products, (err, results) => {
+    if (!err) {
+      console.log("products table created...")
     }
   })
 

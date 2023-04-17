@@ -1,8 +1,10 @@
 const express = require("express"),
-authController = require("../controllers/auth-controller");
+authController = require("../controllers/auth-controller"),
+ecommerceManagementController = require("../controllers/ecommerce-management-controller"),
+db = require("../config/db-setup.js"),
+{getImageStream} = require("../config/s3-setup.js");
 
-const {check} = require("express-validator"),
-router = express.Router();
+const router = express.Router();
 
 // FUNCTION TO CHECK FOR INTERNET EXPLORER ============================================
 
@@ -22,12 +24,35 @@ function checkBrowser(headers){
 
 // USER MANAGEMENT GET ROUTES ==============================================================
 
-router.get("/dashboard", authController.isLoggedIn, (req, res) => {
-  if(req.user && !checkBrowser(req.headers)){
-    return res.status(200).render("dashboard", {title:"eCommerce Management - Dashboard", user:req.user});
+router.get("/create-product", authController.isLoggedIn, (req, res) => {
+  if(req.user && req.user.admin === "Yes" && !checkBrowser(req.headers)){
+    return res.status(200).render("create-product", {title:"eCommerce Management - Create product", user:req.user});
   } else {
-    return res.redirect("/")
+    return res.redirect("/auth/login")
   }
 })
+
+router.get("/view-products", authController.isLoggedIn, (req, res) => {
+  if(req.user && req.user.admin === "Yes" && !checkBrowser(req.headers)){
+    db.query("SELECT * FROM products", (err, rows) => {
+      if(!err) { 
+        return res.status(200).render("view-products", {title:"eCommerce Management - View products" , user:req.user, rows:rows})
+      } else {
+        return res.status(500).render("view-products", {title:"eCommerce Management - View products", user:req.user, message:"Internal server error."})
+      }
+    })
+  } else {
+    return res.redirect("/auth/login")
+  }
+})
+
+router.get("/:image_key", (req, res) => {
+  const readStream = getImageStream(req.params.image_key)
+  readStream.pipe(res)
+})
+
+// USER MANAGEMENT POST ROUTES  ============================================================
+
+router.post("/create-product", ecommerceManagementController.createProduct)
 
 module.exports = router;

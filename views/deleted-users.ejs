@@ -1,58 +1,10 @@
 <%- include("partials/header.ejs") %>
 
-  <% if (typeof message=="undefined" ) { %>
+  <div class="app">
 
-    <div class="app">
+    <%- include("partials/sidebar-menu.ejs") %>
 
-      <aside class="sidebar-menu">
-        <div class="menu">
-          <ul id="menu">
-            <li id="menu-home"><a href="/"><i class="fa fa-home"></i><span>Home</span></a></li>
-            <li id="menu-comunicacao"><a href="#"><i class="fa fa-users"></i><span>User Management</span><span
-                  class="fa fa-angle-double-right" style="float: right"></span></a>
-              <ul id="menu-comunicacao-sub">
-                <li id="menu-mensagens" style="width: 140px">
-                  <p>Find Users<i class="fa fa-angle-right" style="float: right; margin-right: -8px; margin-top: 2px;"></i>
-                  </p>
-                  <ul id="menu-mensagens-sub">
-                    <li id="menu-mensagens-enviadas"><a href="/user-management/active-users">Active</a></li>
-                    <li id="menu-mensagens-recebidas"><a href="/user-management/banned-users">Banned</a></li>
-                    <li id="menu-mensagens-nova"><a href="/user-management/deleted-users">Deleted</a></li>
-                  </ul>
-                </li>
-                <li id="menu-arquivos"><a href="/user-management/create-user">Create User</a></li>
-              </ul>
-            </li>
-            <li id="menu-academico"><a href="#"><i class="fa fa-graduation-cap"></i><span>Acadêmico</span><span
-                  class="fa fa-angle-right" style="float: right"></span></a>
-              <ul id="menu-academico-sub">
-                <li id="menu-academico-avaliacoes"><a href="#">Avaliações</a></li>
-                <li id="menu-academico-boletim"><a href="#">Boletim</a></li>
-              </ul>
-            </li>
-            <li><a href="#"><i class="fa fa-table"></i><span>Agenda</span><span class="fa fa-angle-right"
-                  style="float: right"></span></a>
-              <ul>
-                <li><a href="#">Avaliações Agendadas</a></li>
-                <li><a href="#">Faltas</a></li>
-                <li><a href="#">Calendário</a></li>
-              </ul>
-            </li>
-            <li><a href="#"><i class="fa fa-history"></i><span>Rematrícula</span></a></li>
-            <li><a href="#"><i class="fa fa-gears"></i><span>Dados Cadastrais</span></a></li>
-            <li><a href="#"><i class="fa fa-institution"></i><span>Instituição</span><span class="fa fa-angle-right"
-                  style="float: right"></span></a>
-              <ul>
-                <li><a href="#">Relação de Alunos</a></li>
-                <li><a href="#">Relação de Professores</a></li>
-                <li><a href="#">Plano de Ensino</a></li>
-                <li><a href="#">Pagamentos Pendentes</a></li>
-                <li><a href="#">Mapa</a></li>
-              </ul>
-            </li>
-          </ul>
-        </div>
-      </aside>
+    <% if (typeof message=="undefined" ) { %>
 
       <main class="content">
       
@@ -71,9 +23,13 @@
         <% } %>
 
         <br>
+
+        <h3>User management</h3>
+        
+        <br>
       
-        <h3>Deleted users: <%= rows.length %>
-        </h3>
+        <h4>Deleted users: <%= rows.length %>
+        </h4>
       
         <br>
 
@@ -90,7 +46,6 @@
             <th>#</th>
             <th>First</th>
             <th>Last</th>
-            <th>Status</th>
             <th class="text-end">Action</th>
           </tr>
           <% for(let i=0;i < rows.length;i++) { %>
@@ -104,9 +59,6 @@
               <td>
                 <%= rows[i].lName %>
               </td>
-              <td>
-                <%= rows[i].status %>
-              </td>
               <td class="text-end">
                 <a href="/user-management/view-user/<%= rows[i].id %>"><i class="fa-solid fa-eye"></i> View</a>
               </td>
@@ -115,41 +67,27 @@
         </table>
       </main>
 
-    </div>
-
-    <script>
-      const sidebarHamburger = document.querySelector(".sidebar-hamburger")
-      const sidebarMenu = document.querySelector(".sidebar-menu")
-
-      sidebarHamburger.addEventListener("click", () => {
-        sidebarHamburger.classList.toggle("active")
-        sidebarMenu.classList.toggle("active")
-      })
-    </script>
-
     <% } else { %>
 
-      <div class="container">
-
+      <main class="content">
+      
+        <div class="sidebar-hamburger">
+          <span class="sbar"></span>
+          <span class="sbar"></span>
+          <span class="sbar"></span>
+        </div>
+      
         <div class="server-message error">
           <%= message %>
         </div>
-
-        <form action="/user-management/find-deleted-users" method="POST">
-          <div class="user-management">
-            <div>
-              <h2>User Management</h2>
-            </div>
-            <div>
-              <input type="text" name="search" placeholder="Search"><button>Search</button>
-            </div>
-          </div>
-        </form>
-
-      </div>
+      
+      </main>
 
     <% } %>
 
+  </div>  
+
+  <script src="/js/sidebar-menu.js"></script>
   <script src="/js/script.js"></script>
 
   <%- include("partials/footer.ejs") %></br>
