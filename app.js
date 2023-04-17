@@ -1,4 +1,5 @@
 const express = require("express"),
+path = require("path"),
 googlePassportSetup = require("./server/config/google-passport-setup"),
 cookieParser = require("cookie-parser"),
 session = require('express-session'),
@@ -25,16 +26,20 @@ app.use(session({
 app.use(flash())
 
 app.set("view engine", "ejs")
+app.set('views', [path.join(__dirname, 'views'),
+                  path.join(__dirname, 'views/auth-views/'),
+                  path.join(__dirname, 'views/user-views/'),
+                  path.join(__dirname, 'views/profile-views/'),
+                  path.join(__dirname, 'views/ecommerce-views/')]);
 
 app.use(passport.initialize())
 app.use(passport.session())
 
-app.use("/auth", require("./server/routes/auth-routes"))
-app.use("/profile-management", require("./server/routes/profile-management-routes"))
-app.use("/ecommerce-management", require("./server/routes/ecommerce-management-routes"))
-app.use("/user-management", require("./server/routes/user-management-routes"))
+app.use("/auth-management", require("./server/routes/auth-routes"))
+app.use("/profile-management", require("./server/routes/profile-routes"))
+app.use("/ecommerce-management", require("./server/routes/ecommerce-routes"))
+app.use("/user-management", require("./server/routes/user-routes"))
 app.use("/", require("./server/routes/page-routes"))
-
 
 const PORT = process.env.PORT || 5000
 

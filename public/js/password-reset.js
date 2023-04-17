@@ -6,7 +6,7 @@ passwordResetForm.addEventListener("submit", (e) => {
   const email = document.querySelector("#email").value,
   captcha = document.querySelector("#g-recaptcha-response").value;
 
-  fetch("/auth/password-reset", {
+  fetch("/auth-management/auth-views/password-reset", {
     method: "POST",
     headers: {
       "Accept": "application/json, text/plain, */*",

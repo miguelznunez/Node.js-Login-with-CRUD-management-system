@@ -23,7 +23,7 @@ signupForm.addEventListener("submit", (e) => {
   password = document.querySelector("#password").value,
   cPassword = document.querySelector("#confirm-password").value;
 
-  fetch("/auth/signup", {
+  fetch("/auth-management/auth-views/signup", {
     method: "POST",
     headers: {
       "Accept": "application/json, text/plain, */*",
@@ -34,7 +34,7 @@ signupForm.addEventListener("submit", (e) => {
 
   .then( response => {
     if (response.status !== 200) throw Error(response.statusText)
-    registerForm.reset()
+    signupForm.reset()
     serverMessage.innerHTML = response.statusText
     serverMessage.style.cssText = "background-color: #d4edda; color:#1b5e20; padding: 16px;"
   })

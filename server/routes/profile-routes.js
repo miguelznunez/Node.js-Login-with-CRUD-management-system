@@ -18,11 +18,11 @@ function checkBrowser(headers){
   else return false
 }
 
-router.get("/profile", authController.isLoggedIn, (req, res) => {
+router.get("/profile-views/profile", authController.isLoggedIn, (req, res) => {
   if(req.user && !checkBrowser(req.headers)) {
     return res.status(200).render("profile", {title:"Profile", user:req.user} )
   } else { 
-    return res.redirect("/auth/login")
+    return res.redirect("/auth-management/auth-views/login")
   }
 })
 

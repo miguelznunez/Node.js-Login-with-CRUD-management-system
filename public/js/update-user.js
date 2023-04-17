@@ -10,7 +10,7 @@ updateUserForm.addEventListener("submit", (e) => {
   banned = document.querySelector("input[name=banned]:checked").value,
   admin = document.querySelector("input[name=admin]:checked").value;
 
-  fetch(`/user-management/update-user`, {
+  fetch(`/user-management/user-views/update-user`, {
     method: "POST",
     headers: {
       "Accept": "application/json, text/plain, */*",

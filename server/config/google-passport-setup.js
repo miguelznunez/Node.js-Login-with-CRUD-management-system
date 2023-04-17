@@ -23,7 +23,7 @@ passport.deserializeUser((id, cb) => {
 
 passport.use(
   new GoogleStrategy({
-    callbackURL: "/auth/google/redirect",
+    callbackURL: "/auth-management/auth-views/google/redirect",
     clientID: process.env.GOOGLE_CLIENT_ID,
     clientSecret: process.env.GOOGLE_CLIENT_SECRET 
   }, function verify(accessToken, refreshToken, profile, cb) {

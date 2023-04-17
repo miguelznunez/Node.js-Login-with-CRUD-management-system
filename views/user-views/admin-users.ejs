@@ -33,7 +33,7 @@
 
           <br>
 
-          <form action="/user-management/find-admin-users" method="POST">
+          <form action="/user-management/user-views/find-admin-users" method="POST">
             <div class="user-management">
               <input type="text" name="search" placeholder="Search admin users..."><button>Search</button>
             </div>
@@ -64,14 +64,14 @@
                   <%= rows[i].email %>
                 </td>
                 <td class="text-end">
-                  <a href="/user-management/view-user/<%= rows[i].id %>"><i class="fa-solid fa-eye"></i> View</a>
+                  <a href="/user-management/user-views/view-user/<%= rows[i].id %>"><i class="fa-solid fa-eye"></i> View</a>
                   <% if(user.id !=rows[i].id) { %>
-                    <a href="/user-management/edit-user/<%= rows[i].id %>"><i class="fa-solid fa-pencil"></i>
+                    <a href="/user-management/user-views/edit-user/<%= rows[i].id %>"><i class="fa-solid fa-pencil"></i>
                       Edit</a>
-                    <a href="/user-management/delete-active-user/<%= rows[i].id %>"><i
+                    <a href="/user-management/user-views/delete-active-user/<%= rows[i].id %>"><i
                         class="fa-solid fa-user-minus"></i>
                       Delete</a>
-                    <% } %>
+                  <% } %>
                 </td>
               </tr>
             <% } %>

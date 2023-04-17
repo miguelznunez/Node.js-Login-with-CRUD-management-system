@@ -169,11 +169,11 @@ exports.logout = async (req, res, next) => {
     expires: new Date(Date.now() + 2 * 1000),
     httpOnly: true
     })
-    return res.status(200).redirect("/auth/login");
+    return res.status(200).redirect("/auth-management/auth-views/login");
   } else {
     req.logout(function(err) {
       if (err) { return next(err);}
-      return res.status(200).redirect("/auth/login");    
+      return res.status(200).redirect("/auth-management/auth-views/login");    
     })
   }
 }

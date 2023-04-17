@@ -48,14 +48,15 @@ dbConnection.connect(function(err){
 
   let products = `
     CREATE TABLE products (
-    product_id INT UNSIGNED AUTO_INCREMENT,
+    pId INT UNSIGNED AUTO_INCREMENT,
+    pCategory VARCHAR(255),
     pImage VARCHAR(255),
     pName VARCHAR(255),
     pPrice VARCHAR(255),
     pQuantity VARCHAR(255),
     pDescription TEXT,
 
-    PRIMARY KEY(product_id) );`
+    PRIMARY KEY(pId) );`
 
   dbConnection.query(users, (err, results) => {
     if (!err) {

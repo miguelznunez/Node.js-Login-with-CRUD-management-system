@@ -24,7 +24,7 @@ function checkBrowser(headers){
 
 // AUTH GET ROUTES ==============================================================
 
-router.get("/signup", authController.isLoggedIn, (req, res) => {
+router.get("/auth-views/signup", authController.isLoggedIn, (req, res) => {
   if(!req.user && !checkBrowser(req.headers)){
     return res.status(200).render("signup", {title:"Sign up"});
   } else {
@@ -32,7 +32,7 @@ router.get("/signup", authController.isLoggedIn, (req, res) => {
   }
 })
 
-router.get("/login", authController.isLoggedIn, (req, res) => {
+router.get("/auth-views/login", authController.isLoggedIn, (req, res) => {
   if(!req.user && !checkBrowser(req.headers)) {
     const flash = req.flash("error")
     return res.status(200).render("login", {title:"Login", flash})
@@ -41,17 +41,17 @@ router.get("/login", authController.isLoggedIn, (req, res) => {
   }
 })
 
-router.get("/google", passport.authenticate("google", {
+router.get("/auth-views/google", passport.authenticate("google", {
   scope: ["profile","email"]
 }))
 
-router.get("/google/redirect", passport.authenticate("google",{
+router.get("/auth-views/google/redirect", passport.authenticate("google",{
   successRedirect:'/',
-  failureRedirect:"/auth/login",
+  failureRedirect:"/auth-management/auth-views/login",
   failureFlash : true
 }))
 
-router.get("/password-reset", authController.isLoggedIn, (req, res) => {
+router.get("/auth-views/password-reset", authController.isLoggedIn, (req, res) => {
   if(!req.user && !checkBrowser(req.headers)) {
     return res.status(200).render("password-reset", {title:"Password Reset"} )
   } else {
@@ -59,7 +59,7 @@ router.get("/password-reset", authController.isLoggedIn, (req, res) => {
   }
 })
 
-router.get("/account-verification/:id/:token", authController.isLoggedIn, async (req, res) => {
+router.get("/auth-views/account-verification/:id/:token", authController.isLoggedIn, async (req, res) => {
 
   if(!req.user && !checkBrowser(req.headers)){
     db.query("SELECT * FROM users WHERE id = ? && token = ?", [req.params.id, req.params.token], async (err, results) => {
@@ -81,7 +81,7 @@ router.get("/account-verification/:id/:token", authController.isLoggedIn, async 
   } 
 })
 
-router.get("/password-update/:id/:token", authController.isLoggedIn, async (req, res) => {
+router.get("/auth-views/password-update/:id/:token", authController.isLoggedIn, async (req, res) => {
 
   if(!req.user && !checkBrowser(req.headers)){
     db.query("SELECT * FROM users WHERE id = ? && token = ?", [req.params.id, req.params.token], async (err, results) => {
@@ -106,7 +106,7 @@ router.get("/password-update/:id/:token", authController.isLoggedIn, async (req,
 
 // AUTH POST ROUTES  ============================================================
 
-router.post("/signup",
+router.post("/auth-views/signup",
 [
   check("fName", "First name field cannot be empty.").not().isEmpty(),
   check("fName", "First name must be only alphabetical characters.").isAlpha(),
@@ -128,19 +128,19 @@ router.post("/signup",
  })
 ], authController.signup)
 
-router.post("/login",[
+router.post("/auth-views/login",[
   check("email", "Email field cannot be empty.").not().isEmpty(),
   check("password", "Password field cannot be empty.").not().isEmpty()
 ], authController.login)
 
-router.get("/logout", authController.logout)
+router.get("/auth-views/logout", authController.logout)
 
-router.post("/password-reset", [
+router.post("/auth-views/password-reset", [
   check("email", "Email field cannot be empty.").not().isEmpty(),
   check("captcha", "Please select captcha.").not().isEmpty()
 ], authController.passwordReset)
 
-router.put("/password-update",
+router.put("/auth-views/password-update",
 [ 
   check("password", "Password field cannot be empty.").not().isEmpty(),
   check("password", "Password must be between 8-60 characters long.").isLength({min:8, max:60}),

@@ -1,6 +1,6 @@
 const express = require("express"),
 authController = require("../controllers/auth-controller"),
-ecommerceManagementController = require("../controllers/ecommerce-management-controller"),
+ecommerceManagementController = require("../controllers/ecommerce-controller"),
 db = require("../config/db-setup.js"),
 {getImageStream} = require("../config/s3-setup.js");
 
@@ -24,15 +24,15 @@ function checkBrowser(headers){
 
 // USER MANAGEMENT GET ROUTES ==============================================================
 
-router.get("/create-product", authController.isLoggedIn, (req, res) => {
+router.get("/ecommerce-views/create-product", authController.isLoggedIn, (req, res) => {
   if(req.user && req.user.admin === "Yes" && !checkBrowser(req.headers)){
     return res.status(200).render("create-product", {title:"eCommerce Management - Create product", user:req.user});
   } else {
-    return res.redirect("/auth/login")
+    return res.redirect("/auth-management/auth-views/login")
   }
 })
 
-router.get("/view-products", authController.isLoggedIn, (req, res) => {
+router.get("/ecommerce-views/view-products", authController.isLoggedIn, (req, res) => {
   if(req.user && req.user.admin === "Yes" && !checkBrowser(req.headers)){
     db.query("SELECT * FROM products", (err, rows) => {
       if(!err) { 
@@ -42,7 +42,7 @@ router.get("/view-products", authController.isLoggedIn, (req, res) => {
       }
     })
   } else {
-    return res.redirect("/auth/login")
+    return res.redirect("/auth-management/auth-views/login")
   }
 })
 

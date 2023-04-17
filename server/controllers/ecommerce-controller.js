@@ -57,8 +57,8 @@ exports.createProduct = (req, res) => {
 }
 
 function saveProductInDB(pImage, pInfo){
-  const {pName, pPrice, pQuantity, pDescription} = pInfo
-  db.query("INSERT INTO products (pImage, pName, pPrice, pQuantity, pDescription) VALUES(?,?,?,?,?)", [pImage[0].key, pName, pPrice, pQuantity, pDescription], (err, result) => {
+  const {pCategory, pName, pPrice, pQuantity, pDescription} = pInfo
+  db.query("INSERT INTO products (pCategory, pImage, pName, pPrice, pQuantity, pDescription) VALUES(?,?,?,?,?,?)", [pCategory,pImage[0].key, pName, pPrice, pQuantity, pDescription], (err, result) => {
     if(err) throw new Error(err)
   })
 }

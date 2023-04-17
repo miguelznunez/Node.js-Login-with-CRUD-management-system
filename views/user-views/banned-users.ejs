@@ -1,5 +1,6 @@
 <%- include("partials/header.ejs") %>
 
+
   <div class="app">
 
     <%- include("partials/sidebar-menu.ejs") %>
@@ -21,24 +22,24 @@
             <%= flash %>
           </div>
         <% } %>
-
+          
         <br>
 
         <h3>User management</h3>
         
         <br>
       
-        <h4>Deleted users: <%= rows.length %>
+        <h4>Banned users: <%= rows.length %>
         </h4>
       
         <br>
-
-        <form action="/user-management/find-deleted-users" method="POST">
+      
+        <form action="/user-management/user-views/find-banned-users" method="POST">
           <div class="user-management">
-            <input type="text" name="search" placeholder="Search deleted users..."><button>Search</button>
+            <input type="text" name="search" placeholder="Search banned users..."><button>Search</button>
           </div>
         </form>
-      
+
         <br>
       
         <table>
@@ -46,6 +47,8 @@
             <th>#</th>
             <th>First</th>
             <th>Last</th>
+            <th>Email</th>
+
             <th class="text-end">Action</th>
           </tr>
           <% for(let i=0;i < rows.length;i++) { %>
@@ -59,11 +62,18 @@
               <td>
                 <%= rows[i].lName %>
               </td>
+              <td>
+                <%= rows[i].email %>
+              </td>
               <td class="text-end">
-                <a href="/user-management/view-user/<%= rows[i].id %>"><i class="fa-solid fa-eye"></i> View</a>
+                <a href="/user-management/user-views/view-user/<%= rows[i].id %>"><i class="fa-solid fa-eye"></i> View</a>
+                <% if(user.id !=rows[i].id) { %>
+                  <a href="/user-management/user-views/edit-user/<%= rows[i].id %>"><i class="fa-solid fa-pencil"></i> Edit</a>
+                  <a href="/user-management/user-views/delete-banned-user/<%= rows[i].id %>"><i class="fa-solid fa-user-minus"></i> Delete</a>
+                <% } %>
               </td>
             </tr>
-          <% } %>
+            <% } %>
         </table>
       </main>
 
@@ -85,9 +95,9 @@
 
     <% } %>
 
-  </div>  
-
+  </div>
+   
   <script src="/js/sidebar-menu.js"></script>
   <script src="/js/script.js"></script>
 
-  <%- include("partials/footer.ejs") %></br>
+<%- include("partials/footer.ejs") %></br>

@@ -27,7 +27,7 @@ passwordUpdateForm.addEventListener("submit", (e) => {
 
   console.log(token)
 
-  fetch("/auth/password-update", {
+  fetch("/auth-management/auth-views/password-update", {
     method: "PUT",
     headers: {
       "Accept": "application/json, text/plain, */*",

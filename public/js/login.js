@@ -15,7 +15,7 @@ loginForm.addEventListener("submit", (e) => {
   const email = document.querySelector("#email").value,
   password = document.querySelector("#password").value;
 
-  fetch("/auth/login", {
+  fetch("/auth-management/auth-views/login", {
     method: "POST",
     headers: {
       "Accept": "application/json, text/plain, */*",

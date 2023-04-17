@@ -20,7 +20,22 @@
 
       <h4>Create product</h4>
 
-      <br>          
+      <br>      
+      
+      <select id="pCategory">
+        <option selected value="">Select product category</option>
+        <option value="jeans">Jeans</option>
+        <option value="tops">Tops</option>
+        <option value="sweaters">Sweaters</option>
+        <option value="jackets">Jackets</option>
+        <option value="shoes">Shoes</option>
+        <option value="hats">Hats</option>
+        <option value="accessories">Accessories</option>
+        <option value="electronics">Electronics</option>
+      </select>
+
+      <br>
+      <br>
       
       <div class="queued-image"></div>
 
@@ -88,12 +103,14 @@
 
     function sendQueuedImageToServer() {
       const formData = new FormData(createProductForm),
+        pCategory = document.querySelector("#pCategory").value,
         pName = document.querySelector("#pName").value,
         pPrice = document.querySelector("#pPrice").value,
         pQuantity = document.querySelector("#pQuantity").value,
         pDescription = document.querySelector("#pDescription").value;
 
       formData.append("pImage", queuedImageArray[0])
+      formData.append("pCategory", pCategory)
       formData.append("pName", pName)
       formData.append("pPrice", pPrice)
       formData.append("pQuantity", pQuantity)
