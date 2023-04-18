@@ -50,11 +50,19 @@ dbConnection.connect(function(err){
     CREATE TABLE products (
     pId INT UNSIGNED AUTO_INCREMENT,
     pCategory VARCHAR(255),
+    pGender VARCHAR(255),
     pImage VARCHAR(255),
+    pBrand VARCHAR(255),
     pName VARCHAR(255),
     pPrice VARCHAR(255),
-    pQuantity VARCHAR(255),
     pDescription TEXT,
+    pQuantity_OS VARCHAR(255),
+    pQuantity_XS VARCHAR(255),
+    pQuantity_S VARCHAR(255),
+    pQuantity_M VARCHAR(255),
+    pQuantity_L VARCHAR(255),
+    pQuantity_XL VARCHAR(255),
+    pQuantity_XXL VARCHAR(255),
 
     PRIMARY KEY(pId) );`
 

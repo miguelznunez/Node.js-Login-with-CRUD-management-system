@@ -56,9 +56,31 @@ exports.createProduct = (req, res) => {
   })  
 }
 
+exports.findMenShirts = (req, res) => {
+  const searchTerm = req.body.search
+  db.query("SELECT * FROM products WHERE (pName LIKE ? || pBrand LIKE ?) && pGender = ? && pCategory = ?", ["%" + searchTerm + "%", "%" + searchTerm + "%", "men", "shirts"], (err, rows) => {
+    if(!err) { 
+      return res.status(200).render("view-men-shirts", {title:"User Management - View products" , user:req.user, rows:rows})
+    } else { 
+      return res.status(500).render("view-men-shirts", {title:"User Management - View products" , user:req.user, success:false, message:"Internal server error."})
+    }
+  })
+}
+
+exports.findWomenShirts = (req, res) => {
+  const searchTerm = req.body.search
+  db.query("SELECT * FROM products WHERE (pName LIKE ? || pBrand LIKE ?) && pGender = ? && pCategory = ?", ["%" + searchTerm + "%", "%" + searchTerm + "%", "women", "shirts"], (err, rows) => {
+    if(!err) { 
+      return res.status(200).render("view-women-shirts", {title:"User Management - View products" , user:req.user, rows:rows})
+    } else { 
+      return res.status(500).render("view-women-shirts", {title:"User Management - View products" , user:req.user, success:false, message:"Internal server error."})
+    }
+  })
+}
+
 function saveProductInDB(pImage, pInfo){
-  const {pCategory, pName, pPrice, pQuantity, pDescription} = pInfo
-  db.query("INSERT INTO products (pCategory, pImage, pName, pPrice, pQuantity, pDescription) VALUES(?,?,?,?,?,?)", [pCategory,pImage[0].key, pName, pPrice, pQuantity, pDescription], (err, result) => {
+  const {pCategory, pGender, pBrand, pName, pPrice, pDescription, pQuantity_OS, pQuantity_XS, pQuantity_S, pQuantity_M, pQuantity_L, pQuantity_XL, pQuantity_XXL} = pInfo
+  db.query("INSERT INTO products (pCategory, pGender, pImage, pBrand, pName, pPrice, pDescription, pQuantity_OS,pQuantity_XS, pQuantity_S, pQuantity_M, pQuantity_L, pQuantity_XL, pQuantity_XXL) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?)", [pCategory, pGender, pImage[0].key, pBrand, pName, pPrice, pDescription, pQuantity_OS, pQuantity_XS, pQuantity_S, pQuantity_M, pQuantity_L, pQuantity_XL, pQuantity_XXL], (err, result) => {
     if(err) throw new Error(err)
   })
 }

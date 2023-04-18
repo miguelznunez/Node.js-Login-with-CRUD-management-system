@@ -1,8 +1,8 @@
-<%- include("partials/header.ejs") %>
+<%- include("partial-views/header.ejs") %>
 
   <div class="app">
 
-    <%- include("partials/sidebar-menu.ejs") %>
+    <%- include("partial-views/sidebar-menu.ejs") %>
 
       <% if (typeof message=="undefined" ) { %>
 
@@ -28,8 +28,7 @@
 
           <br>
 
-          <h4>Admin users: <%= rows.length %>
-          </h4>
+          <h4>Admin users (<%= rows.length %>)</h4>
 
           <br>
 
@@ -101,4 +100,4 @@
   <script src="/js/sidebar-menu.js"></script>
   <script src="/js/script.js"></script>
 
-<%- include("partials/footer.ejs") %>
+<%- include("partial-views/footer.ejs") %>

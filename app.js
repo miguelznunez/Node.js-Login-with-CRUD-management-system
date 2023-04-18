@@ -30,7 +30,10 @@ app.set('views', [path.join(__dirname, 'views'),
                   path.join(__dirname, 'views/auth-views/'),
                   path.join(__dirname, 'views/user-views/'),
                   path.join(__dirname, 'views/profile-views/'),
-                  path.join(__dirname, 'views/ecommerce-views/')]);
+                  path.join(__dirname, 'views/ecommerce-views/'),
+                  path.join(__dirname, 'views/ecommerce-views/men/'),
+                  path.join(__dirname, 'views/ecommerce-views/women/'),
+                  path.join(__dirname, 'views/ecommerce-views/dna/'),]);
 
 app.use(passport.initialize())
 app.use(passport.session())

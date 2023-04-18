@@ -1,14 +1,15 @@
-<%- include("partials/header.ejs") %>
+<%- include("partial-views/header.ejs") %>
 
-
-  <div class="container">
-    <div class="margin"></div>
-    <div class="title">
-      <h2>Hello, <%= user.email %> </h2>
+  <main class="main">
+    <div class="container">
+      <br>
+      <div class="title">
+        <h2>Hello, <%= user.email %>
+        </h2>
+      </div>
     </div>
-  </div>
-
+  </main>
 
 <script src="/js/script.js"></script>
 
-<%- include("partials/footer.ejs") %>
+<%- include("partial-views/footer.ejs") %>

@@ -9,13 +9,21 @@
   font-family: 'Roboto', sans-serif;
 }
 
-body{ overflow-x: hidden;}
+body{ 
+  overflow-x: hidden;
+}
 
-header{ background-color: black;}
+header{ 
+  background-color: black;
+}
 
-label{ color: gray; font-style: italic; font-size: 0.9rem;}
+label{
+  color: gray; font-style: italic; font-size: 0.9rem;
+}
 
-p{ line-height: 1.5;}
+p{ 
+  line-height: 1.5;
+}
 
 a{
   color: gray;
@@ -116,6 +124,10 @@ th{
   border: none;
 }
 
+.main{
+  margin-top: 70px;
+}
+
 .container{
   max-width: 1320px;
   width: 92%;
@@ -132,13 +144,8 @@ th{
   margin: 25px 0;
 }
 
-.center {
+.center{
   text-align: center;
-}
-
-.center p{
-  text-align: center;
-  font-size: 0.9rem;
 }
 
 /* SERVER MESSAGERS */
@@ -163,23 +170,24 @@ th{
 
 /* END SERVER MESSAGES */
 
-.flex{
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.flex a{
-  font-size: 1rem;
-  text-decoration: underline;
-}
 /* END GLOBAL */
 
 /* Header / Navbar */
+
+#header {
+  height: 70px;
+  position: fixed;
+  width: 100%;
+  top: 0;
+  z-index: 1;
+  transition: 0.3s ease-in-out;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+}
+
 .navbar{
   width: 95%;
   margin: auto;
-  min-height: 80px;
+  height: 70px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -422,9 +430,15 @@ th{
 /* FORMS */
 
 #create-user-form,
-#create-product-form,
 #update-user-form {
   width: 500px;
+}
+
+#create-product-form{
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: start;
 }
 
 #create-user-form input[type="text"],
@@ -444,7 +458,7 @@ th{
   border-radius: 5px;
   resize: none;
   padding: 10px;
-  height: 200px;
+  height: 150px;
 }
 
 #create-user-form .auth-btn,
@@ -490,7 +504,7 @@ th{
 /* CREATE PRODUCT */
 
 select{
-  width: 500px;
+  width: 100%;
   padding: 12px;
   border: none;
   border-radius: 5px;
@@ -499,7 +513,7 @@ select{
 }
 
 .input-image {
-  width: 500px;
+  width: 100%;
   height: 50px;
   border-radius: 5px;
   display: flex;
@@ -513,6 +527,7 @@ select{
 
 .input-image .browse {
   font-weight: bold;
+  font-size: .9rem;
 }
 
 .file {
@@ -532,7 +547,7 @@ select{
 }
 
 .queued-image {
-  width: 500px;
+  width: 100%;
   min-height: 150px;
   display: flex;
   justify-content: flex-start;
@@ -579,12 +594,44 @@ select{
 }
 
 /* VIEW PRODUCTS */
+
+.cards{
+  min-height: 200px;
+  display: flex;
+  justify-content: flex-start;
+  gap: 10px;
+  border-radius: 5px;
+  border: 1px dotted lightgray;
+}
+
 .card {
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
-  max-width: 200px;
-  /* margin: auto; */
+  max-width: 150px;
+  height: 200px;
   text-align: center;
-  font-family: arial;
+}
+
+.card-img{
+  width: 150px;
+  height: 150px;
+  overflow: hidden;
+  border-bottom: 1px solid lightgray;
+}
+
+.card-img img{
+  width: 100%;
+}
+
+.card-details {
+  padding: 10px;
+}
+
+.card-name,
+.card-price{
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
 }
 
 .price {
@@ -611,11 +658,13 @@ select{
 /* SIDEMENU */
 .app {
   display: flex;
-  min-height: 100vh;
+  margin-top: 70px;
 }
 
 .sidebar-menu {
+  position: fixed;
   width: 280px;
+  height: 100vh;
   background-color: #303641;
   color: white;
   z-index: 1;
@@ -623,7 +672,6 @@ select{
 }
 
 .sidebar-menu i{
-  /* color: #aaabae; */
   color: white;
 }
 
@@ -740,6 +788,7 @@ select{
 }
 
 .content {
+  margin-left: 280px;
   flex-grow: 1;
   padding: 20px;
 }
@@ -802,15 +851,16 @@ select{
   }
 
   .sidebar-menu {
-    position: absolute;
     left: -280px;
-    min-height: 100vh;
-    width: 280px;
     transition: 0.2s linear;
   }
 
   .sidebar-menu.active {
     left: 0;
+  }
+
+  .content{
+    margin-left: 0;
   }
 
     #create-user-form,

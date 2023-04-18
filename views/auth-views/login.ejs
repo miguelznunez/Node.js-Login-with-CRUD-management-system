@@ -1,56 +1,61 @@
-<%- include("partials/header.ejs") %>
+<%- include("partial-views/header.ejs") %>
 
+  <main class="main">
 
-  <div class="container">
+    <div class="container">
 
-    <% if(typeof flash !="undefined" && flash !="" ) { %>
-      <div class="server-message error">
-        <%= flash %>
+      <br>
+
+      <% if(typeof flash !="undefined" && flash !="" ) { %>
+        <div class="server-message error">
+          <%= flash %>
+        </div>
+      <% } else { %>
+          <div class="server-message"></div>
+      <% } %>
+
+      <div class="title">
+        <h2>Welcome, please log in.</h2>
       </div>
-    <% } else { %>
-        <div class="server-message"></div>
-    <% } %>
 
-    <div class="title">
-      <h2>Welcome, please log in.</h2>
-    </div>
-
-    <div class="passport-login">
-      <a href="/auth-management/auth-views/google"><button class="auth-btn google"><i class="fa-brands fa-google"></i> Log in with Google</button></a>
-    </div>
-
-    <div class="margin center" >
-      <p>Have a password? Log in with your email address.</p>
-    </div>
-    
-    <form id="login-form">
-      <div>
-        <input type="text" id="email" placeholder="Email" maxlength="100">
+      <div class="passport-login">
+        <a href="/auth-management/auth-views/google"><button class="auth-btn google"><i class="fa-brands fa-google"></i> Log in with Google</button></a>
       </div>
-      <div>
-        <input type="password" id="password" placeholder="Password" maxlength="60">
+
+      <div class="margin center">
+        <p>Have a password? Log in with your email address.</p>
       </div>
-      <div class="show-password-login">
+      
+      <form id="login-form">
         <div>
-          <input type="checkbox" id="show-password">
-          <label for="show-password">Show password</label>
+          <input type="text" id="email" placeholder="Email" maxlength="100">
         </div>
         <div>
-          <a href="/auth-management/auth-views/password-reset">Forgot password?</a>
+          <input type="password" id="password" placeholder="Password" maxlength="60">
         </div>
+        <div class="show-password-login">
+          <div>
+            <input type="checkbox" id="show-password">
+            <label for="show-password">Show password</label>
+          </div>
+          <div>
+            <a href="/auth-management/auth-views/password-reset">Forgot password?</a>
+          </div>
+        </div>
+
+        <div>
+          <button class="auth-btn">Log in</button>
+        </div>
+        <div id="register-account">
+          <a href="/auth-management/auth-views/signup">Not a member? Sign up</a>
+        </div>
+      </form>
+
       </div>
 
-      <div>
-        <button class="auth-btn">Log in</button>
-      </div>
-      <div id="register-account">
-        <a href="/auth-management/auth-views/signup">Not a member? Sign up</a>
-      </div>
-    </form>
-
-  </div>
+  </main>
 
   <script src="/js/login.js"></script>
   <script src="/js/script.js"></script>
 
-<%- include("partials/footer.ejs") %>
+<%- include("partial-views/footer.ejs") %>

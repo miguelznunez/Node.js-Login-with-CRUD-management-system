@@ -1,0 +1,72 @@
+<%- include("partial-views/header.ejs") %>
+
+  <div class="app">
+
+    <%- include("partial-views/sidebar-menu.ejs") %>
+
+    <% if (typeof message=="undefined" ) { %>
+
+      <main class="content">
+
+        <div class="sidebar-hamburger">
+          <span class="sbar"></span>
+          <span class="sbar"></span>
+          <span class="sbar"></span>
+        </div>
+
+        <div class="server-message"></div>
+
+        <h3>eCommerce management</h3>
+
+        <br>
+
+        <h4>Electronics (<%= rows.length %>)</h4>
+
+        <br>
+        <br>
+        <div class="cards">
+          <% for(let i=0;i < rows.length;i++) { %>
+            <div class="card">
+              <div class="card-img">
+                <img src="http://localhost:5000/ecommerce-management/<%= rows[i].pImage %>" alt="image">
+              </div>
+              <div class="card-details">
+                <div class="card-name">
+                  <h4>
+                    <%= rows[i].pName %>
+                  </h4>
+                </div>
+                <div class="card-price">
+                  <p class="price">
+                    $<%= rows[i].pPrice %>
+                  </p>
+                </div>
+              </div>
+            </div>
+          <% } %>
+        </div>
+
+      </main>
+
+    <% } else { %>
+      <main class="content">
+      
+        <div class="sidebar-hamburger">
+          <span class="sbar"></span>
+          <span class="sbar"></span>
+          <span class="sbar"></span>
+        </div>
+      
+        <div class="server-message error">
+          <%= message %>
+        </div>
+      
+      </main>
+    <% } %>
+
+  </div>
+
+  <script src="/js/sidebar-menu.js"></script>
+  <script src="/js/script.js"></script>
+
+  <%- include("partial-views/footer.ejs") %>

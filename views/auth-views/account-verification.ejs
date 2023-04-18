@@ -1,23 +1,20 @@
-<%- include("partials/header.ejs") %>
+<%- include("partial-views/header.ejs") %>
 
-  <section>
+  <main class="main">
     <div class="container">
-      <div class="subcontainer">
-        <div class="content-padding">
-          <% if (typeof success !="undefined" && success) { %>
-            <div class="server-message success">
-              <p> <%= message %> </p>
-            </div>
-          <% } else { %>
-            <div class="server-message error">
-              <p> <%= message %> </p>
-            </div>
-          <% } %>
+      <br>
+      <% if (typeof success !="undefined" && success) { %>
+        <div class="server-message success">
+          <p> <%= message %> </p>
         </div>
-      </div>
+      <% } else { %>
+        <div class="server-message error">
+          <p> <%= message %> </p>
+        </div>
+      <% } %>
     </div>
-  </section>
+  </main>
 
   <script src="/js/script.js"></script>
 
-  <%- include("partials/footer.ejs") %>
+<%- include("partial-views/footer.ejs") %>

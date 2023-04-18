@@ -1,61 +1,67 @@
-<%- include("partials/header.ejs") %>
+<%- include("partial-views/header.ejs") %>
 
-  <div class="container">
-    
-    <div class="server-message"></div>
+  <main class="main">
 
-    <div class="title">
-      <h2>Welcome, please sign up.</h2>
-    </div>
+    <div class="container">
 
-    <div class="passport-login">
-      <a href="/auth-management/auth-views/google"><button class="auth-btn google"><i class="fa-brands fa-google"></i> Sign up with Google</button></a>
-    </div>
+      <br>
+      
+      <div class="server-message"></div>
 
-    <div class="margin center">
-      <p>Or sign up with your email address.</p>
-    </div>
+      <div class="title">
+        <h2>Welcome, please sign up.</h2>
+      </div>
 
-    <form id="signup-form">
-      <div>
-        <input type="text" id="fName" maxlength="25" placeholder="First name"
-          value="" required>
+      <div class="passport-login">
+        <a href="/auth-management/auth-views/google"><button class="auth-btn google"><i class="fa-brands fa-google"></i> Sign up with Google</button></a>
       </div>
-      <div>
-        <input type="text" id="lName" maxlength="25" placeholder="Last name"
-          value="" required>
+
+      <div class="margin center">
+        <p>Or sign up with your email address.</p>
       </div>
-      <div>
-        <input type="email" id="email" maxlength="100" placeholder="Email"
-          value="" required>
-      </div>
-      <div>
-        <input type="password" id="password" maxlength="60" placeholder="Password"
-          value="" required>
-      </div>
-      <div>
-        <input type="password" id="confirm-password" maxlength="60" placeholder="Confirm password"
-          required>
-      </div>
-      <div class="show-password-signup">
+
+      <form id="signup-form">
         <div>
-          <input type="checkbox" id="show-password">
-          <label for="show-password">Show password</label>
+          <input type="text" id="fName" maxlength="25" placeholder="First name"
+            value="" required>
         </div>
-      </div>
-      <div>
-        <button class="auth-btn">Sign up</button>
-      </div>
-      <div id="login-account">
-        <a href="/auth-management/auth-views/login">Already a member? Log in</a>
-      </div>
-    </form>
+        <div>
+          <input type="text" id="lName" maxlength="25" placeholder="Last name"
+            value="" required>
+        </div>
+        <div>
+          <input type="email" id="email" maxlength="100" placeholder="Email"
+            value="" required>
+        </div>
+        <div>
+          <input type="password" id="password" maxlength="60" placeholder="Password"
+            value="" required>
+        </div>
+        <div>
+          <input type="password" id="confirm-password" maxlength="60" placeholder="Confirm password"
+            required>
+        </div>
+        <div class="show-password-signup">
+          <div>
+            <input type="checkbox" id="show-password">
+            <label for="show-password">Show password</label>
+          </div>
+        </div>
+        <div>
+          <button class="auth-btn">Sign up</button>
+        </div>
+        <div id="login-account">
+          <a href="/auth-management/auth-views/login">Already a member? Log in</a>
+        </div>
+      </form>
 
-    <div class="margin"></div>
+      <div class="margin"></div>
 
-  </div>
+    </div>
+
+  </main>
 
   <script src="/js/signup.js"></script>
   <script src="/js/script.js"></script>
 
-<%- include("partials/footer.ejs") %>
+<%- include("partial-views/footer.ejs") %>

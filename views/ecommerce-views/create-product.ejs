@@ -1,8 +1,8 @@
-<%- include("partials/header.ejs") %>
+<%- include("partial-views/header.ejs") %>
 
   <div class="app">
 
-    <%- include("partials/sidebar-menu.ejs") %>
+    <%- include("partial-views/sidebar-menu.ejs") %>
 
     <main class="content">
 
@@ -21,39 +21,121 @@
       <h4>Create product</h4>
 
       <br>      
-      
-      <select id="pCategory">
-        <option selected value="">Select product category</option>
-        <option value="jeans">Jeans</option>
-        <option value="tops">Tops</option>
-        <option value="sweaters">Sweaters</option>
-        <option value="jackets">Jackets</option>
-        <option value="shoes">Shoes</option>
-        <option value="hats">Hats</option>
-        <option value="accessories">Accessories</option>
-        <option value="electronics">Electronics</option>
-      </select>
-
-      <br>
-      <br>
-      
-      <div class="queued-image"></div>
-
-      <br>
-      
-      <div class="input-image">
-        <p><span class="browse">Select image</span></p>
-        <input type="file" class="file" accept="image/jpeg, image/png, image/jpg" required>
-      </div>
-
-      <br>
 
       <form id="create-product-form">
-        <input type="text" id="pName" maxlength="100" placeholder="Name" value="" required>
-        <input type="number" id="pPrice" maxlength="100" placeholder="Price" step="any" value="" required>
-        <input type="number" id="pQuantity" maxlength="100" placeholder="Quantity available" value="" required>
-        <textarea id="pDescription" placeholder="Description" required></textarea>
-        <button class="auth-btn">Create</button>
+
+        <div>
+          <div class="queued-image"></div>
+          <br>
+          <div class="input-image">
+            <p><span class="browse"><i class="fa-solid fa-image"></i> Select image</span></p>
+            <input type="file" class="file" accept="image/jpeg, image/png, image/jpg" required>
+          </div>
+          <br>
+          <select id="pCategory" required>
+            <option selected value="">Category</option>
+            <option value="shirts">Shirts</option>
+            <option value="pants">Pants</option>
+            <option value="sweaters">Jackets</option>
+            <option value="jackets">Sweaters</option>
+            <option value="shoes">Shoes</option>
+            <option value="hats">Hats</option>
+            <option value="accessories">Accessories</option>
+            <option value="cosmetics">Cosmetics</option>
+            <option value="fragrances">Fragrances</option>
+            <option value="electronics">Electronics</option>
+          </select>
+          <br>
+          <br>
+          <select id="pGender" required>
+            <option selected value="">Gender</option>
+            <option value="men">Men</option>
+            <option value="women">Women</option>
+            <option value="DNA">Does not apply</option>
+          </select>
+          <br>
+          <br>
+          <input type="text" id="pBrand" maxlength="100" placeholder="Brand" value="" required>
+          <br>
+          <br>
+          <input type="text" id="pName" maxlength="100" placeholder="Name" value="" required>
+          <br>
+          <br>
+          <input type="number" id="pPrice" maxlength="100" placeholder="Price" step="any" value="" min="0" required>
+          <br>
+          <br>
+          <textarea id="pDescription" placeholder="Description" required></textarea>
+          <br>
+          <br>
+          <button class="auth-btn">Create</button>
+        </div>
+
+        <div>
+          <h4>Quantity on hand</h4>
+          <br>
+          <h5>One size</h5>
+          <br>
+          <input type="number" id="pQuantity_OS" min="0" placeholder="Quantity">
+          <br>
+          <br>
+          <h5>General sizes</h5>
+          <br>
+          <input type="number" id="pQuantity_XS" min="0" placeholder="XS">
+          <br>
+          <br>
+          <input type="number" id="pQuantity_S" min="0" placeholder="S">
+          <br>
+          <br>
+          <input type="number" id="pQuantity_M" min="0" placeholder="M">
+          <br>
+          <br>
+          <input type="number" id="pQuantity_L" min="0" placeholder="L">
+          <br>
+          <br>
+          <input type="number" id="pQuantity_XL" min="0" placeholder="XL">
+          <br>
+          <br>
+          <input type="number" id="pQuantity_XXL" min="0" placeholder="XXL">
+          <!-- <br>
+          <br>
+          <h5>Hat sizes</h5>
+          <br>
+          <input type="number" id="6_78" placeholder="6 7/8">
+          <br>
+          <br>
+          <input type="number" id="7" placeholder="7">
+          <br>
+          <br>
+          <input type="number" id="7_18 " placeholder="7 1/8">
+          <br>
+          <br>
+          <input type="number" id="7_14" placeholder="7 1/4">
+          <br>
+          <br>
+          <input type="number" id="7_38" placeholder="7 3/8">
+          <br>
+          <br>
+          <input type="number" id="7_12" placeholder="7 1/2">
+          <br>
+          <br>
+          <input type="number" id="7_58" placeholder="7 5/8">
+          <br>
+          <br>
+          <input type="number" id="7_34" placeholder="7 3/4">
+          <br>
+          <br>
+          <input type="number" id="7_78" placeholder="7 7/8">
+          <br>
+          <br>
+          <input type="number" id="8" placeholder="8">
+          <br>
+          <br>
+          <input type="number" id="8_18" placeholder="8 1/8">
+          <br>
+          <br>
+          <input type="number" id="8_14" placeholder="8 1/4"> -->
+        </div>
+        
       </form>
 
     </main>
@@ -103,18 +185,34 @@
 
     function sendQueuedImageToServer() {
       const formData = new FormData(createProductForm),
-        pCategory = document.querySelector("#pCategory").value,
-        pName = document.querySelector("#pName").value,
-        pPrice = document.querySelector("#pPrice").value,
-        pQuantity = document.querySelector("#pQuantity").value,
-        pDescription = document.querySelector("#pDescription").value;
+      pCategory = document.querySelector("#pCategory").value,
+      pGender = document.querySelector("#pGender").value,
+      pBrand = document.querySelector("#pBrand").value,
+      pName = document.querySelector("#pName").value,
+      pPrice = document.querySelector("#pPrice").value,
+      pDescription = document.querySelector("#pDescription").value,
+      pQuantity_OS = document.querySelector("#pQuantity_OS").value,
+      pQuantity_XS = document.querySelector("#pQuantity_XS").value,
+      pQuantity_S = document.querySelector("#pQuantity_S").value,
+      pQuantity_M = document.querySelector("#pQuantity_M").value,
+      pQuantity_L = document.querySelector("#pQuantity_L").value,
+      pQuantity_XL = document.querySelector("#pQuantity_XL").value,
+      pQuantity_XXL = document.querySelector("#pQuantity_XXL").value;
 
       formData.append("pImage", queuedImageArray[0])
       formData.append("pCategory", pCategory)
+      formData.append("pGender", pGender)
+      formData.append("pBrand", pBrand)
       formData.append("pName", pName)
       formData.append("pPrice", pPrice)
-      formData.append("pQuantity", pQuantity)
       formData.append("pDescription", pDescription)
+      formData.append("pQuantity_OS", pQuantity_OS)
+      formData.append("pQuantity_XS", pQuantity_XS)
+      formData.append("pQuantity_S", pQuantity_S)
+      formData.append("pQuantity_M", pQuantity_M)
+      formData.append("pQuantity_L", pQuantity_L)
+      formData.append("pQuantity_XL", pQuantity_XL)
+      formData.append("pQuantity_XXL", pQuantity_XXL)
 
       fetch("/ecommerce-management/create-product", {
         method: "POST",
@@ -137,4 +235,4 @@
     }
   </script>
 
-  <%- include("partials/footer.ejs") %>
+  <%- include("partial-views/footer.ejs") %>
