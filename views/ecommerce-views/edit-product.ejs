@@ -4,244 +4,281 @@
 
     <%- include("partial-views/sidebar-menu.ejs") %>
 
-    <main class="content">
+    <% if(typeof message=="undefined" ) { %>
 
-      <div class="sidebar-hamburger">
-        <span class="sbar"></span>
-        <span class="sbar"></span>
-        <span class="sbar"></span>
+      <div class="modal-overlay">
+        <div class="modal">
+          <i class="fa-solid fa-xmark" id="close-modal"></i>
+          <form action="/ecommerce-management/ecommerce-views/delete-product/<%= rows[0].pGender%>/<%= rows[0].pId %>" id="delete-product-form" method="GET">
+            <h4>Sure you want to delete this product?</h4>
+            <button>Delete</button>
+          </form>
+        </div>
       </div>
 
-      <div class="server-message"></div>
+      <main class="content">
 
-      <h3>eCommerce management</h3>
+        <div class="sidebar-hamburger">
+          <span class="sbar"></span>
+          <span class="sbar"></span>
+          <span class="sbar"></span>
+        </div>
 
-      <br>
+        <div class="server-message"></div>
 
-      <h4>Edit product</h4>
 
-      <br>  
+        <div class="flex">
+          <h3>eCommerce management</h3>
+          <button id="show-modal">Delete product</button>
+        </div>
+        
+        <br>
+        
+        <h4>Edit product</h4>
+        
+        <br>
 
-      <form id="edit-product-form">
-        <div>
-          <div class="input-image">
-            <p><span class="browse"><i class="fa-solid fa-image"></i> Select image</span></p>
-            <input type="file" class="file" accept="image/jpeg, image/png, image/jpg">
+        <form id="edit-product-form">
+          <div>
+            <div class="input-image">
+              <p><span class="browse"><i class="fa-solid fa-image"></i> Select image</span></p>
+              <input type="file" class="file" accept="image/jpeg, image/png, image/jpg">
+            </div>
+            <br>
+            <div class="queued-image"></div>
+            <br>
+            <input type="hidden" id="pId" value="<%= rows[0].pId %>">
+            <select id="pCategory" required>
+              <option selected value="<%= rows[0].pCategory %>"><%= rows[0].pCategory %></option>
+              <option value="shirts">Shirts</option>
+              <option value="pants">Pants</option>
+              <option value="sweaters">Jackets</option>
+              <option value="jackets">Sweaters</option>
+              <option value="shoes">Shoes</option>
+              <option value="hats">Hats</option>
+              <option value="accessories">Accessories</option>
+              <option value="cosmetics">Cosmetics</option>
+              <option value="fragrances">Fragrances</option>
+              <option value="electronics">Electronics</option>
+            </select>
+            <br>
+            <br>
+            <select id="pGender" required>
+              <option selected value="<%= rows[0].pGender %>"><%= rows[0].pGender %></option>
+              <option value="men">Men</option>
+              <option value="women">Women</option>
+              <option value="DNA">Does not apply</option>
+            </select>
+            <br>
+            <br>
+            <input type="text" id="pBrand" maxlength="100" placeholder="Brand" value="<%= rows[0].pBrand %>" required>
+            <br>
+            <br>
+            <input type="text" id="pNumber" maxlength="100" placeholder="Product number" value="<%= rows[0].pNumber %>" required>
+            <br>
+            <br>
+            <input type="text" id="pName" maxlength="100" placeholder="Name" value="<%= rows[0].pName %>" required>
+            <br>
+            <br>
+            <input type="number" id="pPrice" maxlength="100" placeholder="Price" step="any" value="<%= rows[0].pPrice %>" min="0" required>
+            <br>
+            <br>
+            <input type="number" id="pDiscount" maxlength="100" placeholder="Discount (optional)" step="any" value="" min="0">
+            <br>
+            <br>
+            <textarea id="pDescription" placeholder="Description" required><%= rows[0].pDescription %></textarea>
+            <br>
+            <br>
+            <button class="auth-btn">Update</button>
           </div>
-          <br>
-          <div class="queued-image"></div>
-          <br>
-          <input type="hidden" id="pId" value="<%= rows[0].pId %>">
-          <select id="pCategory" required>
-            <option selected value="<%= rows[0].pCategory %>"><%= rows[0].pCategory %></option>
-            <option value="shirts">Shirts</option>
-            <option value="pants">Pants</option>
-            <option value="sweaters">Jackets</option>
-            <option value="jackets">Sweaters</option>
-            <option value="shoes">Shoes</option>
-            <option value="hats">Hats</option>
-            <option value="accessories">Accessories</option>
-            <option value="cosmetics">Cosmetics</option>
-            <option value="fragrances">Fragrances</option>
-            <option value="electronics">Electronics</option>
-          </select>
-          <br>
-          <br>
-          <select id="pGender" required>
-            <option selected value="<%= rows[0].pGender %>"><%= rows[0].pGender %></option>
-            <option value="men">Men</option>
-            <option value="women">Women</option>
-            <option value="DNA">Does not apply</option>
-          </select>
-          <br>
-          <br>
-          <input type="text" id="pBrand" maxlength="100" placeholder="Brand" value="<%= rows[0].pBrand %>" required>
-          <br>
-          <br>
-          <input type="text" id="pNumber" maxlength="100" placeholder="Product number" value="<%= rows[0].pNumber %>" required>
-          <br>
-          <br>
-          <input type="text" id="pName" maxlength="100" placeholder="Name" value="<%= rows[0].pName %>" required>
-          <br>
-          <br>
-          <input type="number" id="pPrice" maxlength="100" placeholder="Price" step="any" value="<%= rows[0].pPrice %>" min="0" required>
-          <br>
-          <br>
-          <input type="number" id="pDiscount" maxlength="100" placeholder="Discount (optional)" step="any" value="" min="0">
-          <br>
-          <br>
-          <textarea id="pDescription" placeholder="Description" required><%= rows[0].pDescription %></textarea>
-          <br>
-          <br>
-          <button class="auth-btn">Update</button>
-        </div>
-      
-        <div>
-          <h4>Quantity on hand</h4>
-          <br>
-          <h5>One size</h5>
-          <br>
-          <input type="number" id="pQuantity_OS" min="0" value="<%= rows[0].pQuantity_OS %>" placeholder="Quantity">
-          <br>
-          <br>
-          <h5>General sizes</h5>
-          <br>
-          <input type="number" id="pQuantity_XS" min="0" value="<%= rows[0].pQuantity_XS %>" placeholder="XS">
-          <br>
-          <br>
-          <input type="number" id="pQuantity_S" min="0" value="<%= rows[0].pQuantity_S %>" placeholder="S">
-          <br>
-          <br>
-          <input type="number" id="pQuantity_M" min="0" value="<%= rows[0].pQuantity_M %>" placeholder="M">
-          <br>
-          <br>
-          <input type="number" id="pQuantity_L" min="0" value="<%= rows[0].pQuantity_L %>" placeholder="L">
-          <br>
-          <br>
-          <input type="number" id="pQuantity_XL" min="0" value="<%= rows[0].pQuantity_XL %>" placeholder="XL">
-          <br>
-          <br>
-          <input type="number" id="pQuantity_XXL" min="0" value="<%= rows[0].pQuantity_XXL %>" placeholder="XXL">
-        </div>
-      
-      </form>
+        
+          <div>
+            <h4>Quantity on hand</h4>
+            <br>
+            <h5>One size</h5>
+            <br>
+            <input type="number" id="pQuantity_OS" min="0" value="<%= rows[0].pQuantity_OS %>" placeholder="Quantity">
+            <br>
+            <br>
+            <h5>General sizes</h5>
+            <br>
+            <input type="number" id="pQuantity_XS" min="0" value="<%= rows[0].pQuantity_XS %>" placeholder="XS">
+            <br>
+            <br>
+            <input type="number" id="pQuantity_S" min="0" value="<%= rows[0].pQuantity_S %>" placeholder="S">
+            <br>
+            <br>
+            <input type="number" id="pQuantity_M" min="0" value="<%= rows[0].pQuantity_M %>" placeholder="M">
+            <br>
+            <br>
+            <input type="number" id="pQuantity_L" min="0" value="<%= rows[0].pQuantity_L %>" placeholder="L">
+            <br>
+            <br>
+            <input type="number" id="pQuantity_XL" min="0" value="<%= rows[0].pQuantity_XL %>" placeholder="XL">
+            <br>
+            <br>
+            <input type="number" id="pQuantity_XXL" min="0" value="<%= rows[0].pQuantity_XXL %>" placeholder="XXL">
+          </div>
+        
+        </form>
 
-    </main>
+      </main>
+
+      <script>
+        const editProductForm = document.querySelector("#edit-product-form"),
+          pageHeader = document.querySelector(".page-header"),
+          queuedImage = document.querySelector('.queued-image'),
+          inputImage = document.querySelector('.input-image'),
+          input = document.querySelector('.input-image input'),
+          serverMessage = document.querySelector('.server-message'),
+          savedImage = JSON.parse('<%-JSON.stringify(rows[0].pImage)%>');
+
+        let queuedImageArray = []
+
+        if (savedImage) {
+          displaySavedImage()
+        }
+
+        function displaySavedImage() {
+          queuedImageArray.push(savedImage)
+          queuedImage.innerHTML = `<div class="image">
+                          <img src="http://localhost:5000/ecommerce-management/${savedImage}" alt="image">
+                          <span onclick="deleteQueuedImage(${0})">&times;</span>
+                        </div>`;
+        }
+
+        function displayQueuedImage() {
+          let images = "";
+          queuedImageArray.forEach((image, index) => {
+            images += `<div class="image">
+                          <img src="${URL.createObjectURL(image)}" alt="image">
+                          <span onclick="deleteQueuedImage(${index})">&times;</span>
+                        </div>`;
+          })
+          queuedImage.innerHTML = images;
+        }
+
+        function deleteQueuedImage(index) {
+          queuedImageArray.splice(index, 1);
+          displayQueuedImage();
+        }
+
+        input.addEventListener("change", () => {
+          const files = input.files;
+          for (let i = 0; i < files.length; i++) {
+            queuedImageArray[0] = files[i]
+          }
+          displayQueuedImage()
+        })
+
+        editProductForm.addEventListener("submit", (e) => {
+          e.preventDefault()
+          sendQueuedImageToServer()
+        })
+
+        function sendQueuedImageToServer() {
+          const formData = new FormData(editProductForm),
+            pId = document.querySelector("#pId").value,
+            pCategory = document.querySelector("#pCategory").value,
+            pGender = document.querySelector("#pGender").value,
+            pBrand = document.querySelector("#pBrand").value,
+            pNumber = document.querySelector("#pNumber").value,
+            pName = document.querySelector("#pName").value,
+            pPrice = document.querySelector("#pPrice").value,
+            pDescription = document.querySelector("#pDescription").value,
+            pQuantity_OS = document.querySelector("#pQuantity_OS").value,
+            pQuantity_XS = document.querySelector("#pQuantity_XS").value,
+            pQuantity_S = document.querySelector("#pQuantity_S").value,
+            pQuantity_M = document.querySelector("#pQuantity_M").value,
+            pQuantity_L = document.querySelector("#pQuantity_L").value,
+            pQuantity_XL = document.querySelector("#pQuantity_XL").value,
+            pQuantity_XXL = document.querySelector("#pQuantity_XXL").value;
+
+          formData.append("pId", pId)
+          formData.append("pCategory", pCategory)
+          formData.append("pGender", pGender)
+          // image to upload
+          formData.append("pImage", queuedImageArray[0])
+          // image to delete
+          formData.append("pSavedImage", savedImage)
+          formData.append("pBrand", pBrand)
+          formData.append("pNumber", pNumber)
+          formData.append("pName", pName)
+          formData.append("pPrice", pPrice)
+          formData.append("pDescription", pDescription)
+          formData.append("pQuantity_OS", pQuantity_OS)
+          formData.append("pQuantity_XS", pQuantity_XS)
+          formData.append("pQuantity_S", pQuantity_S)
+          formData.append("pQuantity_M", pQuantity_M)
+          formData.append("pQuantity_L", pQuantity_L)
+          formData.append("pQuantity_XL", pQuantity_XL)
+          formData.append("pQuantity_XXL", pQuantity_XXL)
+
+          if (queuedImageArray[0] === savedImage) {
+
+            fetch("/ecommerce-management/edit-product-info", {
+              method: "PUT",
+              headers: {
+                "Accept": "application/json, text/plain, */*",
+                "Content-type": "application/json"
+              },
+              body: JSON.stringify({ pId: pId, pCategory: pCategory, pGender: pGender, pImage: savedImage, pBrand: pBrand, pNumber: pNumber, pName: pName, pPrice: pPrice, pDescription: pDescription, pQuantity_OS: pQuantity_OS, pQuantity_XS: pQuantity_XS, pQuantity_S: pQuantity_S, pQuantity_M: pQuantity_M, pQuantity_L: pQuantity_L, pQuantity_XL: pQuantity_XL, pQuantity_XXL: pQuantity_XXL })
+            })
+
+            .then(response => {
+              if (response.status !== 200) throw Error(response.statusText)
+              serverMessage.innerHTML = response.statusText
+              serverMessage.style.cssText = "background-color: #d4edda; color:#1b5e20; padding: 16px;"
+            })
+
+            .catch(error => {
+              serverMessage.innerHTML = error
+              serverMessage.style.cssText = "background-color: #f8d7da; color:#b71c1c; padding: 16px;"
+            });
+          } else {
+
+            fetch("/ecommerce-management/edit-product-image", {
+              method: "PUT",
+              body: formData
+            })
+
+            .then(response => {
+              if (response.status !== 200) throw Error(response.statusText)
+              serverMessage.innerHTML = response.statusText
+              serverMessage.style.cssText = "background-color: #d4edda; color:#1b5e20; padding: 16px;"
+            })
+
+            .catch(error => {
+              serverMessage.innerHTML = error
+              serverMessage.style.cssText = "background-color: #f8d7da; color:#b71c1c; padding: 16px;"
+            });
+          }
+
+        }
+      </script>
+      <script src="/js/modal.js"></script>
+
+    <% } else { %>
+
+      <main class="content">
+      
+        <div class="sidebar-hamburger">
+          <span class="sbar"></span>
+          <span class="sbar"></span>
+          <span class="sbar"></span>
+        </div>
+      
+        <div class="server-message error">
+          <%= message %>
+        </div>
+      
+      </main>
+
+    <% } %>
 
   </div>
 
   <script src="/js/sidebar-menu.js"></script>
   <script src="/js/script.js"></script>
-  <script>
-    const editProductForm = document.querySelector("#edit-product-form"),
-      queuedImage = document.querySelector('.queued-image'),
-      inputImage = document.querySelector('.input-image'),
-      input = document.querySelector('.input-image input'),
-      serverMessage = document.querySelector('.server-message'),
-      savedImage = JSON.parse('<%-JSON.stringify(rows[0].pImage)%>');
-
-    let queuedImageArray = []
-
-    if(savedImage){
-      displaySavedImage()
-    }
-
-    function displaySavedImage(){
-      queuedImageArray.push(savedImage)
-      queuedImage.innerHTML = `<div class="image">
-                    <img src="http://localhost:5000/ecommerce-management/${savedImage}" alt="image">
-                    <span onclick="deleteQueuedImage(${0})">&times;</span>
-                  </div>`;
-    }    
-
-    function displayQueuedImage() {
-      let images = "";
-      queuedImageArray.forEach((image, index) => {
-        images += `<div class="image">
-                    <img src="${URL.createObjectURL(image)}" alt="image">
-                    <span onclick="deleteQueuedImage(${index})">&times;</span>
-                  </div>`;
-      })
-      queuedImage.innerHTML = images;
-    }
-
-    function deleteQueuedImage(index) {
-      queuedImageArray.splice(index, 1);
-      displayQueuedImage();
-    }
-
-    input.addEventListener("change", () => {
-      const files = input.files;
-      for (let i = 0; i < files.length; i++) {
-        queuedImageArray[0] = files[i]
-      }
-      displayQueuedImage()
-    })
-
-    editProductForm.addEventListener("submit", (e) => {
-      e.preventDefault()
-      sendQueuedImageToServer()
-    });
-
-    function sendQueuedImageToServer() {
-      const formData = new FormData(editProductForm),
-        pId = document.querySelector("#pId").value,
-        pCategory = document.querySelector("#pCategory").value,
-        pGender = document.querySelector("#pGender").value,
-        pBrand = document.querySelector("#pBrand").value,
-        pNumber = document.querySelector("#pNumber").value,
-        pName = document.querySelector("#pName").value,
-        pPrice = document.querySelector("#pPrice").value,
-        pDescription = document.querySelector("#pDescription").value,
-        pQuantity_OS = document.querySelector("#pQuantity_OS").value,
-        pQuantity_XS = document.querySelector("#pQuantity_XS").value,
-        pQuantity_S = document.querySelector("#pQuantity_S").value,
-        pQuantity_M = document.querySelector("#pQuantity_M").value,
-        pQuantity_L = document.querySelector("#pQuantity_L").value,
-        pQuantity_XL = document.querySelector("#pQuantity_XL").value,
-        pQuantity_XXL = document.querySelector("#pQuantity_XXL").value;
-
-      formData.append("pId", pId)
-      formData.append("pCategory", pCategory)
-      formData.append("pGender", pGender)
-      // image to upload
-      formData.append("pImage", queuedImageArray[0])
-      // image to delete
-      formData.append("pSavedImage", savedImage)
-      formData.append("pBrand", pBrand)
-      formData.append("pNumber", pNumber)
-      formData.append("pName", pName)
-      formData.append("pPrice", pPrice)
-      formData.append("pDescription", pDescription)
-      formData.append("pQuantity_OS", pQuantity_OS)
-      formData.append("pQuantity_XS", pQuantity_XS)
-      formData.append("pQuantity_S", pQuantity_S)
-      formData.append("pQuantity_M", pQuantity_M)
-      formData.append("pQuantity_L", pQuantity_L)
-      formData.append("pQuantity_XL", pQuantity_XL)
-      formData.append("pQuantity_XXL", pQuantity_XXL)
-
-      if (queuedImageArray[0] === savedImage) {
-
-        fetch("/ecommerce-management/edit-product-info", {
-          method: "PUT",
-          headers: {
-            "Accept": "application/json, text/plain, */*",
-            "Content-type": "application/json"
-          },
-          body: JSON.stringify({ pId: pId, pCategory: pCategory, pGender:pGender, pImage:savedImage, pBrand:pBrand, pNumber:pNumber, pName:pName, pPrice:pPrice, pDescription:pDescription, pQuantity_OS:pQuantity_OS, pQuantity_XS:pQuantity_XS, pQuantity_S:pQuantity_S, pQuantity_M:pQuantity_M, pQuantity_L:pQuantity_L, pQuantity_XL:pQuantity_XL, pQuantity_XXL:pQuantity_XXL })
-        })
-
-        .then(response => {
-          if (response.status !== 200) throw Error(response.statusText)
-          serverMessage.innerHTML = response.statusText
-          serverMessage.style.cssText = "background-color: #d4edda; color:#1b5e20; padding: 16px;"
-        })
-
-        .catch(error => {
-          serverMessage.innerHTML = error
-          serverMessage.style.cssText = "background-color: #f8d7da; color:#b71c1c; padding: 16px;"
-        });
-      } else {
-
-        fetch("/ecommerce-management/edit-product-image", {
-          method: "PUT",
-          body: formData
-        })
-
-        .then(response => {
-          if (response.status !== 200) throw Error(response.statusText)
-          serverMessage.innerHTML = response.statusText
-          serverMessage.style.cssText = "background-color: #d4edda; color:#1b5e20; padding: 16px;"
-        })
-
-        .catch(error => {
-          serverMessage.innerHTML = error
-          serverMessage.style.cssText = "background-color: #f8d7da; color:#b71c1c; padding: 16px;"
-        });
-      }
-
-    }
-  </script>
 
   <%- include("partial-views/footer.ejs") %>

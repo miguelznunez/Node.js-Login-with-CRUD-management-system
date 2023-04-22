@@ -140,12 +140,61 @@ th{
   text-align: center;
 }
 
+.flex{
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+
 .margin {
   margin: 25px 0;
 }
 
 .center{
   text-align: center;
+}
+
+/* MODAL */
+.modal-overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 1;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.modal {
+  max-width: 500px;
+  height: 200px;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  margin: auto;
+  position: absolute;
+  border-radius: 5px;
+  background-color: white;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+}
+
+#show-modal{
+  border: 1px solid red;
+  color: red;
+  background-color: white;
+}
+
+#close-modal{
+  position: absolute;
+  top: 5%;
+  right: 5%;
+  font-size: 2rem;
+  cursor: pointer;
+  z-index: 1;
 }
 
 /* SERVER MESSAGERS */
@@ -489,18 +538,25 @@ th{
   width: 100%;
 }
 
-#delete-user-form{
+#delete-product-form button,
+#delete-user-form button{
+  background-color: red;
+  border: 1px solid red;
+  color: white;
+}
+
+/* #delete-user-form{
   padding: none;
   margin: none;
   display: inline;
-}
+} */
 
-#delete-user-form button{
+/* #delete-user-form button{
   outline: none;
   border: none;
   padding: 5px;
   font-size: 0.9rem;
-}
+} */
 
 .admin-user-radios{
   width: 100%;

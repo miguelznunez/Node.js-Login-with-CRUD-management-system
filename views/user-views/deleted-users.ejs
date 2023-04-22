@@ -24,7 +24,10 @@
 
         <br>
 
-        <h3>User management</h3>
+        <div class="flex">
+          <h3>User management</h3>
+          <a href="/user-management/user-views/deleted-users">View all deleted users</a>
+        </div>
         
         <br>
       
@@ -32,7 +35,7 @@
       
         <br>
 
-        <form action="/user-management/user-views/find-deleted-users" method="POST">
+        <form action="/user-management/user-views/search-deleted-users" method="POST">
           <div class="user-management">
             <input type="text" name="search" placeholder="Search deleted users..."><button>Search</button>
           </div>

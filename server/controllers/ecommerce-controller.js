@@ -125,6 +125,28 @@ exports.findWomenProductsByProductNumber = (req, res) => {
   })
 }
 
+exports.findDNAProductsByBrandCategory = (req, res) => {
+  const {pBrand, pCategory} = req.body
+  db.query("SELECT * FROM products WHERE pGender = ? && pBrand = ? && pCategory = ?", ["DNA", pBrand, pCategory], (err, rows) => {
+    if(!err) { 
+      return res.status(200).render("view-dna-products", {title:"User Management - View DNA products" , user:req.user, rows:rows})
+    } else { 
+      return res.status(500).render("view-dna-products", {title:"User Management - View DNA products" , user:req.user, success:false, message:"Internal server error."})
+    }
+  })
+}
+
+exports.findDNAProductsByProductNumber = (req, res) => {
+  const pNumber = req.body.pNumber
+  db.query("SELECT * FROM products WHERE pGender = ? && pNumber = ?", ["DNA", pNumber], (err, rows) => {
+    if(!err) { 
+      return res.status(200).render("view-dna-products", {title:"User Management - View DNA products" , user:req.user, rows:rows})
+    } else { 
+      return res.status(500).render("view-dna-products", {title:"User Management - View DNA products" , user:req.user, success:false, message:"Internal server error."})
+    }
+  })
+}
+
 function deleteOldImageFromS3(pInfo){
   const {pSavedImage} = pInfo
   deleteImage(pSavedImage)
@@ -132,7 +154,7 @@ function deleteOldImageFromS3(pInfo){
 
 function saveProductInDB(pImage, pInfo){
   const {pCategory, pGender, pBrand, pNumber, pName, pPrice, pDescription, pQuantity_OS, pQuantity_XS, pQuantity_S, pQuantity_M, pQuantity_L, pQuantity_XL, pQuantity_XXL} = pInfo
-  db.query("INSERT INTO products (pCategory, pGender, pImage, pBrand, pNumber, pName, pPrice, pDescription, pQuantity_OS,pQuantity_XS, pQuantity_S, pQuantity_M, pQuantity_L, pQuantity_XL, pQuantity_XXL) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?)", [pCategory, pGender, pImage[0].key, pBrand, pNumber, pName, pPrice, pDescription, pQuantity_OS, pQuantity_XS, pQuantity_S, pQuantity_M, pQuantity_L, pQuantity_XL, pQuantity_XXL], (err, result) => {
+  db.query("INSERT INTO products (pCategory, pGender, pImage, pBrand, pNumber, pName, pPrice, pDescription, pQuantity_OS,pQuantity_XS, pQuantity_S, pQuantity_M, pQuantity_L, pQuantity_XL, pQuantity_XXL) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", [pCategory, pGender, pImage[0].key, pBrand, pNumber, pName, pPrice, pDescription, pQuantity_OS, pQuantity_XS, pQuantity_S, pQuantity_M, pQuantity_L, pQuantity_XL, pQuantity_XXL], (err, result) => {
     if(err) throw new Error(err)
   })
 }

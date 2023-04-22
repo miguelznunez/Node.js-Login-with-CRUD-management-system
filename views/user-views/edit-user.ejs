@@ -6,6 +6,17 @@
 
     <% if(typeof message=="undefined" ) { %>
 
+      <div class="modal-overlay">
+        <div class="modal">
+          <i class="fa-solid fa-xmark" id="close-modal"></i>
+          <form action="/user-management/user-views/delete-user/<%= rows[0].status %>/<%= rows[0].id %>"
+            id="delete-user-form" method="GET">
+            <h4>Sure you want to delete this user?</h4>
+            <button>Delete</button>
+          </form>
+        </div>
+      </div>
+
       <main class="content">
 
         <div class="sidebar-hamburger">
@@ -16,7 +27,10 @@
 
         <div class="server-message"></div>
 
-        <h3>User management</h3>
+        <div class="flex">
+          <h3>User management</h3>
+          <button id="show-modal">Delete user</button>
+        </div>
         
         <br>
 
@@ -88,6 +102,7 @@
       </main>
 
       <script src="/js/update-user.js"></script>
+      <script src="/js/modal.js"></script>
 
     <% } else { %>
       <main class="content">

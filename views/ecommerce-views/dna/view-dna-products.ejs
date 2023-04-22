@@ -24,15 +24,15 @@
 
         <div class="flex">
           <h3>eCommerce management</h3>
-          <a href="/ecommerce-management/ecommerce-views/men/view-men-products">View all men's products</a>
+          <a href="/ecommerce-management/ecommerce-views/dna/view-dna-products">View all dna products</a>
         </div>
-        
+
         <br>
 
         <div>
           <h4>Search by brand and category</h4>
           <br>
-          <form action="/ecommerce-management/search-men-products-by-brand-and-category" method="POST">
+          <form action="/ecommerce-management/search-dna-products-by-brand-and-category" method="POST">
             <div class="user-management filter">
               <input type="text" name="pBrand" placeholder="Brand..."><select name="pCategory" required>
                 <option selected value="">Category</option>
@@ -52,21 +52,21 @@
           <br>
           <h4>or search by product number</h4>
           <br>
-          <form action="/ecommerce-management/search-men-products-by-product-number" method="POST">
-              <div class="user-management">
-                <input type="text" name="pNumber" placeholder="Product number..."><button>Search</button>
-              </div>
+          <form action="/ecommerce-management/search-dna-products-by-product-number" method="POST">
+            <div class="user-management">
+              <input type="text" name="pNumber" placeholder="Product number..."><button>Search</button>
+            </div>
           </form>
         </div>
 
         <br>
 
-        <h4>Men's Products (<%= rows.length %>)</h4>
-        
+        <h4>DNA Products (<%= rows.length %>)</h4>
+
         <br>
 
         <br>
-        
+
         <div class="cards">
           <% for(let i=0;i < rows.length;i++) { %>
             <div class="card">
@@ -84,7 +84,8 @@
                     $<%= rows[i].pPrice %>
                   </p>
                 </div>
-                <a href="/ecommerce-management/ecommerce-views/edit-product/<%= rows[i].pId %>"><i class="fa-solid fa-pencil"></i> Edit</a>
+                <a href="/ecommerce-management/ecommerce-views/edit-product/<%= rows[i].pId %>"><i class="fa-solid fa-pencil"></i>
+                  Edit</a>
               </div>
             </div>
           <% } %>

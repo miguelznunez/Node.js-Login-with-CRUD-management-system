@@ -13,7 +13,7 @@ function get_date(){
   return yourDate.toISOString().split('T')[0]
 }
 
-exports.findActiveUsers = (req, res) => {
+exports.searchActiveUsers = (req, res) => {
   const searchTerm = req.body.search
   db.query("SELECT * FROM users WHERE (fName LIKE ? OR lName LIKE ? OR email LIKE ?) && status = 'Active'", ["%" + searchTerm + "%", "%" + searchTerm + "%", "%" + searchTerm + "%"], (err, rows) => {
     if(!err) { 
@@ -24,7 +24,7 @@ exports.findActiveUsers = (req, res) => {
   })
 }
 
-exports.findBannedUsers = (req, res) => {
+exports.searchBannedUsers = (req, res) => {
   const searchTerm = req.body.search
   db.query("SELECT * FROM users WHERE (fName LIKE ? OR lName LIKE ? OR email LIKE ?) && status = 'Banned'", ["%" + searchTerm + "%", "%" + searchTerm + "%", "%" + searchTerm + "%"], (err, rows) => {
     if(!err) { 
@@ -35,7 +35,7 @@ exports.findBannedUsers = (req, res) => {
   })
 }
 
-exports.findDeletedUsers = (req, res) => {
+exports.searchDeletedUsers = (req, res) => {
   const searchTerm = req.body.search
   db.query("SELECT * FROM users WHERE (fName LIKE ? OR lName LIKE ? OR email LIKE ?) && status = 'Deleted'", ["%" + searchTerm + "%", "%" + searchTerm + "%", "%" + searchTerm + "%"], (err, rows) => {
     if(!err) { 
@@ -46,7 +46,7 @@ exports.findDeletedUsers = (req, res) => {
   })
 }
 
-exports.findAdminUsers = (req, res) => {
+exports.searchAdminUsers = (req, res) => {
   const searchTerm = req.body.search
   db.query("SELECT * FROM users WHERE (fName LIKE ? OR lName LIKE ? OR email LIKE ?) && admin = 'Yes'", ["%" + searchTerm + "%", "%" + searchTerm + "%", "%" + searchTerm + "%"], (err, rows) => {
     if(!err) { 

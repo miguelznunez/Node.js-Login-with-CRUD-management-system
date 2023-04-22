@@ -124,84 +124,44 @@ router.get("/user-views/create-user", authController.isLoggedIn, (req, res) => {
   }
 })
 
-router.get("/user-views/delete-active-user/:id", authController.isLoggedIn, (req, res) => {
+router.get("/user-views/delete-user/:status/:id", authController.isLoggedIn, (req, res) => {
   if(req.user && req.user.admin === "Yes" && !checkBrowser(req.headers)) {
 
-    db.query("SELECT * FROM federated_credentials WHERE user_id = ?", [req.params.id], (err, row) => {
+    const {status, id} = req.params
+
+    db.query("SELECT * FROM federated_credentials WHERE user_id = ?", [id], (err, row) => {
       // IF USER EXISTS IN FEDERATED CREDENTIALS
       if(!err && row){
         // REMOVE
-        db.query("UPDATE federated_credentials SET subject = ? WHERE user_id = ?", [null, req.params.id], (err, rows) => {
+        db.query("UPDATE federated_credentials SET subject = ? WHERE user_id = ?", [null, id], (err, rows) => {
           if(!err) { 
-            db.query("UPDATE users SET email = ?, status = ? WHERE id = ?", [null, "Deleted", req.params.id], (err, rows) => {
+            db.query("UPDATE users SET email = ?, status = ? WHERE id = ?", [null, "Deleted", id], (err, rows) => {
               if(!err) { 
                 req.flash("message", `User has been deleted successfully.`)
-                return res.redirect("/user-management/user-views/active-users")
+                return res.redirect(`/user-management/user-views/${status.toLowerCase()}-users`)
               } else { 
-                return res.status(500).render("active-users", {title:"User Management - Active Users", user:req.user, message:"Internal server error."})
+                return res.status(500).render(`${status.toLowerCase()}-users`, {title:`User Management - ${status} Users", user:req.user, message:"Internal server error.`})
               }
            })
           } else { 
-            return res.status(500).render("active-users", {title:"User Management - Active Users", user:req.user, message:"Internal server error."})
+            return res.status(500).render(`${status.toLowerCase()}-users`, {title:`User Management - ${status} Users", user:req.user, message:"Internal server error.`})
           }
         })
       // IF THEY DONT: DELETE FROM USERS TABLE ONLY
       } else if(!err && !row) {
-        db.query("UPDATE users SET email = ?, status = ? WHERE id = ?", [null, "Deleted", req.params.id], (err, rows) => {
+        db.query("UPDATE users SET email = ?, status = ? WHERE id = ?", [null, "Deleted", id], (err, rows) => {
           if(!err) { 
             req.flash("message", `Account has been deleted successfully.`)
-            return res.redirect("/user-management/user-views/active-users")
+            return res.redirect(`/user-management/user-views/${status.toLowerCase()}-users`)
           } else { 
-            return res.status(500).render("active-users", {title:"User Management - Active Users", user:req.user, message:"Internal server error."})
+            return res.status(500).render(`${status.toLowerCase()}-users`, {title:`User Management - ${status} Users", user:req.user, message:"Internal server error.`})
           }
         })
       // DB ERROR
       } else {
-        return res.status(500).render("active-users", {title:"User Management - Active Users", user:req.user, message:"Internal server error."})
+        return res.status(500).render(`${status.toLowerCase()}-users`, {title:`User Management - ${status} Users", user:req.user, message:"Internal server error.`})
       }
     })
-  } else { 
-    return res.redirect("/auth-management/auth-views/login")
-  }
-})
-// DELETE GOOGLE USER PROVIDER
-router.get("/user-views/delete-banned-user/:id", authController.isLoggedIn, (req, res) => {
-  if(req.user && req.user.admin === "Yes" && !checkBrowser(req.headers)) {
-
-    db.query("SELECT * FROM federated_credentials WHERE user_id = ?", [req.params.id], (err, row) => {
-      // IF USER EXISTS IN FEDERATED CREDENTIALS
-      if(!err && row){
-        // REMOVE
-        db.query("UPDATE federated_credentials SET subject = ? WHERE user_id = ?", [null, req.params.id], (err, rows) => {
-          if(!err) { 
-            db.query("UPDATE users SET email = ?, status = ? WHERE id = ?", [null, "Deleted", req.params.id], (err, rows) => {
-              if(!err) { 
-                req.flash("message", `User has been deleted successfully.`)
-                return res.redirect("/user-management/user-views/banned-users")
-              } else { 
-                return res.status(500).render("banned-users", {title:"User Management - Banned Users", user:req.user, message:"Internal server error."})
-              }
-           })
-          } else { 
-            return res.status(500).render("banned-users", {title:"User Management - Banned Users", user:req.user, message:"Internal server error."})
-          }
-        })
-      // IF THEY DONT: DELETE FROM USERS TABLE ONLY
-      } else if(!err && !row) {
-        db.query("UPDATE users SET email = ?, status = ? WHERE id = ?", [null, "Deleted", req.params.id], (err, rows) => {
-          if(!err) { 
-            req.flash("message", `User has been deleted successfully.`)
-            return res.redirect("/user-management/user-views/banned-users")
-          } else { 
-            return res.status(500).render("banned-users", {title:"User Management - Banned Users", user:req.user, message:"Internal server error."})
-          }
-        })
-      // DB ERROR
-      } else {
-        return res.status(500).render("banned-users", {title:"User Management - Banned Users", user:req.user, message:"Internal server error."})
-      }
-    })
-
   } else { 
     return res.redirect("/auth-management/auth-views/login")
   }
@@ -209,13 +169,13 @@ router.get("/user-views/delete-banned-user/:id", authController.isLoggedIn, (req
 
 // USER MANAGEMENT POST ROUTES  ============================================================
 
-router.post("/user-views/find-active-users", authController.isLoggedIn, userManagementController.findActiveUsers)
+router.post("/user-views/search-active-users", authController.isLoggedIn, userManagementController.searchActiveUsers)
 
-router.post("/user-views/find-banned-users", authController.isLoggedIn, userManagementController.findBannedUsers)
+router.post("/user-views/search-banned-users", authController.isLoggedIn, userManagementController.searchBannedUsers)
 
-router.post("/user-views/find-deleted-users", authController.isLoggedIn, userManagementController.findDeletedUsers)
+router.post("/user-views/search-deleted-users", authController.isLoggedIn, userManagementController.searchDeletedUsers)
 
-router.post("/user-views/find-admin-users", authController.isLoggedIn, userManagementController.findAdminUsers)
+router.post("/user-views/search-admin-users", authController.isLoggedIn, userManagementController.searchAdminUsers)
 
 router.post("/user-views/create-user",
 [

@@ -24,7 +24,10 @@
 
           <br>
 
-          <h3>User management</h3>
+          <div class="flex">
+            <h3>User management</h3>
+            <a href="/user-management/user-views/admin-users">View all admin users</a>
+          </div>
 
           <br>
 
@@ -32,7 +35,7 @@
 
           <br>
 
-          <form action="/user-management/user-views/find-admin-users" method="POST">
+          <form action="/user-management/user-views/search-admin-users" method="POST">
             <div class="user-management">
               <input type="text" name="search" placeholder="Search admin users..."><button>Search</button>
             </div>
@@ -67,9 +70,6 @@
                   <% if(user.id !=rows[i].id) { %>
                     <a href="/user-management/user-views/edit-user/<%= rows[i].id %>"><i class="fa-solid fa-pencil"></i>
                       Edit</a>
-                    <a href="/user-management/user-views/delete-active-user/<%= rows[i].id %>"><i
-                        class="fa-solid fa-user-minus"></i>
-                      Delete</a>
                   <% } %>
                 </td>
               </tr>

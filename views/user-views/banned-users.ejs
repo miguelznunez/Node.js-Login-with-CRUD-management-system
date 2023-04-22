@@ -24,7 +24,10 @@
           
         <br>
 
-        <h3>User management</h3>
+        <div class="flex">
+          <h3>User management</h3>
+          <a href="/user-management/user-views/banned-users">View all banned users</a>
+        </div>
         
         <br>
       
@@ -33,7 +36,7 @@
       
         <br>
       
-        <form action="/user-management/user-views/find-banned-users" method="POST">
+        <form action="/user-management/user-views/search-banned-users" method="POST">
           <div class="user-management">
             <input type="text" name="search" placeholder="Search banned users..."><button>Search</button>
           </div>
@@ -68,7 +71,6 @@
                 <a href="/user-management/user-views/view-user/<%= rows[i].id %>"><i class="fa-solid fa-eye"></i> View</a>
                 <% if(user.id !=rows[i].id) { %>
                   <a href="/user-management/user-views/edit-user/<%= rows[i].id %>"><i class="fa-solid fa-pencil"></i> Edit</a>
-                  <a href="/user-management/user-views/delete-banned-user/<%= rows[i].id %>"><i class="fa-solid fa-user-minus"></i> Delete</a>
                 <% } %>
               </td>
             </tr>

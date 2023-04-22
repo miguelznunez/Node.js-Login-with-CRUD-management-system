@@ -14,9 +14,18 @@
             <span class="sbar"></span>
           </div>
 
+          <% if(typeof flash !="undefined" && flash !="" ) { %>
+            <div class="server-message success">
+              <%= flash %>
+            </div>
+          <% } %>
+
           <div class="server-message"></div>
 
-          <h3>eCommerce management</h3>
+          <div class="flex">
+            <h3>eCommerce management</h3>
+            <a href="/ecommerce-management/ecommerce-views/women/view-women-products">View all women's products</a>
+          </div>
 
           <br>
           
@@ -75,6 +84,8 @@
                       $<%= rows[i].pPrice %>
                     </p>
                   </div>
+                  <a href="/ecommerce-management/ecommerce-views/edit-product/<%= rows[i].pId %>"><i class="fa-solid fa-pencil"></i>
+                    Edit</a>
                 </div>
               </div>
             <% } %>
