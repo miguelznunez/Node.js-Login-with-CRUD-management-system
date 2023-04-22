@@ -19,17 +19,43 @@
           <h3>eCommerce management</h3>
 
           <br>
-
-          <h4>Women's Shirts (<%= rows.length %>)</h4>
+          
+          <div>
+            <h4>Search by brand and category</h4>
+            <br>
+            <form action="/ecommerce-management/search-women-products-by-brand-and-category" method="POST">
+              <div class="user-management filter">
+                <input type="text" name="pBrand" placeholder="Brand..."><select name="pCategory" required>
+                  <option selected value="">Category</option>
+                  <option value="shirts">Shirts</option>
+                  <option value="pants">Pants</option>
+                  <option value="sweaters">Jackets</option>
+                  <option value="jackets">Sweaters</option>
+                  <option value="shoes">Shoes</option>
+                  <option value="hats">Hats</option>
+                  <option value="accessories">Accessories</option>
+                  <option value="cosmetics">Cosmetics</option>
+                  <option value="fragrances">Fragrances</option>
+                  <option value="electronics">Electronics</option>
+                </select><button>Search</button>
+              </div>
+            </form>
+            <br>
+            <h4>or search by product number</h4>
+            <br>
+            <form action="/ecommerce-management/search-women-products-by-product-number" method="POST">
+              <div class="user-management">
+                <input type="text" name="pNumber" placeholder="Product number..."><button>Search</button>
+              </div>
+            </form>
+          </div>         
 
           <br>
           
-          <form action="/ecommerce-management/find-women-shirts" method="POST">
-            <div class="user-management">
-              <input type="text" name="search" placeholder="Search women's shirts..."><button>Search</button>
-            </div>
-          </form>
-          
+          <h4>Women's Products (<%= rows.length %>)</h4>
+
+          <br>
+
           <br>
 
           <div class="cards">

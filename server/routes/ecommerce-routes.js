@@ -32,52 +32,60 @@ router.get("/ecommerce-views/create-product", authController.isLoggedIn, (req, r
   }
 })
 
+router.get("/ecommerce-views/edit-product/:pId", authController.isLoggedIn, (req, res) => {
+  if(req.user && req.user.admin === "Yes" && !checkBrowser(req.headers)){
+    db.query("SELECT * FROM products WHERE pId = ?", [req.params.pId], (err, rows) => {
+      if(!err){
+        return res.status(200).render("edit-product", {title:"eCommerce Management - Edit product" , user:req.user, rows:rows})
+      } else {
+        return res.status(200).render("edit-product", {title:"eCommerce Management - Edit product", user:req.user});
+      }
+    })
+  } else {
+    return res.redirect("/auth-management/auth-views/login")
+  }
+})
+
 router.get("/:image_key", (req, res) => {
   const readStream = getImageStream(req.params.image_key)
   readStream.pipe(res)
 })
 
-// DNA
-
-router.get("/ecommerce-views/dna/view-electronics", authController.isLoggedIn, (req, res) => {
+router.get("/ecommerce-views/men/view-men-products", authController.isLoggedIn, (req, res) => {
   if(req.user && req.user.admin === "Yes" && !checkBrowser(req.headers)){
-    db.query("SELECT * FROM products WHERE pGender = ? AND pCategory = ?", ["DNA","electronics"], (err, rows) => {
+    db.query("SELECT * FROM products WHERE pGender = ?", ["men"], (err, rows) => {
+      if(!err) { 
+        return res.status(200).render("view-men-products", {title:"eCommerce Management - View men products" , user:req.user, rows:rows})
+      } else {
+        return res.status(500).render("view-men-products", {title:"eCommerce Management - View men products", user:req.user, message:"Internal server error."})
+      }
+    })
+  } else {
+    return res.redirect("/auth-management/auth-views/login")
+  }
+})
+
+router.get("/ecommerce-views/women/view-women-products", authController.isLoggedIn, (req, res) => {
+  if(req.user && req.user.admin === "Yes" && !checkBrowser(req.headers)){
+    db.query("SELECT * FROM products WHERE pGender = ?", ["women"], (err, rows) => {
+      if(!err) { 
+        return res.status(200).render("view-women-products", {title:"eCommerce Management - View women products" , user:req.user, rows:rows})
+      } else {
+        return res.status(500).render("view-women-products", {title:"eCommerce Management - View women products", user:req.user, message:"Internal server error."})
+      }
+    })
+  } else {
+    return res.redirect("/auth-management/auth-views/login")
+  }
+})
+
+router.get("/ecommerce-views/dna/view-dna-products", authController.isLoggedIn, (req, res) => {
+  if(req.user && req.user.admin === "Yes" && !checkBrowser(req.headers)){
+    db.query("SELECT * FROM products WHERE pGender = ?", ["DNA"], (err, rows) => {
       if(!err) { 
         return res.status(200).render("view-electronics", {title:"eCommerce Management - View products" , user:req.user, rows:rows})
       } else {
         return res.status(500).render("view-electronics", {title:"eCommerce Management - View products", user:req.user, message:"Internal server error."})
-      }
-    })
-  } else {
-    return res.redirect("/auth-management/auth-views/login")
-  }
-})
-
-// MEN
-
-router.get("/ecommerce-views/men/view-men-shirts", authController.isLoggedIn, (req, res) => {
-  if(req.user && req.user.admin === "Yes" && !checkBrowser(req.headers)){
-    db.query("SELECT * FROM products WHERE pGender = ? AND pCategory = ?", ["men","shirts"], (err, rows) => {
-      if(!err) { 
-        return res.status(200).render("view-men-shirts", {title:"eCommerce Management - View products" , user:req.user, rows:rows})
-      } else {
-        return res.status(500).render("view-men-shirts", {title:"eCommerce Management - View products", user:req.user, message:"Internal server error."})
-      }
-    })
-  } else {
-    return res.redirect("/auth-management/auth-views/login")
-  }
-})
-
-// WOMEN
-
-router.get("/ecommerce-views/women/view-women-shirts", authController.isLoggedIn, (req, res) => {
-  if(req.user && req.user.admin === "Yes" && !checkBrowser(req.headers)){
-    db.query("SELECT * FROM products WHERE pGender = ? AND pCategory = ?", ["women","shirts"], (err, rows) => {
-      if(!err) { 
-        return res.status(200).render("view-women-shirts", {title:"eCommerce Management - View products" , user:req.user, rows:rows})
-      } else {
-        return res.status(500).render("view-women-shirts", {title:"eCommerce Management - View products", user:req.user, message:"Internal server error."})
       }
     })
   } else {
@@ -92,8 +100,16 @@ router.get("/ecommerce-views/women/view-women-shirts", authController.isLoggedIn
 
 router.post("/create-product", ecommerceManagementController.createProduct)
 
-router.post("/find-men-shirts", ecommerceManagementController.findMenShirts)
+router.put("/edit-product-info", ecommerceManagementController.editProductInfo)
 
-router.post("/find-women-shirts", ecommerceManagementController.findWomenShirts)
+router.put("/edit-product-image", ecommerceManagementController.editProductImage)
+
+router.post("/search-men-products-by-brand-and-category", ecommerceManagementController.findMenProductsByBrandCategory)
+
+router.post("/search-men-products-by-product-number", ecommerceManagementController.findMenProductsByProductNumber)
+
+router.post("/search-women-products-by-brand-and-category", ecommerceManagementController.findWomenProductsByBrandCategory)
+
+router.post("/search-women-products-by-product-number", ecommerceManagementController.findWomenProductsByProductNumber)
 
 module.exports = router;

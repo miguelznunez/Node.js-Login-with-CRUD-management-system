@@ -25,12 +25,12 @@
       <form id="create-product-form">
 
         <div>
-          <div class="queued-image"></div>
-          <br>
           <div class="input-image">
             <p><span class="browse"><i class="fa-solid fa-image"></i> Select image</span></p>
             <input type="file" class="file" accept="image/jpeg, image/png, image/jpg" required>
           </div>
+          <br>
+          <div class="queued-image"></div>
           <br>
           <select id="pCategory" required>
             <option selected value="">Category</option>
@@ -58,10 +58,16 @@
           <input type="text" id="pBrand" maxlength="100" placeholder="Brand" value="" required>
           <br>
           <br>
+          <input type="text" id="pNumber" maxlength="100" placeholder="Product number" value="" required>
+          <br>
+          <br>
           <input type="text" id="pName" maxlength="100" placeholder="Name" value="" required>
           <br>
           <br>
           <input type="number" id="pPrice" maxlength="100" placeholder="Price" step="any" value="" min="0" required>
+          <br>
+          <br>
+          <input type="number" id="pDiscount" maxlength="100" placeholder="Discount (optional)" step="any" value="" min="0">
           <br>
           <br>
           <textarea id="pDescription" placeholder="Description" required></textarea>
@@ -188,6 +194,7 @@
       pCategory = document.querySelector("#pCategory").value,
       pGender = document.querySelector("#pGender").value,
       pBrand = document.querySelector("#pBrand").value,
+      pNumber = document.querySelector("#pNumber").value,
       pName = document.querySelector("#pName").value,
       pPrice = document.querySelector("#pPrice").value,
       pDescription = document.querySelector("#pDescription").value,
@@ -203,6 +210,7 @@
       formData.append("pCategory", pCategory)
       formData.append("pGender", pGender)
       formData.append("pBrand", pBrand)
+      formData.append("pNumber", pNumber)
       formData.append("pName", pName)
       formData.append("pPrice", pPrice)
       formData.append("pDescription", pDescription)

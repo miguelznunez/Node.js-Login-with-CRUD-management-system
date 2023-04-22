@@ -389,6 +389,10 @@ th{
   display: flex;
 }
 
+.filter{
+  gap: 10px;
+}
+
 .fa-arrow-left{
   font-size: 1.2rem;
 }
@@ -403,6 +407,10 @@ th{
   border-bottom-right-radius: 0px;
 }
 
+.filter input{
+  border-radius: 5px;
+}
+
 .user-management button,
 .create-user button,
 .view-users button {
@@ -410,6 +418,10 @@ th{
   font-size: inherit;
   border-top-left-radius: 0px;
   border-bottom-left-radius: 0px;
+}
+
+.filter button {
+  border-radius: 5px;
 }
 
 .text-end{
@@ -434,7 +446,8 @@ th{
   width: 500px;
 }
 
-#create-product-form{
+#create-product-form,
+#edit-product-form{
   width: 100%;
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -447,13 +460,18 @@ th{
 #create-product-form input[type="file"],
 #create-product-form input[type="number"],
 #create-product-form textarea,
+#edit-product-form input[type="text"],
+#edit-product-form input[type="file"],
+#edit-product-form input[type="number"],
+#edit-product-form textarea,
 #create-user-form input[type="password"],
 #update-user-form input[type="text"],
 #update-user-form input[type="email"] {
   width: 100%;
 }
 
-#create-product-form textarea{
+#create-product-form textarea,
+#edit-product-form textarea{
   border: 1px solid lightgray;
   border-radius: 5px;
   resize: none;
@@ -462,7 +480,8 @@ th{
 }
 
 #create-user-form .auth-btn,
-#create-product-form .auth-btn{
+#create-product-form .auth-btn,
+#edit-product-form .auth-btn{
   width: 100%;
 }
 
@@ -509,6 +528,7 @@ select{
   border: none;
   border-radius: 5px;
   outline: none;
+  font-family: inherit;
   border: 1px solid #DDDDDD;
 }
 
@@ -560,7 +580,7 @@ select{
 }
 
 .queued-image .image {
-  height: 150px;
+  height: auto;
   border-radius: 5px;
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.15);
   overflow: hidden;
@@ -596,30 +616,28 @@ select{
 /* VIEW PRODUCTS */
 
 .cards{
-  min-height: 200px;
-  display: flex;
-  justify-content: flex-start;
-  gap: 10px;
-  border-radius: 5px;
-  border: 1px dotted lightgray;
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+  grid-gap: 10px;
+  align-items: start;
 }
 
 .card {
-  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
-  max-width: 150px;
-  height: 200px;
+  width: 100%;
+  height: auto;
   text-align: center;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
 }
 
-.card-img{
-  width: 150px;
-  height: 150px;
-  overflow: hidden;
-  border-bottom: 1px solid lightgray;
-}
-
+/* .card-img{
+  width: 100%;
+  height: auto;
+} */
+ 
 .card-img img{
   width: 100%;
+  height: auto;
 }
 
 .card-details {

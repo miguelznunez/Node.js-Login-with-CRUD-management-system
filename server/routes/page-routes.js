@@ -22,7 +22,15 @@ function checkBrowser(headers){
 
 router.get("/", authController.isLoggedIn,(req, res) => {
   if(!checkBrowser(req.headers)) {
-    return res.status(200).render("index", {title: "Unsupported", user:req.user})
+    return res.status(200).render("index", {title: "Home", user:req.user})
+  } else {
+    return res.render("unsupported", {title:"Unsupported", user:req.user})
+  }
+})
+
+router.get("/shop-products", authController.isLoggedIn,(req, res) => {
+  if(!checkBrowser(req.headers)) {
+    return res.status(200).render("shop-products", {title: "Shop products", user:req.user})
   } else {
     return res.render("unsupported", {title:"Unsupported", user:req.user})
   }

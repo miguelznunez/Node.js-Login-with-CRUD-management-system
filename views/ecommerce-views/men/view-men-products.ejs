@@ -20,15 +20,41 @@
 
         <br>
 
-        <h4>Men's Shirts (<%= rows.length %>)</h4>
+        <div>
+          <h4>Search by brand and category</h4>
+          <br>
+          <form action="/ecommerce-management/search-men-products-by-brand-and-category" method="POST">
+            <div class="user-management filter">
+              <input type="text" name="pBrand" placeholder="Brand..."><select name="pCategory" required>
+                <option selected value="">Category</option>
+                <option value="shirts">Shirts</option>
+                <option value="pants">Pants</option>
+                <option value="sweaters">Jackets</option>
+                <option value="jackets">Sweaters</option>
+                <option value="shoes">Shoes</option>
+                <option value="hats">Hats</option>
+                <option value="accessories">Accessories</option>
+                <option value="cosmetics">Cosmetics</option>
+                <option value="fragrances">Fragrances</option>
+                <option value="electronics">Electronics</option>
+              </select><button>Search</button>
+            </div>
+          </form>
+          <br>
+          <h4>or search by product number</h4>
+          <br>
+          <form action="/ecommerce-management/search-men-products-by-product-number" method="POST">
+              <div class="user-management">
+                <input type="text" name="pNumber" placeholder="Product number..."><button>Search</button>
+              </div>
+          </form>
+        </div>
 
         <br>
+
+        <h4>Men's Products (<%= rows.length %>)</h4>
         
-        <form action="/ecommerce-management/find-men-shirts" method="POST">
-          <div class="user-management">
-            <input type="text" name="search" placeholder="Search men's shirts..."><button>Search</button>
-          </div>
-        </form>
+        <br>
 
         <br>
         
@@ -49,6 +75,7 @@
                     $<%= rows[i].pPrice %>
                   </p>
                 </div>
+                <a href="/ecommerce-management/ecommerce-views/edit-product/<%= rows[i].pId %>"><i class="fa-solid fa-pencil"></i> Edit</a>
               </div>
             </div>
           <% } %>
