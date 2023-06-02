@@ -4,10 +4,13 @@
     <div class="modal">
       <i class="fa-solid fa-xmark" id="close-modal"></i>
       <form id="delete-account-form">
+        <br>
         <div class="server-message"></div>
-        <h4>Please enter your password</h4>
-        <input type="password" placeholder="Password..." required>
+        <h4>Are your sure?</h4>
+        <input type="hidden" id="id" value="<%= user.id %>">
+        <input type="hidden" id="email" value="<%= user.email %>">
         <button>Delete</button>
+        <br>
       </form>
     </div>
   </div>
@@ -32,5 +35,6 @@
 
   <script src="/js/script.js"></script>
   <script src="/js/modal.js"></script>
+  <script src="/js/delete-account-form.js"></script>
 
 <%- include("partial-views/footer.ejs") %>

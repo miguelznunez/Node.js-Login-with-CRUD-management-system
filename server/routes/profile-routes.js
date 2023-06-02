@@ -1,5 +1,7 @@
 const express = require("express"),
 authController = require("../controllers/auth-controller"),
+profileController = require("../controllers/profile-controller"),
+{check} = require("express-validator"),
 router = express.Router();
 
 // FUNCTION TO CHECK FOR INTERNET EXPLORER ============================================
@@ -20,10 +22,13 @@ function checkBrowser(headers){
 
 router.get("/profile-views/profile", authController.isLoggedIn, (req, res) => {
   if(req.user && !checkBrowser(req.headers)) {
-    return res.status(200).render("profile", {title:"Profile", user:req.user} )
+    const flash = req.flash("message") 
+    return res.status(200).render("profile", {title:"Profile", user:req.user, flash} )
   } else { 
     return res.redirect("/auth-management/auth-views/login")
   }
 })
+
+router.post("/profile-views/delete-account", profileController.deleteAccount)
 
 module.exports = router;

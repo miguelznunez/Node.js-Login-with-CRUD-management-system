@@ -1,7 +1,7 @@
-// show/hide password
-const showPassword = document.querySelector("#show-password");
-const passwordField = document.querySelector("#password");
-const passwordMatchField = document.querySelector("#confirm-password");
+const showPassword = document.querySelector("#show-password"),
+passwordField = document.querySelector("#password"),
+passwordMatchField = document.querySelector("#confirm-password"),
+btn = document.querySelector(".button");
 
 showPassword.addEventListener("click", function (e) {
   if (showPassword.checked) {
@@ -25,7 +25,8 @@ passwordUpdateForm.addEventListener("submit", (e) => {
   tExpires = document.querySelector("#tExpires").value,
   id = document.querySelector("#id").value;
 
-  console.log(token)
+  btn.classList.add("button--loading");
+  btn.disabled = true
 
   fetch("/auth-management/auth-views/password-update", {
     method: "PUT",
@@ -41,13 +42,17 @@ passwordUpdateForm.addEventListener("submit", (e) => {
   .then( response => {
     if (response.status !== 200) throw Error(response.statusMessage)
     passwordUpdateForm.innerHTML = ""
-    serverMessage.innerHTML = response.statusText
+    serverMessage.innerHTML = response.statusMessage
     serverMessage.style.cssText = "background-color: #d4edda; color:#1b5e20; padding: 16px;"
+    btn.classList.remove("button--loading")
+    btn.disabled = false
   })
 
   .catch(error => {
     serverMessage.innerHTML = error.toString().split(": ")[1]
     serverMessage.style.cssText = "background-color: #f8d7da; color:#b71c1c; padding: 16px;"
+    btn.classList.remove("button--loading")
+    btn.disabled = false
   })
 
 })

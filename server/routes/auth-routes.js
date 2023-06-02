@@ -1,9 +1,8 @@
 const express = require("express"),
 authController = require("../controllers/auth-controller"),
 db = require("../config/db-setup.js"),
-passport = require("passport");
-
-const {check} = require("express-validator"),
+passport = require("passport"),
+{check} = require("express-validator"),
 router = express.Router();
 
 // FUNCTION TO CHECK FOR INTERNET EXPLORER ============================================
@@ -34,7 +33,7 @@ router.get("/auth-views/signup", authController.isLoggedIn, (req, res) => {
 
 router.get("/auth-views/login", authController.isLoggedIn, (req, res) => {
   if(!req.user && !checkBrowser(req.headers)) {
-    const flash = req.flash("error")
+    const flash = req.flash("message")
     return res.status(200).render("login", {title:"Login", flash})
   } else {
     return res.redirect("/")
@@ -59,13 +58,12 @@ router.get("/auth-views/password-reset", authController.isLoggedIn, (req, res) =
   }
 })
 
-router.get("/auth-views/account-verification/:id/:token", authController.isLoggedIn, async (req, res) => {
+router.get("/auth-views/account-verification/:id/:token", authController.isLoggedIn, (req, res) => {
 
   if(!req.user && !checkBrowser(req.headers)){
-    db.query("SELECT * FROM users WHERE id = ? && token = ?", [req.params.id, req.params.token], async (err, results) => {
+    db.query("SELECT * FROM users WHERE id = ? && token = ?", [req.params.id, req.params.token], (err, results) => {
       if((results != "")) {
-        db.query("UPDATE users SET token = ?, status = ? WHERE id = ?", [null, "Active", req.params.id],
-        async (err, results) => {
+        db.query("UPDATE users SET token = ?, status = ? WHERE id = ?", [null, "Active", req.params.id], (err, results) => {
           if(!err) {
             return res.status(200).render("account-verification", {title:"Account Verification", success:true, message:"Your account has been verified, please use your credentials to login."})
           } else {
@@ -81,10 +79,10 @@ router.get("/auth-views/account-verification/:id/:token", authController.isLogge
   } 
 })
 
-router.get("/auth-views/password-update/:id/:token", authController.isLoggedIn, async (req, res) => {
+router.get("/auth-views/password-update/:id/:token", authController.isLoggedIn, (req, res) => {
 
   if(!req.user && !checkBrowser(req.headers)){
-    db.query("SELECT * FROM users WHERE id = ? && token = ?", [req.params.id, req.params.token], async (err, results) => {
+    db.query("SELECT * FROM users WHERE id = ? && token = ?", [req.params.id, req.params.token], (err, results) => {
       // DATABASE ERROR
       if(err){
          return res.status(500).render("password-update-error", {title:"Password Update Error", success:false, message:"Internal server error."})
@@ -154,7 +152,5 @@ router.put("/auth-views/password-update",
   }
  })
 ], authController.passwordUpdate);
-
-
 
 module.exports = router;

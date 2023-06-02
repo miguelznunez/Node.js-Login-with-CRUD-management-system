@@ -29,6 +29,20 @@ const activateAccountEmail = (email, id, token, callback) => {
 
 }
 
+const accountDeletedEmail = (email, id, token, callback) => {
+
+  transporter.sendMail( {
+    from: "mail.modernwebdesigners@gmail.com",
+    to: email,
+    subject: "Modern Web Designers - Account Deleted",
+    html: `<p>Your account has been deleted.<br><br>If you decide to comeback, <a href="http://localhost:5000/auth-management/auth-views/signup">you can sign up here.</a><br><br>The MWD team</p>`
+    }, (err, info) => {
+      if (err) callback(err, null)
+      else callback(null, info)
+    })
+
+}
+
 const resetPasswordEmail = (email, id, token, callback) => {
 
   transporter.sendMail( {
@@ -57,4 +71,4 @@ const newsletterWelcomeEmail = (email, callback) => {
 
 }
 
-module.exports = {resetPasswordEmail, activateAccountEmail, newsletterWelcomeEmail};
+module.exports = {resetPasswordEmail, accountDeletedEmail, activateAccountEmail, newsletterWelcomeEmail};

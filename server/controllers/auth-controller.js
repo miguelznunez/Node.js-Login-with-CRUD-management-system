@@ -4,9 +4,8 @@ jwt = require("jsonwebtoken"),
 bcrypt = require("bcrypt"),
 saltRounds = 10,
 mail = require("../config/mail-setup.js"),
-{promisify} = require("util");
-
-const {validationResult} = require("express-validator");
+{promisify} = require("util"),
+{validationResult} = require("express-validator");
 
 var request = require("request")
 var randomstring = require("randomstring");
@@ -37,7 +36,7 @@ exports.signup = (req, res) => {
   const { fName, lName, email, password } = req.body;  
   const member_since = get_date();
 
-  db.query("SELECT email FROM users WHERE email = ?", [email], async (err, results) => {
+  db.query("SELECT email FROM users WHERE email = ?", [email], (err, results) => {
     // CHECK IF EMAIL ALREADY EXISTS IN DATABASE
     if (!err && results != "") {
       return res.status(401).json({statusMessage:"An account with that email address already exists.", status:401})
@@ -45,8 +44,7 @@ exports.signup = (req, res) => {
     } else if(!err && results[0] === undefined){
         let token = randomstring.generate(40)
         bcrypt.hash(password, saltRounds, (err, hash) => {
-          db.query("INSERT INTO users (fName, lName, email, password, token, member_since) VALUES (?,?,?,?,?,?)", [fName, lName, email, hash, token, member_since],
-            async (err, results) => {
+          db.query("INSERT INTO users (fName, lName, email, password, token, member_since) VALUES (?,?,?,?,?,?)", [fName, lName, email, hash, token, member_since], (err, results) => {
               if (!err) {
                 mail.activateAccountEmail(email, results.insertId, token, (err, info) => {
                   if(!err) {
@@ -73,7 +71,7 @@ exports.signup = (req, res) => {
 
 // LOGIN -------------------------------------------------------
 
-exports.login = async (req, res) => {
+exports.login = (req, res) => {
 
   const errors = validationResult(req),
   allErrors = JSON.stringify(errors),
@@ -95,7 +93,6 @@ exports.login = async (req, res) => {
       return res.status(401).json({statusMessage:"A Google account exists with this email address, please use Google to login.", status:401})
     // IF EMAIL IS NOT IN THE DATABASE OR PASSWORDS DO NOT MATCH
     } else if(!err && (results[0].email == null || !(await bcrypt.compare(password, results[0].password.toString())))){
-      console.log("hey")
       return res.status(401).json({statusMessage:"The email or password is incorrect.", status:401})
     // ELSE IF ACCOUNT IS INACTIVE
     } else if (!err && results[0].status === "Inactive") {
@@ -247,7 +244,7 @@ exports.passwordUpdate = (req, res) => {
       var data = { token: null, token_expires: null, password: hash};
       db.query("UPDATE users SET ? WHERE id = ?", [data, id], (err, result) => {
         if(!err) { 
-          return res.status(200).json({statusMessage:"Your password has been updated successfully, please login with your new password.", status:200})
+          return res.status(200).json({statusMessage:`Your password has been updated successfully, <a href="http://localhost:5000/auth-management/auth-views/login">follow this link to login with your new password.</a>`, status:200})
         } else { 
           return res.status(500).json({statusMessage:"Internal Server Error", status:500})
         }

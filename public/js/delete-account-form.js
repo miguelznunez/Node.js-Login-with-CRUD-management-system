@@ -1,26 +1,24 @@
 const delAccountForm = document.querySelector("#delete-account-form"),
 serverMessage = document.querySelector(".server-message");
 
-nForm.addEventListener("submit", (e) => {
+delAccountForm.addEventListener("submit", (e) => {
   e.preventDefault()
-  const email = document.querySelector("#email").value
-  fetch("/newsletter-form", {
+  const id = document.querySelector("#id").value,
+  email = document.querySelector("#email").value;
+  fetch("/profile-management/profile-views/delete-account", {
     method: "POST",
     headers: {
       "Accept": "application/json, text/plain, */*",
       "Content-type": "application/json"
     },
-    body: JSON.stringify({ email:email })
+    body: JSON.stringify({ id:id, email:email })
   })
 
   .then( response => response.json() )
 
   .then( response => {
     if (response.status !== 200) throw Error(response.statusMessage)
-    formInput.innerHTML = ""
-    serverMessage.innerHTML = response.statusMessage
-    serverMessage.style.cssText = "background-color: #d4edda; color:#1b5e20; padding: 12px;border-radius:5px;width:100%;"
-    setTimeout(removeServerMessage, 15000)
+    window.open("/auth-management/auth-views/logout", "_self")
   })
 
   .catch(error => {

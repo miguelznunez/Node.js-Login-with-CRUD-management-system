@@ -199,7 +199,7 @@ th{
 
 .modal {
   max-width: 500px;
-  height: 200px;
+  height: 250px;
   top: 0;
   bottom: 0;
   right: 0;
@@ -221,8 +221,8 @@ th{
 
 #close-modal{
   position: absolute;
-  top: 5%;
-  right: 5%;
+  top: 2%;
+  right: 3%;
   font-size: 2rem;
   cursor: pointer;
   z-index: 1;
@@ -233,7 +233,6 @@ th{
 .server-message {
   width: 100%;
   border-radius: 5px;
-  /* margin: 25px 0; */
 }
 
 .error{
@@ -248,7 +247,64 @@ th{
   padding: 16px;
 }
 
+.server-message a{
+  text-decoration: underline;
+  font-size: 1rem;
+  color: #1b5e20;
+}
+
 /* END SERVER MESSAGES */
+
+/* BUTTON SPINNER */
+
+.button {
+  position: relative;
+  border: none;
+  outline: none;
+  cursor: pointer;
+}
+
+.button:active {
+  background: black;
+}
+
+.button__text {
+  color: #ffffff;
+  transition: all 0.2s;
+}
+
+.button--loading .button__text {
+  visibility: hidden;
+  opacity: 0;
+}
+
+.button--loading::after {
+  content: "";
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: auto;
+  border: 4px solid transparent;
+  border-top-color: #ffffff;
+  border-radius: 50%;
+  animation: button-loading-spinner 1s ease infinite;
+}
+
+@keyframes button-loading-spinner {
+  from {
+    transform: rotate(0turn);
+  }
+
+  to {
+    transform: rotate(1turn);
+  }
+}
+
+
 
 /* END GLOBAL */
 
