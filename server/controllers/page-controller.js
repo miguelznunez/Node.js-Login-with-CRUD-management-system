@@ -33,18 +33,18 @@ exports.newsletterForm = (req, res) => {
                 if(!err){
                     mail.newsletterWelcomeEmail(email, (err, info) => {
                         if(!err) {
-                            return res.status(200).json({statusText:"Thanks for subscribing!", status:200})
+                            return res.status(200).json({statusMessage:"Thanks for subscribing!", status:200})
                         } else { 
-                          return res.status(500).json({statusText:"Internal Server Error", status:500})
+                          return res.status(500).json({statusMessage:"Internal Server Error", status:500})
                         }
                       });
                 } else {
-                    return res.status(500).json({statusText:"Internal Server Error", status:500})
+                    return res.status(500).json({statusMessage:"Internal Server Error", status:500})
                 }
             })
         // IF IT DOES: LET THE USER KNOW
         } else if(!err && results != "") {
-            return res.status(400).json({statusText:`${email} is already subscribed.`, status:400})
+            return res.status(400).json({statusMessage:`${email} is already subscribed.`, status:400})
         // DB ERROR
         } else {
             return res.status(500).json({statusText:"Internal Server Error", status:500})
