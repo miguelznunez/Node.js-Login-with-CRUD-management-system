@@ -31,13 +31,15 @@ exports.newsletterForm = (req, res) => {
         if(!err && results[0] === undefined){
             db.query("INSERT INTO newsletter (email, date_subscribed) VALUES (?,?)", [email, date_subscribed], (err, results) => {
                 if(!err){
-                    mail.newsletterWelcomeEmail(email, (err, info) => {
-                        if(!err) {
-                            return res.status(200).json({statusMessage:"Thanks for subscribing!", status:200})
-                        } else { 
-                          return res.status(500).json({statusMessage:"Internal Server Error", status:500})
-                        }
-                      });
+                    // mail.newsletterWelcomeEmail(email, (err, info) => {
+                    //     if(!err) {
+                    //         return res.status(200).json({statusMessage:"Thanks for subscribing!", status:200})
+                    //     } else { 
+                    //       return res.status(500).json({statusMessage:"Internal Server Error", status:500})
+                    //     }
+                    //   });
+                    // ONLY USING THIS SO I WONT SEND AN EMAIL EVERYTIME
+                    return res.status(200).json({statusMessage:"Thanks for subscribing!", status:200})
                 } else {
                     return res.status(500).json({statusMessage:"Internal Server Error", status:500})
                 }

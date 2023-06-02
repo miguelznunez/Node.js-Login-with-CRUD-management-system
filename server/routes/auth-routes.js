@@ -77,7 +77,7 @@ router.get("/auth-views/account-verification/:id/:token", authController.isLogge
       } 
     });
   } else{
-    return res.status(401).render("account-verification", {title:"Account Verification", success:false, user:req.user, message:"This link is no longer valid."})
+    return res.status(401).render("account-verification", {title:"Account Verification", success:false, user:req.user, message:"Please log out of your current account to verify."})
   } 
 })
 

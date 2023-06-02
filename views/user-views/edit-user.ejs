@@ -11,7 +11,7 @@
           <i class="fa-solid fa-xmark" id="close-modal"></i>
           <form action="/user-management/user-views/delete-user/<%= rows[0].status %>/<%= rows[0].id %>"
             id="delete-user-form" method="GET">
-            <h4>Do you want to delete user #<%= rows[0].id %> ?</h4>
+            <h4>Delete this user?</h4>
             <button>Yes</button>
           </form>
         </div>
@@ -32,11 +32,6 @@
           <button id="show-modal">Delete user</button>
         </div>
         
-        <br>
-
-        <h4>Edit user # <%= rows[0].id %>
-        </h4>
-
         <br>
         
         <form id="update-user-form">

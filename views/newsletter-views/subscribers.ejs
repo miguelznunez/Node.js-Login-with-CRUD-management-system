@@ -28,13 +28,19 @@
 
         <br>
 
-        <% if(typeof flash !="undefined" && flash !="" && flash != "Please select at least one email.") { %>
+        <% if(typeof flash !="undefined" && flash !="" && flash != "Please select at least one email to unsubscribe." && flash != "Internal server error") { %>
           <div class="server-message success">
             <%= flash %>
           </div>
         <% } %>
 
-        <% if(typeof flash !="undefined" && flash !="" && flash == "Please select at least one email.") { %>
+        <% if(typeof flash !="undefined" && flash !="" && flash == "Please select at least one email to unsubscribe.") { %>
+          <div class="server-message error">
+            <%= flash %>
+          </div>
+        <% } %>
+
+        <% if(typeof flash !="undefined" && flash !="" && flash == "Internal server error") { %>
           <div class="server-message error">
             <%= flash %>
           </div>
@@ -44,7 +50,10 @@
 
         <div class="flex">
           <h3>Newsletter Management</h3>
-          <button><a href="/newsletter-management/newsletter-views/subscribers"><i class="fa-solid fa-eye"></i> All Subscribers</a></button>
+          <div>
+            <button><a href="/newsletter-management/newsletter-views/subscribers"><i class="fa-solid fa-eye"></i> All Subscribers</a></button>
+            <button><a href="/newsletter-management/newsletter-views/compose-email"><i class="fa-solid fa-envelope"></i> Compose Email</a></button>
+          </div>
         </div>
 
         <br>
@@ -62,17 +71,19 @@
         <br>
 
         <div class="flex">
-          <div class="edit-controller">
-            <div class="flex">
-              <button id="edit-subs-btn"><a><i class="fa-solid fa-pen-to-square"></i> Edit Subscribers</a></button>
+          <div>
+            <div class="edit-controller">
+              <div class="flex">
+                <button id="edit-subs-btn"><a><i class="fa-solid fa-pen-to-square"></i> Edit Subscribers</a></button>
+              </div>
             </div>
-          </div>
-          <div class="delete-controller">
-            <div class="flex flex-start">
-              <button id="cancel-subs-btn"><a><i class="fa-solid fa-xmark"></i> Cancel</a></button>
-              <button id="show-modal"><a><i class="fa-solid fa-envelope"></i> Unsubscribe</a></button>
+            <div class="delete-controller">
+              <div class="flex flex-start">
+                <button id="cancel-subs-btn"><a><i class="fa-solid fa-xmark"></i> Cancel</a></button>
+                <button id="show-modal"><a><i class="fa-solid fa-envelope"></i> Unsubscribe</a></button>
+              </div>  
             </div>  
-          </div>         
+          </div>
         </div>
 
         <br>

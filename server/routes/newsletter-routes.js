@@ -60,10 +60,10 @@ router.get("/newsletter-views/create-subscriber", authController.isLoggedIn,(req
     }
 })
 
-router.get("/newsletter-views/create-email", authController.isLoggedIn,(req, res) => {
+router.get("/newsletter-views/compose-email", authController.isLoggedIn,(req, res) => {
 
     if(req.user && req.user.admin === "Yes" && !checkBrowser(req.headers)){
-        return res.status(200).render("create-email", {title:"Newsletter Management - Create email" , user:req.user})
+        return res.status(200).render("compose-email", {title:"Newsletter Management - Compose email" , user:req.user})
         
     } else {
         return res.redirect("/auth-management/auth-views/login")

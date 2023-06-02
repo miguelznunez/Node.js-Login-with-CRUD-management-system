@@ -1,5 +1,6 @@
 const express = require("express"),
 db = require("../config/db-setup.js"),
+mail = require("../config/mail-setup.js"),
 {validationResult} = require("express-validator");
 
 function get_date(){
@@ -26,15 +27,21 @@ exports.searchSubscribers = (req, res) => {
 
 exports.removeSubscribers = (req, res) => {
 
-    const emails = JSON.parse(req.body.removeEmails)
-    if(emails != ""){
-        deleteEmailsFromDb(emails)
-        req.flash("message", `The ${emails.length} selected email(s) have been successfully removed from your newsletter.`)
-        return res.redirect("/newsletter-management/newsletter-views/subscribers") 
-    } else {
-        req.flash("message", `Please select at least one email.`)
-        return res.redirect("/newsletter-management/newsletter-views/subscribers")
-    }
+  const emails = JSON.parse(req.body.removeEmails)
+  if(emails != ""){
+      deleteEmailsFromDb(emails, (err, results) => {
+        if(!err){
+          req.flash("message", `The ${emails.length} selected email(s) have been successfully removed from your newsletter.`)
+          return res.redirect("/newsletter-management/newsletter-views/subscribers")
+        } else {
+          req.flash("message", "Internal server error")
+          return res.redirect("/newsletter-management/newsletter-views/subscribers")
+        }
+      })
+  } else {
+      req.flash("message", "Please select at least one email to unsubscribe.")
+      return res.redirect("/newsletter-management/newsletter-views/subscribers")
+  }
 }
   
 exports.createSubscriber = (req, res) => {
@@ -46,23 +53,31 @@ exports.createSubscriber = (req, res) => {
       return res.status(401).json({statusMessage:allParsedErrors.errors[0].msg, status:401})
     }
 
-    const nEmail = req.body.nEmail
+    const email = req.body.nEmail
     const date_subscribed = get_date();
 
      // CHECK IF THIS EMAIL EXISTS IN DB
-     db.query("SELECT * FROM newsletter WHERE email = ?", [nEmail], (err, results) => {
+     db.query("SELECT * FROM newsletter WHERE email = ?", [email], (err, results) => {
         // IF IT DOESN'T: SAVE IT IN DB
         if(!err && results[0] === undefined){
-            db.query("INSERT INTO newsletter (email, date_subscribed) VALUES (?,?)", [nEmail, date_subscribed], (err, results) => {
-                if(!err){
-                    return res.status(200).json({statusMessage:`${nEmail} has been successfully added to your newsletter!`, status:200})
-                } else {
-                    return res.status(500).json({statusMessage:"Internal Server Error", status:500})
-                }
+            db.query("INSERT INTO newsletter (email, date_subscribed) VALUES (?,?)", [email, date_subscribed], (err, results) => {
+              if(!err){
+                // mail.newsletterWelcomeEmail(email, (err, info) => {
+                //   if(!err) {
+                //       return res.status(200).json({statusMessage:`${email} has been successfully added to your newsletter!`, status:200})
+                //   } else { 
+                //     return res.status(500).json({statusMessage:"Internal Server Error", status:500})
+                //   }
+                // });
+                // ONLY USING THIS SO I WONT SEND AN EMAIL EVERYTIME
+                return res.status(200).json({statusMessage:`${email} has been successfully added to your newsletter!`, status:200})
+              } else {
+                  return res.status(500).json({statusMessage:"Internal Server Error", status:500})
+              }
             })
         // IF IT DOES: LET THE USER KNOW
         } else if(!err && results != "") {
-            return res.status(400).json({statusMessage:`${nEmail} is already subscribed.`, status:400})
+            return res.status(400).json({statusMessage:`${email} is already subscribed.`, status:400})
         // DB ERROR
         } else {
             return res.status(500).json({statusMessage:"Internal Server Error", status:500})
@@ -79,11 +94,10 @@ exports.sendNewsletterEmail = (req, res) => {
   
   }
 
-function deleteEmailsFromDb(emails){
-    for(let i = 0; i < emails.length;i++){
-      db.query("DELETE FROM newsletter WHERE email = ?", [emails[i]], (err, result) => {
-        if(err) throw new Error(err)
-      })
-    }
+function deleteEmailsFromDb(emails, callback){
+  db.query("DELETE FROM newsletter WHERE email IN (?)", [emails], (err, result) => {
+    if(err) callback(err, null)
+    else callback(null, result)
+  })
 }
 

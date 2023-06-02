@@ -252,9 +252,10 @@ th{
 
 /* END GLOBAL */
 
-/* NEWSLETTER */
+/* NEWSLETTER / DELETE-ACCOUNT */
 
-#newsletter-form{
+#newsletter-form,
+#delete-account-box{
   width: 400px;
   margin: auto;
   border: 1px solid black;
@@ -277,6 +278,7 @@ th{
 }
 
 /* END NEWSLETTER */
+
 
 /* Header / Navbar */
 

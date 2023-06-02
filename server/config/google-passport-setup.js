@@ -63,7 +63,7 @@ passport.use(
             })
           // DB ERROR (LIKELY DUPLICATE ERROR) 
           } else {
-            return cb(null, false, { message: "An email account exists with this email address, please use that to log in." })
+            return cb(null, false, { message: "An account exists with that email address, please use those credentials to log in manually." })
           }          
         })
       // DB ERROR 

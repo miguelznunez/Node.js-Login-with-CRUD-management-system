@@ -1,5 +1,17 @@
 <%- include("partial-views/header.ejs") %>
 
+  <div class="modal-overlay">
+    <div class="modal">
+      <i class="fa-solid fa-xmark" id="close-modal"></i>
+      <form id="delete-account-form">
+        <div class="server-message"></div>
+        <h4>Please enter your password</h4>
+        <input type="password" placeholder="Password..." required>
+        <button>Delete</button>
+      </form>
+    </div>
+  </div>
+
   <main class="main">
     <div class="container">
       <br>
@@ -7,9 +19,18 @@
         <h2>Hello, <%= user.email %>
         </h2>
       </div>
+      <div id="delete-account-box">
+        <div class="title">
+          <h2>Delete Account</h2>
+        </div>
+        <div class="form-group form-input">
+          <button id="show-modal">Delete</button>
+        </div>
+      </div>
     </div>
   </main>
 
-<script src="/js/script.js"></script>
+  <script src="/js/script.js"></script>
+  <script src="/js/modal.js"></script>
 
 <%- include("partial-views/footer.ejs") %>
