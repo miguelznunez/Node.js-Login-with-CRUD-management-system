@@ -491,7 +491,7 @@ th{
 /* USER MANAGEMENT */
 
 .user-management,
-.create-user,
+.add-user,
 .view-users{
   width: 100%;
   display: flex;
@@ -506,7 +506,7 @@ th{
 }
 
 .user-management input,
-.create-user input,
+.add-user input,
 .view-users input {
   width: 95%;
   padding: 10px;
@@ -520,7 +520,7 @@ th{
 }
 
 .user-management button,
-.create-user button,
+.add-user button,
 .view-users button {
   padding: 10px;
   font-size: inherit;
@@ -539,7 +539,7 @@ th{
 
 .text-end a,
 .user-management a,
-.create-user a,
+.add-user a,
 .view-users a {
   border-radius: 5px;
   padding: 4px 6px;
@@ -549,9 +549,9 @@ th{
 
 /* FORMS */
 
-#create-user-form,
+#add-user-form,
 #update-user-form,
-#create-subscriber-form {
+#add-subscriber-form {
   width: 50%;
 }
 
@@ -568,8 +568,8 @@ th{
   align-items: start;
 }
 
-#create-user-form input[type="text"],
-#create-user-form input[type="email"],
+#add-user-form input[type="text"],
+#add-user-form input[type="email"],
 #create-product-form input[type="text"],
 #create-product-form input[type="file"],
 #create-product-form input[type="number"],
@@ -578,11 +578,11 @@ th{
 #edit-product-form input[type="file"],
 #edit-product-form input[type="number"],
 #edit-product-form textarea,
-#create-user-form input[type="password"],
+#add-user-form input[type="password"],
 #update-user-form input[type="text"],
 #update-user-form input[type="email"],
 #create-email-form input[type="text"],
-#create-subscriber-form input[type="email"] {
+#add-subscriber-form input[type="email"] {
   width: 100%;
 }
 
@@ -595,11 +595,11 @@ th{
   height: 150px;
 }
 
-#create-user-form .auth-btn,
+#add-user-form .auth-btn,
 #create-email-form .auth-btn,
 #create-product-form .auth-btn,
 #edit-product-form .auth-btn,
-#create-subscriber-form .auth-btn{
+#add-subscriber-form .auth-btn{
   width: 100%;
 }
 

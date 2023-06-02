@@ -130,9 +130,9 @@ router.get("/user-views/edit-user/:id", authController.isLoggedIn, (req, res) =>
   }
 })
 
-router.get("/user-views/create-user", authController.isLoggedIn, (req, res) => {
+router.get("/user-views/add-user", authController.isLoggedIn, (req, res) => {
   if(req.user && req.user.admin === "Yes" && !checkBrowser(req.headers)) {
-    return res.render("create-user", {title:"Create User", user:req.user})
+    return res.render("add-user", {title:"Add User", user:req.user})
   } else { 
     return res.redirect("/auth-management/auth-views/login")
   }
@@ -193,7 +193,7 @@ router.post("/user-views/search-deleted-users", authController.isLoggedIn, userM
 
 router.post("/user-views/search-admin-users", authController.isLoggedIn, userManagementController.searchAdminUsers)
 
-router.post("/user-views/create-user",
+router.post("/user-views/add-user",
 [
   check("fName", "First name field cannot be empty.").not().isEmpty(),
   check("fName", "First name must be only alphabetical characters.").isAlpha(),
@@ -213,7 +213,7 @@ router.post("/user-views/create-user",
     return value;
   }
  })
-], userManagementController.createUser)
+], userManagementController.addUser)
 
 router.post("/user-views/update-user", userManagementController.updateUser)
 

@@ -1,7 +1,7 @@
 const showPassword = document.querySelector("#show-password"),
 passwordField = document.querySelector("#password"),
 passwordMatchField = document.querySelector("#confirm-password"),
-createUserForm = document.querySelector("#create-user-form"),
+addUserForm = document.querySelector("#add-user-form"),
 serverMessage = document.querySelector(".server-message");
 
 showPassword.addEventListener("click", function (e) {
@@ -15,7 +15,7 @@ showPassword.addEventListener("click", function (e) {
   }
 })
 
-createUserForm.addEventListener("submit", (e) => {
+addUserForm.addEventListener("submit", (e) => {
   e.preventDefault()
   const fName = document.querySelector("#fName").value,
   lName = document.querySelector("#lName").value,
@@ -23,7 +23,7 @@ createUserForm.addEventListener("submit", (e) => {
   password = document.querySelector("#password").value,
   cPassword = document.querySelector("#confirm-password").value;
 
-  fetch("/user-management/user-views/create-user", {
+  fetch("/user-management/user-views/add-user", {
     method: "POST",
     headers: {
       "Accept": "application/json, text/plain, */*",
@@ -36,7 +36,7 @@ createUserForm.addEventListener("submit", (e) => {
 
   .then( response => {
     if (response.status !== 200) throw Error(response.statusMessage)
-    createUserForm.reset()
+    addUserForm.reset()
     serverMessage.innerHTML = response.statusMessage
     serverMessage.style.cssText = "background-color: #d4edda; color:#1b5e20; padding: 16px;"
   })

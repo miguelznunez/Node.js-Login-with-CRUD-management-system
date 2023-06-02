@@ -44,7 +44,7 @@ exports.removeSubscribers = (req, res) => {
   }
 }
   
-exports.createSubscriber = (req, res) => {
+exports.addSubscriber = (req, res) => {
 
     const errors = validationResult(req),
     allErrors = JSON.stringify(errors),

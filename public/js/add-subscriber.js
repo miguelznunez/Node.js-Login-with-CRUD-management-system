@@ -1,11 +1,11 @@
-const createSubForm = document.querySelector("#create-subscriber-form"),
+const addSubForm = document.querySelector("#add-subscriber-form"),
 serverMessage = document.querySelector(".server-message");
 
-createSubForm.addEventListener("submit", (e) => {
+addSubForm.addEventListener("submit", (e) => {
   e.preventDefault()
   const nEmail = document.querySelector("#nEmail").value;
 
-  fetch("/newsletter-management/newsletter-views/create-subscriber", {
+  fetch("/newsletter-management/newsletter-views/add-subscriber", {
     method: "POST",
     headers: {
       "Accept": "application/json, text/plain, */*",
@@ -18,7 +18,7 @@ createSubForm.addEventListener("submit", (e) => {
 
   .then( response => {
     if (response.status !== 200) throw Error(response.statusMessage)
-    createSubForm.reset()
+    addSubForm.reset()
     serverMessage.innerHTML = response.statusMessage
     serverMessage.style.cssText = "background-color: #d4edda; color:#1b5e20; padding: 16px;"
   })

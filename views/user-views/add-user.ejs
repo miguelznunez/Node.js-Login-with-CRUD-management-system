@@ -14,15 +14,24 @@
 
       <div class="server-message"></div>
 
+      <br>
+
+      <div class="flex">
+        <a href="/user-management/user-views/active-users"><i class="fa-solid fa-arrow-left" style="font-size: 2.5rem;color: #000;"></i></a>
+        <button><a href="/user-management/user-views/active-users"><i class="fa-solid fa-eye"></i> All Active Users</a></button>
+      </div>
+
+      <br>
+
       <h3>User Management</h3>
       
       <br>
 
-      <h4>Create user</h4>
+      <h4>Add user</h4>
 
       <br>
       
-      <form id="create-user-form">
+      <form id="add-user-form">
         <input type="text" id="fName" maxlength="100" placeholder="First name" value="" required>
         <input type="text" id="lName" maxlength="100" placeholder="Last name" value="" required>
         <input type="email" id="email" maxlength="100" placeholder="Email" value="" required>
@@ -32,7 +41,7 @@
           <input type="checkbox" id="show-password">
           <label for="show-password">Show password</label>
         </div>
-        <button class="auth-btn">Create</button>
+        <button class="auth-btn">Add</button>
       </form>
 
     </main>
@@ -41,6 +50,6 @@
 
   <script src="/js/sidebar-menu.js"></script>
   <script src="/js/script.js"></script>
-  <script src="/js/create-user.js"></script>
+  <script src="/js/add-user.js"></script>
 
 <%- include("partial-views/footer.ejs") %>

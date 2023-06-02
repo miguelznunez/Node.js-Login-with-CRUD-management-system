@@ -24,9 +24,9 @@ function checkBrowser(headers){
 
 // USER MANAGEMENT GET ROUTES ==============================================================
 
-router.get("/ecommerce-views/create-product", authController.isLoggedIn, (req, res) => {
+router.get("/ecommerce-views/add-product", authController.isLoggedIn, (req, res) => {
   if(req.user && req.user.admin === "Yes" && !checkBrowser(req.headers)){
-    return res.status(200).render("create-product", {title:"eCommerce Management - Create product", user:req.user});
+    return res.status(200).render("add-product", {title:"eCommerce Management - Add product", user:req.user});
   } else {
     return res.redirect("/auth-management/auth-views/login")
   }

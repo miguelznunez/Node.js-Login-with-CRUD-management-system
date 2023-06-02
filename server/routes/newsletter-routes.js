@@ -52,9 +52,9 @@ router.get("/newsletter-views/edit-subscriber/:nId", authController.isLoggedIn,(
     }
 })
 
-router.get("/newsletter-views/create-subscriber", authController.isLoggedIn,(req, res) => {
+router.get("/newsletter-views/add-subscriber", authController.isLoggedIn,(req, res) => {
     if(req.user && req.user.admin === "Yes" && !checkBrowser(req.headers)){          
-        return res.status(200).render("create-subscriber", {title:"Newsletter Management - Create subscriber" , user:req.user})
+        return res.status(200).render("add-subscriber", {title:"Newsletter Management - Add subscriber" , user:req.user})
     } else {
         return res.redirect("/auth-management/auth-views/login")
     }
@@ -77,11 +77,11 @@ router.post("/newsletter-views/search-subscribers", authController.isLoggedIn, n
 
 router.post("/newsletter-views/remove-subscribers", authController.isLoggedIn, newsletterController.removeSubscribers)
 
-router.post("/newsletter-views/create-subscriber",
+router.post("/newsletter-views/add-subscriber",
 [
     check("nEmail", "The email you entered is invalid, please try again.").isEmail().normalizeEmail(),
     check("nEmail", "Email address must be between 4-100 characters long, please try again.").isLength({min:4, max:100}).normalizeEmail()
-], authController.isLoggedIn, newsletterController.createSubscriber)
+], authController.isLoggedIn, newsletterController.addSubscriber)
 
 router.post("/newsletter-views/send-newsletter-email", authController.isLoggedIn, newsletterController.sendNewsletterEmail)
 

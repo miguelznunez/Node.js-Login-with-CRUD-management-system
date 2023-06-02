@@ -68,7 +68,7 @@ exports.searchAdminUsers = (req, res) => {
   })
 }
 
-exports.createUser = (req, res) => {
+exports.addUser = (req, res) => {
 
   const errors = validationResult(req),
   allErrors = JSON.stringify(errors),
