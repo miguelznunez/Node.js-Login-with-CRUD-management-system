@@ -19,7 +19,18 @@
 
         <div class="flex">
           <h3>User Management</h3>
-          <button><a href="/user-management/user-views/add-user"><i class="fa-solid fa-plus"></i> Add User</a></button>
+          <div>
+            <% if(rows[0].status == "Active") { %>
+              <button><a href="/user-management/user-views/active-users"><i class="fa-solid fa-eye"></i> All Active Users</a></button>
+            <% } else if(rows[0].status == "Banned") { %>
+              <button><a href="/user-management/user-views/banned-users"><i class="fa-solid fa-eye"></i> All Banned Users</a></button>
+            <% } else if(rows[0].status == "Inactive") { %>
+              <button><a href="/user-management/user-views/inactive-users"><i class="fa-solid fa-eye"></i> All Inactive Users</a></button>
+            <% } else { %>
+              <button><a href="/user-management/user-views/deleted-users"><i class="fa-solid fa-eye"></i> All Deleted Users</a></button>
+            <% } %>
+            <button><a href="/user-management/user-views/add-user"><i class="fa-solid fa-plus"></i> Add User</a></button>
+          </div>
         </div>
         
         <br>
@@ -33,28 +44,26 @@
             <th>Member Since</th>
             <th>Admin</th>
           </tr>
-          <% for(let i=0;i < rows.length;i++) { %>
-            <tr>
-              <td>
-                <%= rows[i].fName %>
-              </td>
-              <td>
-                <%= rows[i].lName %>
-              </td>
-              <td>
-                <%= rows[i].email %>
-              </td>
-              <td>
-                <%= rows[i].status %>
-              </td>
-              <td>
-                <%= rows[i].member_since %>
-              </td>
-              <td>
-                <%= rows[i].admin %>
-              </td>
-            </tr>
-            <% } %>
+          <tr>
+            <td>
+              <%= rows[0].fName %>
+            </td>
+            <td>
+              <%= rows[0].lName %>
+            </td>
+            <td>
+              <%= rows[0].email %>
+            </td>
+            <td>
+              <%= rows[0].status %>
+            </td>
+            <td>
+              <%= rows[0].member_since %>
+            </td>
+            <td>
+              <%= rows[0].admin %>
+            </td>
+          </tr>
         </table>
 
       </main>
