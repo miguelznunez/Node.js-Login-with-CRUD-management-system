@@ -67,17 +67,17 @@ router.get("/auth-views/account-verification/:id/:token", authController.isLogge
         db.query("UPDATE users SET token = ?, status = ? WHERE id = ?", [null, "Active", req.params.id],
         async (err, results) => {
           if(!err) {
-            return res.status(200).render("account-verification", {success:true, message:"Your account has been verified, please use your credentials to login."})
+            return res.status(200).render("account-verification", {title:"Account Verification", success:true, message:"Your account has been verified, please use your credentials to login."})
           } else {
-            return res.status(500).render("account-verification", {success:false, message:"Internal server error."})
+            return res.status(500).render("account-verification", {title:"Account Verification", success:false, message:"Internal server error."})
           }
         });
       } else{
-         return res.status(401).render("account-verification", {success:false, message:"This link is no longer valid."})
+         return res.status(401).render("account-verification", {title:"Account Verification", success:false, message:"This link is no longer valid."})
       } 
     });
   } else{
-    return res.status(401).render("account-verification", {success:false, user:req.user, message:"This link is no longer valid."})
+    return res.status(401).render("account-verification", {title:"Account Verification", success:false, user:req.user, message:"This link is no longer valid."})
   } 
 })
 
@@ -87,19 +87,19 @@ router.get("/auth-views/password-update/:id/:token", authController.isLoggedIn, 
     db.query("SELECT * FROM users WHERE id = ? && token = ?", [req.params.id, req.params.token], async (err, results) => {
       // DATABASE ERROR
       if(err){
-         return res.status(500).render("password-update-error", {success:false, message:"Internal server error."})
+         return res.status(500).render("password-update-error", {title:"Password Update Error", success:false, message:"Internal server error."})
       }
       // USER WAS FOUND AND CREDENTIALS MATCH
       if((results != "") && (results[0].token != null) && (results[0].token_expires > Date.now())) {
-        return res.status(200).render("password-update", { success:true, token:results[0].token, tExpires:results[0].token_expires, id:results[0].id  })
+        return res.status(200).render("password-update", {title:"Password Update", success:true, token:results[0].token, tExpires:results[0].token_expires, id:results[0].id  })
       } else{
         // USER WAS FOUND OR NOT BUT CREDENTIALS DO NOT MATCH
-        return res.status(500).render("password-update-error", {success:false, message:"This link is no longer valid."})
+        return res.status(500).render("password-update-error", {title:"Password Update Error", success:false, message:"This link is no longer valid."})
       } 
 
     })
   } else {
-    return res.status(401).render("password-update-error", {success:false, user:req.user, message:"Please logout before proceeding."})
+    return res.status(401).render("password-update-error", {title:"Password Update Error", success:false, user:req.user, message:"Please logout before proceeding."})
   }
 })
 

@@ -19,9 +19,11 @@ updateUserForm.addEventListener("submit", (e) => {
     body: JSON.stringify({ id: id, fName: fName, lName: lName, email: email, banned:banned, admin:admin})
   })
 
+  .then( response => response.json() )
+
   .then( response => {
-    if (response.status !== 200) throw Error(response.statusText)
-    serverMessage.innerHTML = response.statusText
+    if (response.status !== 200) throw Error(response.statusMessage)
+    serverMessage.innerHTML = response.statusMessage
     serverMessage.style.cssText = "background-color: #d4edda; color:#1b5e20; padding: 16px;"
   })
 

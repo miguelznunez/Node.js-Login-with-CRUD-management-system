@@ -8,6 +8,15 @@
 
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css">
   <link rel="stylesheet" href="/css/my-styles.css">
+
+  <script src="https://cdn.tiny.cloud/1/w2r6xxh3evy1d8h049o8c949qa8dzlu3g1tyvt03u6nd55yk/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
+  <script>
+    tinymce.init({
+      selector: "#emailTextarea",
+      width: "100%"
+    });
+  </script>
+
   <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 
   <title> <%= title %> </title>
@@ -19,7 +28,7 @@
 
     <div class="navbar">
 
-      <a href="/" class="nav-branding" style="font-size: 2rem;font-weight: bold;">MWD</a>
+      <a href="/" class="nav-branding" style="font-size: 2rem;font-weight: bold;">COMP.</a>
       
       <ul class="nav-menu">
         
@@ -48,6 +57,11 @@
                   <a href="/ecommerce-management/ecommerce-views/men/view-men-products">
                     <div class="dropdown-links">
                       <h3>eCommerce Management</h3>
+                    </div>
+                  </a>
+                  <a href="/newsletter-management/newsletter-views/subscribers">
+                    <div class="dropdown-links">
+                      <h3>Newsletter Management</h3>
                     </div>
                   </a>
                   <a href="/profile-management/profile-views/profile">

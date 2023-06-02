@@ -1,0 +1,46 @@
+<%- include("partial-views/header.ejs") %>
+
+  <div class="app">
+
+    <%- include("partial-views/sidebar-menu.ejs") %>
+
+      <main class="content">
+
+        <div class="sidebar-hamburger">
+          <span class="sbar"></span>
+          <span class="sbar"></span>
+          <span class="sbar"></span>
+        </div>
+
+        <br>
+
+        <div class="server-message"></div>
+
+        <br>
+
+        <div class="flex">
+          <h3>Newsletter Management</h3>
+        </div>
+
+        <br>
+
+        <h4>Create Email</h4>
+
+        <br>
+
+        <form id="create-email-form">
+          <input type="text" id="subject" placeholder="Subject" required>
+          <textarea id="emailTextarea"></textarea>
+          <button class="auth-btn">Send</button>
+        </form>
+        
+        
+      </main>
+
+  </div>
+
+  <script src="/js/create-email-form.js"></script>
+  <script src="/js/sidebar-menu.js"></script>
+  <script src="/js/script.js"></script>
+
+<%- include("partial-views/footer.ejs") %>

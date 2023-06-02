@@ -16,7 +16,9 @@ function get_date(){
   let yourDate = new Date()
   const offset = yourDate.getTimezoneOffset();
   yourDate = new Date(yourDate.getTime() - (offset*60*1000));
-  return yourDate.toISOString().split('T')[0]
+  yourDate = yourDate.toISOString().split('T')[0]
+  yourDate = yourDate.split("-")
+  return `${yourDate[1]}-${yourDate[2]}-${yourDate[0]}` 
 }
 
 
@@ -29,8 +31,7 @@ exports.signup = (req, res) => {
   allErrors = JSON.stringify(errors),
   allParsedErrors = JSON.parse(allErrors);
   if(!errors.isEmpty()){
-    res.statusMessage = allParsedErrors.errors[0].msg
-    return res.status(401).end()
+    return res.status(401).json({statusMessage:allParsedErrors.errors[0].msg, status:401})
   }
 
   const { fName, lName, email, password } = req.body;  
@@ -39,38 +40,31 @@ exports.signup = (req, res) => {
   db.query("SELECT email FROM users WHERE email = ?", [email], async (err, results) => {
     // CHECK IF EMAIL ALREADY EXISTS IN DATABASE
     if (!err && results != "") {
-      console.log(results)
-      res.statusMessage = "An account with that email address already exists."
-      return res.status(401).end()
+      return res.status(401).json({statusMessage:"An account with that email address already exists.", status:401})
     // ELSE CREATE A NEW USER
     } else if(!err && results[0] === undefined){
-        var token = randomstring.generate(40)
+        let token = randomstring.generate(40)
         bcrypt.hash(password, saltRounds, (err, hash) => {
           db.query("INSERT INTO users (fName, lName, email, password, token, member_since) VALUES (?,?,?,?,?,?)", [fName, lName, email, hash, token, member_since],
             async (err, results) => {
               if (!err) {
-                mail.activateAccountEmail(email, results.insertId, token, (err, data) => {
+                mail.activateAccountEmail(email, results.insertId, token, (err, info) => {
                   if(!err) {
-                    res.statusMessage = `We sent an email to ${email}, please click the link included to verify your email address.`
-                    return res.status(200).end()
+                    return res.status(200).json({statusMessage:`We sent an email to ${email}, please click the link included to verify your email address.`, status:200})
                   } else {
                     // MAILGUN ERROR
-                    res.statusMessage = err.message
-                    return res.status(err.status).end()
+                    return res.status(err.status).json({statusMessage:err.message, status:err.status})
                   }
                 })
               // DATABASE ERROR
               } else { 
-                res.statusMessage = "Internal server error."
-                return res.status(500).end()
+                return res.status(500).json({statusText:"Internal server error.", status:500})
               }
           })//function
         });//bcrypt
     // DATABASE ERROR
-    } else{ 
-        console.log("this one?")
-        res.statusMessage = "Internal server error."
-        return res.status(500).end()
+    } else { 
+        return res.status(500).json({statusText:"Internal server error.", status:500})
      } 
    })
    
@@ -85,8 +79,7 @@ exports.login = async (req, res) => {
   allErrors = JSON.stringify(errors),
   allParsedErrors = JSON.parse(allErrors);
   if(!errors.isEmpty()){
-    res.statusMessage = allParsedErrors.errors[0].msg
-    return res.status(401).end()
+    return res.status(401).json({statusMessage:allParsedErrors.errors[0].msg, status:401})
   }
 
   const {email, password} = req.body
@@ -94,26 +87,22 @@ exports.login = async (req, res) => {
   db.query("SELECT * FROM users WHERE email = ?", [email], async (err, results) => {
     // IF EMAIL IS INVALID
     if(!err && results == ""){
-      res.statusMessage = "The email or password is incorrect."
-      return res.status(401).end()
+      return res.status(401).json({statusMessage:"The email or password is incorrect.", status:401})
     }
 
     // IF EMAIL IS IN THE DATABASE BUT PASSWORD IS NULL
     if(!err && (results[0].email != null && results[0].password == null)){
-      res.statusMessage = "A Google account exists with this email address, please use Google to login."
-      return res.status(401).end()
+      return res.status(401).json({statusMessage:"A Google account exists with this email address, please use Google to login.", status:401})
     // IF EMAIL IS NOT IN THE DATABASE OR PASSWORDS DO NOT MATCH
     } else if(!err && (results[0].email == null || !(await bcrypt.compare(password, results[0].password.toString())))){
-      res.statusMessage = "The email or password is incorrect."
-      return res.status(401).end()
+      console.log("hey")
+      return res.status(401).json({statusMessage:"The email or password is incorrect.", status:401})
     // ELSE IF ACCOUNT IS INACTIVE
     } else if (!err && results[0].status === "Inactive") {
-      res.statusMessage = "This account has not been verified."
-      return res.status(400).end()
+      return res.status(400).json({statusMessage:"This account has not been verified.", status:400})
     // ELSE IF ACCOUNT IS BANNED
     } else if (!err && results[0].status === "Banned") {
-      res.statusMessage = "This account has been banned."
-      return res.status(400).end()
+      return res.status(400).json({statusMessage:"This account has been banned.", status:400})
     // ELSE ALLOW USER TO LOGIN
     } else if(!err && results[0].status === "Active") {
       const id = results[0].id;
@@ -127,11 +116,10 @@ exports.login = async (req, res) => {
         httpOnly: true
       }
       res.cookie("jwt", token, cookieOptions);
-      return res.status(200).end();
+      return res.status(200).json({status:200})
     // DATABASE ERROR
     } else {
-      res.statusMessage = "Internal server error."
-      return res.status(500).end()
+      return res.status(500).json({statusText:"Internal server error.", status:500})
     }
   })
 }
@@ -188,8 +176,7 @@ exports.passwordReset = (req, res) => {
   allErrors = JSON.stringify(errors),
   allParsedErrors = JSON.parse(allErrors);
   if(!errors.isEmpty()){
-    res.statusMessage = allParsedErrors.errors[0].msg
-    return res.status(401).end()
+    return res.status(401).json({statusMessage:allParsedErrors.errors[0].msg, status:401})
   }
   
   const secretKey = process.env.SECRET_KEY
@@ -198,8 +185,7 @@ exports.passwordReset = (req, res) => {
   request(verifyUrl, (err, response, body) => {
     body = JSON.parse(body)
     if(body.success !== undefined && !body.success){
-      res.statusMessage = "Failed captcha verification."
-      return res.status(400).end()
+      return res.status(400).json({statusMessage:"Failed captcha verification.", status:400})
     }
 
     const email = req.body.email
@@ -215,30 +201,25 @@ exports.passwordReset = (req, res) => {
 
         db.query("UPDATE users SET ? WHERE email = ?", [data, email], (err, results) => {
           if(!err) {
-            mail.resetPasswordEmail(email, id, token, (err, data) => {
+            mail.resetPasswordEmail(email, id, token, (err, info) => {
               if(!err) {
-                res.statusMessage = `If an account with that email exists, you will receive an email with instructions on how to reset your password.`
-                return res.status(200).end() 
+                return res.status(200).json({statusMessage:"If an account with that email exists, you will receive an email with instructions on how to reset your password.", status:200})
               } else { 
                 // MAILGUN ERROR
-                res.statusMessage = err.message
-                return res.status(err.status).end()
+                return res.status(err.status).json({statusMessage:err.message, status:err.status})
               }
             });
           // DATABASE ERROR
           } else {
-            res.statusMessage = "Internal server error."
-            return res.status(500).end()
+            return res.status(500).json({statusMessage:"Internal Server Error", status:500})
           }
         }); 
       // EMAIL WAS NOT FOUND (USER DOES NOT EXIST)
       } else if(!err && results[0] === undefined) {
-        res.statusMessage = "If an account with that email exists, you will receive an email with instructions on how to reset your password."
-        return res.status(200).end()
+        return res.status(200).json({statusMessage:"If an account with that email exists, you will receive an email with instructions on how to reset your password.", status:200})
       // DATABASE ERROR
       } else {
-        res.statusMessage = "Internal server error."
-        return res.status(500).end()
+        return res.status(500).json({statusMessage:"Internal Server Error", status:500})
       }
     })
   })
@@ -254,8 +235,7 @@ exports.passwordUpdate = (req, res) => {
   allErrors = JSON.stringify(errors),
   allParsedErrors = JSON.parse(allErrors);
   if(!errors.isEmpty()){
-    res.statusMessage = allParsedErrors.errors[0].msg
-    return res.status(401).end()
+    return res.status(401).json({statusMessage:allParsedErrors.errors[0].msg, status:401})
   }
     
   const { id, tExpires, password } = req.body;
@@ -267,17 +247,14 @@ exports.passwordUpdate = (req, res) => {
       var data = { token: null, token_expires: null, password: hash};
       db.query("UPDATE users SET ? WHERE id = ?", [data, id], (err, result) => {
         if(!err) { 
-          res.statusMessage = "Your password has been updated successfully, please login with your new password."
-          return res.status(200).end()
+          return res.status(200).json({statusMessage:"Your password has been updated successfully, please login with your new password.", status:200})
         } else { 
-          res.statusMessage = "Internal server error."
-          return res.status(500).end()
+          return res.status(500).json({statusMessage:"Internal Server Error", status:500})
         }
       });
     });
   } else {
-    res.statusMessage = "The timeframe to reset your password has expired."
-    return res.status(401).end()
+    return res.status(401).json({statusMessage:"The timeframe to reset your password has expired.", status:401})
   }
 }
 

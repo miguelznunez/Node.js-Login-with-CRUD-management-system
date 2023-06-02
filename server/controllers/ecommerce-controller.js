@@ -45,22 +45,19 @@ exports.createProduct = (req, res) => {
   upload(req, res, (err) => {
     if(!err && req.files != "") {
       saveProductInDB(req.files, req.body)
-      res.statusMessage = "Product has been added successfully.";
-      res.status(200).send()
+      return res.status(200).json({statusMessage:"Product has been added successfully.", status:200})
     } else if (!err && req.files == ""){
-      res.statusMessage = "Please select an image to upload";
-      res.status(400).end()
+      return res.status(400).json({statusMessage:"Please select an image to upload.", status:400})
     } else {
-      res.statusMessage = (err === "Please upload images only" ? err : "Photo exceeds limit of 1MB") ;
-      res.status(400).end()
+      let error =  (err === "Please upload images only" ? err : "Photo exceeds limit of 1MB") ;
+      return res.status(400).json({statusMessage:error, status:400})
     }
   })  
 }
 
 exports.editProductInfo = (req, res) => {
   editProductInfoInDB(req.body)
-  res.statusMessage = "Product has been edited successfully.";
-  res.status(200).send()
+  return res.status(200).json({statusMessage:"Product has been edited successfully.", status:200})
 }
 
 exports.editProductImage = (req, res) => {
@@ -69,14 +66,12 @@ exports.editProductImage = (req, res) => {
     if(!err && req.files != "") { 
       deleteOldImageFromS3(req.body) 
       editProductImageInDB(req.files, req.body)
-      res.statusMessage = "Product has been edited successfully.";
-      res.status(200).send()
+      return res.status(200).json({statusMessage:"Product has been edited successfully.", status:200})
     } else if (!err && req.files == ""){
-      res.statusMessage = "Please select an image to upload";
-      res.status(400).end()
+      return res.status(400).json({statusMessage:"Please select an image to upload.", status:400})
     } else {
-      res.statusMessage = (err === "Please upload images only" ? err : "Photo exceeds limit of 1MB") ;
-      res.status(400).end()
+      let error =  (err === "Please upload images only" ? err : "Photo exceeds limit of 1MB") ;
+      return res.status(400).json({statusMessage:error, status:400})
     }
   }) 
 }

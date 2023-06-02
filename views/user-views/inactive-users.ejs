@@ -26,18 +26,18 @@
 
         <div class="flex">
           <h3>User Management</h3>
-          <button><a href="/user-management/user-views/active-users"><i class="fa-solid fa-magnifying-glass"></i> View All Active Users</a></button>
+          <button><a href="/user-management/user-views/inactive-users"><i class="fa-solid fa-magnifying-glass"></i> View All Inactive Users</a></button>
         </div>
 
         <br>
 
-        <h4>Active users (<%= rows.length %>)</h4>
+        <h4>Inactive users (<%= rows.length %>)</h4>
 
         <br>
         
-        <form action="/user-management/user-views/search-active-users" method="POST">
+        <form action="/user-management/user-views/search-inactive-users" method="POST">
           <div class="user-management">
-            <input type="text" name="search" placeholder="Search active users..."><button>Search</button>
+            <input type="text" name="search" placeholder="Search inactive users..."><button>Search</button>
           </div>
         </form>
 

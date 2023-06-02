@@ -1,0 +1,30 @@
+<%- include("partial-views/header.ejs") %>
+
+  <main class="main">
+    <div class="container">
+      <br>
+      <div class="title">
+        <h2>Home</h2>
+      </div>
+
+      <% if (typeof user =="undefined") { %>
+        <form id="newsletter-form">
+          <h2>Newsletter</h2>
+          <div class="form-group form-input">
+            <label for="newsletter">Email address *</label>
+            <input type="email" id="email" value="" placeholder="Email" required>
+            <button>Subscribe</button>
+          </div>
+          <div class="server-message"></div>
+        </form>
+      <% } %>
+
+    </div>
+  </main>
+
+  <script src="/js/script.js"></script>
+  <% if (typeof user =="undefined") { %>
+  <script src="/js/newsletter-form.js"></script>
+  <% } %>
+  
+<%- include("partial-views/footer.ejs") %>

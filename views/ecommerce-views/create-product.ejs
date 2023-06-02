@@ -228,10 +228,10 @@
       })
 
       .then(response => {
-        if (response.status !== 200) throw Error(response.statusText)
+        if (response.status !== 200) throw Error(response.statusMessage)
         createProductForm.reset()
         queuedImage.innerHTML = ""
-        serverMessage.innerHTML = response.statusText
+        serverMessage.innerHTML = response.statusMessage
         serverMessage.style.cssText = "background-color: #d4edda; color:#1b5e20; padding: 16px;"
       })
 

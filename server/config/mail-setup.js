@@ -1,45 +1,60 @@
-const nodemailer = require("nodemailer");
-const mailGun = require("nodemailer-mailgun-transport");
+const nodemailer = require("nodemailer"),
+mailGun = require("nodemailer-mailgun-transport");
 
 require("dotenv").config();
 
-const auth = {
+let transporter = nodemailer.createTransport({
+  service: "gmail",
   auth: {
-      api_key: process.env.API_KEY,
-      domain: process.env.DOMAIN
+    type: "OAuth2",
+    user: process.env.MAIL_USERNAME,
+    pass: process.env.MAIL_PASSWORD,
+    clientId: process.env.OAUTH_CLIENTID,
+    clientSecret: process.env.OAUTH_CLIENT_SECRET,
+    refreshToken: process.env.OAUTH_REFRESH_TOKEN
   }
-};
+});
 
-const transporter = nodemailer.createTransport(mailGun(auth));
+const activateAccountEmail = (email, id, token, callback) => {
 
-activateAccountEmail = (email, id, token, cb) => {
+  transporter.sendMail( {
+    from: "mail.modernwebdesigners@gmail.com",
+    to: email,
+    subject: "Modern Web Designers - Account Verification",
+    html: `<p>Please click on the following link, or paste it into your browser to complete the account activation process:<br><br><a href="http://localhost:5000/auth-management/auth-views/account-verification/${id}/${token}">http://localhost:5000/auth-management/auth-views/account-verification/${id}/${token}</a><br><br>The Team</p>`
+    }, (err, info) => {
+      if (err) callback(err, null)
+      else callback(null, info)
+    })
 
-  var mailOptions = {
-      from: "iamcodefoxx@gmail.com",
-      to: email,
-      subject: "Account activation",
-      html: `<p>Please click on the following link, or paste it into your browser to complete the account activation process:<br><br><a href="http://localhost:5000/auth-management/auth-views/account-verification/${id}/${token}">http://localhost:5000/auth-management/auth-views/account-verification/${id}/${token}</a><br><br>The Team</p>`
-      // html: `<p>Please click on the following link, or paste it into your browser to complete the account activation process:<br><br><a href="https://code-foxx.com/account-verification-message/${id}${token}">https://code-foxx.com/account-verification-message/${id}${token}</a><br><br>The Team</p>`
-  };
-  transporter.sendMail(mailOptions, function(err, data) {
-    if (err) cb(err, null);
-    else cb(null, data);
-  });
 }
 
-resetPasswordEmail = (email, id, token, cb) => {
+const resetPasswordEmail = (email, id, token, callback) => {
 
-  var mailOptions = {
-      from: "iamcodefoxx@gmail.com",
-      to: email,
-      subject: "Password reset",
-      html: `<p>You are receiving this because you (or someone else) have requested the reset of the password for your account. Please click on the following link, or paste it into your browser to complete the process within one hour of receiving it:<br><br><a href="http://localhost:5000/auth-management/auth-views/password-update/${id}/${token}">http://localhost:5000/auth-management/auth-views/password-update/${id}/${token}</a><br><br>If you did not request this, please ignore this email and your password will remain unchanged.<br><br>The Team</p>`
-      // html: `<p>You are receiving this because you (or someone else) have requested the reset of the password for your account. Please click on the following link, or paste it into your browser to complete the process within one hour of receiving it:<br><br><a href="https://code-foxx.com/password-reset-update/${id}${token}">https://code-foxx.com/password-reset-update/${id}${token}</a><br><br>If you did not request this, please ignore this email and your password will remain unchanged.<br><br>The Team</p>`
-  };
-  transporter.sendMail(mailOptions, function(err, data) {
-    if (err) cb(err, null);
-    else cb(null, data);
-  });
+  transporter.sendMail( {
+    from: "mail.modernwebdesigners@gmail.com",
+    to: email,
+    subject: "Modern Web Designers - Password Reset",
+    html: `<p>You are receiving this because you (or someone else) have requested the reset of the password for your account. Please click on the following link, or paste it into your browser to complete the process within one hour of receiving it:<br><br><a href="http://localhost:5000/auth-management/auth-views/password-update/${id}/${token}">http://localhost:5000/auth-management/auth-views/password-update/${id}/${token}</a><br><br>If you did not request this, please ignore this email and your password will remain unchanged.<br><br>The Team</p>`
+    }, (err, info) => {
+      if (err) callback(err, null)
+      else callback(null, info)
+    })
+
 }
 
-module.exports = {resetPasswordEmail, activateAccountEmail};
+const newsletterWelcomeEmail = (email, callback) => {
+
+  transporter.sendMail( {
+    from: "mail.modernwebdesigners@gmail.com",
+    to: email,
+    subject: "Modern Web Designers - Welcome to the Newsletter",
+    html: "<p>Congrats, you have unlocked access to future sales and news.<br><br>The MWD team</p>"
+  }, (err, info) => {
+    if (err) callback(err, null)
+    else callback(null, info)
+  })
+
+}
+
+module.exports = {resetPasswordEmail, activateAccountEmail, newsletterWelcomeEmail};

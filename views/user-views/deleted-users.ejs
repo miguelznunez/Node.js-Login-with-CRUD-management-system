@@ -25,8 +25,8 @@
         <br>
 
         <div class="flex">
-          <h3>User management</h3>
-          <a href="/user-management/user-views/deleted-users">View all deleted users</a>
+          <h3>User Management</h3>
+          <button><a href="/user-management/user-views/deleted-users"><i class="fa-solid fa-magnifying-glass"></i> View All Deleted Users</a></button>
         </div>
         
         <br>
@@ -45,21 +45,21 @@
       
         <table>
           <tr>
-            <th>#</th>
             <th>First</th>
             <th>Last</th>
+            <th>Status</th>
             <th class="text-end">Action</th>
           </tr>
           <% for(let i=0;i < rows.length;i++) { %>
             <tr>
               <td>
-                <%= rows[i].id %>
-              </td>
-              <td>
                 <%= rows[i].fName %>
               </td>
               <td>
                 <%= rows[i].lName %>
+              </td>
+              <td>
+                <%= rows[i].status %>
               </td>
               <td class="text-end">
                 <a href="/user-management/user-views/view-user/<%= rows[i].id %>"><i class="fa-solid fa-eye"></i> View</a>

@@ -32,8 +32,8 @@ dbConnection.connect(function(err){
     admin VARCHAR(3) DEFAULT 'No',
     
     PRIMARY KEY(id),
-    UNIQUE INDEX id_UNIQUE (id ASC) VISIBLE,
-    UNIQUE INDEX email_UNIQUE (email ASC) VISIBLE );`
+    UNIQUE INDEX id_UNIQUE (id),
+    UNIQUE INDEX email_UNIQUE (email) );`
 
   let federated_credentials = `      
     CREATE TABLE federated_credentials (
@@ -44,7 +44,7 @@ dbConnection.connect(function(err){
 
     PRIMARY KEY(id),
     FOREIGN KEY(user_id) REFERENCES users(id),
-    UNIQUE INDEX subject_UNIQUE (subject ASC) VISIBLE );`
+    UNIQUE INDEX subject_UNIQUE (subject) );`
 
   let products = `
     CREATE TABLE products (
@@ -68,6 +68,14 @@ dbConnection.connect(function(err){
 
     PRIMARY KEY(pId) );`
 
+  let newsletter = `
+    CREATE TABLE newsletter (
+      nId INT UNSIGNED AUTO_INCREMENT,
+      email VARCHAR(100),
+      date_subscribed VARCHAR(10),
+
+    PRIMARY KEY(nId) );`
+
   dbConnection.query(users, (err, results) => {
     if (!err) {
       console.log("users table created...")
@@ -83,6 +91,12 @@ dbConnection.connect(function(err){
   dbConnection.query(products, (err, results) => {
     if (!err) {
       console.log("products table created...")
+    }
+  })
+
+  dbConnection.query(newsletter, (err, results) => {
+    if (!err) {
+      console.log("newsletter table created...")
     }
   })
 

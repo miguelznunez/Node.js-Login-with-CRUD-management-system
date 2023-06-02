@@ -67,6 +67,20 @@ router.get("/user-views/deleted-users", authController.isLoggedIn, (req, res) =>
   }
 })
 
+router.get("/user-views/inactive-users", authController.isLoggedIn, (req, res) => {
+  if(req.user && req.user.admin === "Yes" && !checkBrowser(req.headers)) {
+    db.query("SELECT * FROM users WHERE status = 'Inactive'", (err, rows) => {
+      if(!err) { 
+        return res.status(200).render("inactive-users", {title:"User Management - Inactive Users" , user:req.user, rows:rows})
+      } else {
+        return res.status(500).render("inactive-users", {title:"User Management - Inactive Users", user:req.user, message:"Internal server error."})
+      }
+    })
+  } else { 
+    return res.redirect("/auth-management/auth-views/login")
+  }
+})
+
 router.get("/user-views/admin-users", authController.isLoggedIn, (req, res) => {
   if(req.user && req.user.admin === "Yes" && !checkBrowser(req.headers)) {
     db.query("SELECT * FROM users WHERE admin = 'Yes' AND status != 'Deleted'", (err, rows) => {
@@ -137,7 +151,7 @@ router.get("/user-views/delete-user/:status/:id", authController.isLoggedIn, (re
           if(!err) { 
             db.query("UPDATE users SET email = ?, status = ? WHERE id = ?", [null, "Deleted", id], (err, rows) => {
               if(!err) { 
-                req.flash("message", `User has been deleted successfully.`)
+                req.flash("message", `User was deleted successfully.`)
                 return res.redirect(`/user-management/user-views/${status.toLowerCase()}-users`)
               } else { 
                 return res.status(500).render(`${status.toLowerCase()}-users`, {title:`User Management - ${status} Users", user:req.user, message:"Internal server error.`})
@@ -151,7 +165,7 @@ router.get("/user-views/delete-user/:status/:id", authController.isLoggedIn, (re
       } else if(!err && !row) {
         db.query("UPDATE users SET email = ?, status = ? WHERE id = ?", [null, "Deleted", id], (err, rows) => {
           if(!err) { 
-            req.flash("message", `Account has been deleted successfully.`)
+            req.flash("message", `Account was deleted successfully.`)
             return res.redirect(`/user-management/user-views/${status.toLowerCase()}-users`)
           } else { 
             return res.status(500).render(`${status.toLowerCase()}-users`, {title:`User Management - ${status} Users", user:req.user, message:"Internal server error.`})
@@ -172,6 +186,8 @@ router.get("/user-views/delete-user/:status/:id", authController.isLoggedIn, (re
 router.post("/user-views/search-active-users", authController.isLoggedIn, userManagementController.searchActiveUsers)
 
 router.post("/user-views/search-banned-users", authController.isLoggedIn, userManagementController.searchBannedUsers)
+
+router.post("/user-views/search-inactive-users", authController.isLoggedIn, userManagementController.searchInactiveUsers)
 
 router.post("/user-views/search-deleted-users", authController.isLoggedIn, userManagementController.searchDeletedUsers)
 

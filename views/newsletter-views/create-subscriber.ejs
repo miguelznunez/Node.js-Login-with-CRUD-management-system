@@ -1,0 +1,38 @@
+<%- include("partial-views/header.ejs") %>
+
+  <div class="app">
+
+    <%- include("partial-views/sidebar-menu.ejs") %>
+
+    <main class="content">
+
+      <div class="sidebar-hamburger">
+        <span class="sbar"></span>
+        <span class="sbar"></span>
+        <span class="sbar"></span>
+      </div>
+
+      <div class="server-message"></div>
+
+      <h3>Newsletter Management</h3>
+      
+      <br>
+
+      <h4>Create subscriber</h4>
+
+      <br>
+      
+      <form id="create-subscriber-form">
+        <input type="email" id="nEmail" maxlength="100" placeholder="Email" value="" required>
+        <button class="auth-btn">Create</button>
+      </form>
+
+    </main>
+
+  </div>
+
+  <script src="/js/sidebar-menu.js"></script>
+  <script src="/js/script.js"></script>
+  <script src="/js/create-subscriber.js"></script>
+
+<%- include("partial-views/footer.ejs") %>

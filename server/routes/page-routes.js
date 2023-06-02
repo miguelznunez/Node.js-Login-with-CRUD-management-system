@@ -1,5 +1,7 @@
 const express = require("express")
 authController = require("../controllers/auth-controller"),
+pageController = require("../controllers/page-controller"),
+{check} = require("express-validator"),
 router = express.Router();
 
 // FUNCTION TO CHECK FOR INTERNET EXPLORER ============================================
@@ -35,6 +37,17 @@ router.get("/shop-products", authController.isLoggedIn,(req, res) => {
     return res.render("unsupported", {title:"Unsupported", user:req.user})
   }
 })
+
+// PAGE POST ROUTES  ============================================================
+
+router.post("/newsletter-form",
+[
+  check("email", "The email you entered is invalid, please try again.").isEmail().normalizeEmail(),
+  check("email", "Email address must be between 4-100 characters long, please try again.").isLength({min:4, max:100}).normalizeEmail()
+], pageController.newsletterForm)
+
+
+// ROUTE DOES NOT EXIST  ========================================================
 
 router.get("*", authController.isLoggedIn, (req, res) => {
   return res.render("error", {title: "Error 404 ", user:req.user})

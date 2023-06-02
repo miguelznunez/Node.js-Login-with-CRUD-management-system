@@ -36,8 +36,10 @@ passwordUpdateForm.addEventListener("submit", (e) => {
     body: JSON.stringify({ id: id, token: token, tExpires: tExpires, password:password, cPassword:cPassword})
   })
 
+  .then( response => response.json() )
+
   .then( response => {
-    if (response.status !== 200) throw Error(response.statusText)
+    if (response.status !== 200) throw Error(response.statusMessage)
     passwordUpdateForm.innerHTML = ""
     serverMessage.innerHTML = response.statusText
     serverMessage.style.cssText = "background-color: #d4edda; color:#1b5e20; padding: 16px;"

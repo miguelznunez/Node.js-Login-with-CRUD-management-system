@@ -24,8 +24,10 @@ loginForm.addEventListener("submit", (e) => {
     body: JSON.stringify({ email: email, password:password })
   })
 
+  .then( response => response.json() )
+
   .then( response => {
-    if (response.status !== 200) throw Error(response.statusText)
+    if (response.status !== 200) throw Error(response.statusMessage)
     window.open("http://localhost:5000/", "_self");
   })
 

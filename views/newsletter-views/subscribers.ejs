@@ -1,0 +1,188 @@
+<%- include("partial-views/header.ejs") %>
+
+  <div class="app">
+
+    <%- include("partial-views/sidebar-menu.ejs") %>
+
+    <% if (typeof message=="undefined" ) { %>
+
+      <div class="modal-overlay">
+        <div class="modal">
+          <i class="fa-solid fa-xmark" id="close-modal"></i>
+          <form action="/newsletter-management/newsletter-views/remove-subscribers" method="POST">
+            <input type="hidden" name="removeEmails" value="[]">
+            <h4>Are you sure?</h4>
+            <button>Yes</button>
+          </form>
+        </div>
+      </div>
+
+
+      <main class="content">
+
+        <div class="sidebar-hamburger">
+          <span class="sbar"></span>
+          <span class="sbar"></span>
+          <span class="sbar"></span>
+        </div>
+
+        <br>
+
+        <% if(typeof flash !="undefined" && flash !="" && flash != "Please select at least one email.") { %>
+          <div class="server-message success">
+            <%= flash %>
+          </div>
+        <% } %>
+
+        <% if(typeof flash !="undefined" && flash !="" && flash == "Please select at least one email.") { %>
+          <div class="server-message error">
+            <%= flash %>
+          </div>
+        <% } %>
+
+        <br>
+
+        <div class="flex">
+          <h3>Newsletter Management</h3>
+          <button><a href="/newsletter-management/newsletter-views/subscribers"><i class="fa-solid fa-eye"></i> All Subscribers</a></button>
+        </div>
+
+        <br>
+
+        <h4>Subscribers (<%= rows.length %>)</h4>
+
+        <br>
+        
+        <form action="/newsletter-management/newsletter-views/search-subscribers" method="POST">
+          <div class="user-management">
+            <input type="text" name="search" placeholder="Search subscribers..."><button>Search</button>
+          </div>
+        </form>
+
+        <br>
+
+        <div class="flex">
+          <div class="edit-controller">
+            <div class="flex">
+              <button id="edit-subs-btn"><a><i class="fa-solid fa-pen-to-square"></i> Edit Subscribers</a></button>
+            </div>
+          </div>
+          <div class="delete-controller">
+            <div class="flex flex-start">
+              <button id="cancel-subs-btn"><a><i class="fa-solid fa-xmark"></i> Cancel</a></button>
+              <button id="show-modal"><a><i class="fa-solid fa-envelope"></i> Unsubscribe</a></button>
+            </div>  
+          </div>         
+        </div>
+
+        <br>
+        
+        <table id="subscriber-table">
+          <tr>
+            <th><input id="select-all" type="checkbox" disabled></th>
+            <th>Email</th>
+            <th>Subscribed</th>
+          </tr>
+          <% for(let i=0;i < rows.length;i++) { %>
+            <tr>
+              <td>
+                <input value="<%= rows[i].email %>" type="checkbox" disabled>
+              </td>
+              <td>
+                <%= rows[i].email %>
+              </td>
+              <td>
+                <%= rows[i].date_subscribed %>
+              </td>
+            </tr>
+          <% } %>
+        </table>
+      </main>
+
+      <script>
+
+        const subscriberTable = document.querySelector("#subscriber-table"),
+        checkItAll = subscriberTable.querySelector("#select-all"),
+        inputs = subscriberTable.querySelectorAll('tbody>tr>td>input'),
+        editController = document.querySelector(".edit-controller"),
+        deleteController = document.querySelector(".delete-controller"),
+        serverMessage = document.querySelector(".server-message");
+        let removeEmails = [];
+
+        inputs.forEach(i => {
+          i.addEventListener("change", () => {
+            if(i.checked){
+              removeEmails.push(i.value);
+            } else {
+              var index = removeEmails.indexOf(i.value);
+              removeEmails.splice(index, 1);
+            }
+            document.querySelector('[name="removeEmails"]').value = JSON.stringify(removeEmails);
+          })
+        })
+
+        checkItAll.addEventListener('change', () => {
+          if (checkItAll.checked) {
+            removeEmails = []
+            inputs.forEach(i => {
+              i.checked = true;
+              removeEmails.push(i.value);
+            })
+          } else {
+            removeEmails = []
+            inputs.forEach(i => {
+              i.checked = false
+            })
+          }
+          document.querySelector('[name="removeEmails"]').value = JSON.stringify(removeEmails);
+        });
+
+        document.querySelector("#edit-subs-btn").addEventListener("click", () => {
+          editController.style.display = "none";
+          deleteController.style.display = "block";
+          checkItAll.disabled = false
+          inputs.forEach(i => {
+            i.disabled = false
+          })
+        })
+
+        document.querySelector("#cancel-subs-btn").addEventListener("click", () => {
+          editController.style.display = "block";
+          deleteController.style.display = "none";
+          checkItAll.disabled = true
+          checkItAll.checked = false
+          inputs.forEach(i => {
+            i.disabled = true
+            i.checked = false
+          })
+          removeEmails = []
+        })
+
+      </script>
+      <script src="/js/modal.js"></script>
+
+
+    <% } else { %>
+
+      <main class="content">
+      
+        <div class="sidebar-hamburger">
+          <span class="sbar"></span>
+          <span class="sbar"></span>
+          <span class="sbar"></span>
+        </div>
+
+        <div class="server-message error">
+          <%= message %>
+        </div>
+
+      </main>
+
+    <% } %>
+
+  </div>
+
+  <script src="/js/sidebar-menu.js"></script>
+  <script src="/js/script.js"></script>
+
+<%- include("partial-views/footer.ejs") %>
