@@ -88,9 +88,25 @@ exports.addSubscriber = (req, res) => {
 
 exports.sendNewsletterEmail = (req, res) => {
 
-    const {subject, emailTextarea} = req.body
+    const {subject, message} = req.body
 
-    console.log(emailTextarea)
+    db.query("SELECT email FROM newsletter", (err, result) => {  
+      if(!err){
+        const emails = []
+        result.forEach(e => {
+          emails.push(e.email)
+        });
+        mail.newsletterEmail(subject, message, emails, (err, info) => {
+          if(!err){
+            return res.status(200).json({statusMessage:"Your message has been successfully sent to your newsletter subscribers!", status:200})
+          } else {
+            return res.status(500).json({statusMessage:"Internal Server Error", status:500})
+          }
+        })
+      } else {
+        return res.status(500).json({statusMessage:"Internal Server Error", status:500})
+      }
+    })
   
   }
 

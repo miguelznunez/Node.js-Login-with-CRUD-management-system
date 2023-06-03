@@ -611,7 +611,7 @@ th{
   width: 50%;
 }
 
-#create-email-form{
+#compose-email-form{
   width: 50%;
   z-index: 0;
 }
@@ -637,7 +637,7 @@ th{
 #add-user-form input[type="password"],
 #update-user-form input[type="text"],
 #update-user-form input[type="email"],
-#create-email-form input[type="text"],
+#compose-email-form input[type="text"],
 #add-subscriber-form input[type="email"] {
   width: 100%;
 }
@@ -652,7 +652,7 @@ th{
 }
 
 #add-user-form .auth-btn,
-#create-email-form .auth-btn,
+#compose-email-form .auth-btn,
 #add-product-form .auth-btn,
 #edit-product-form .auth-btn,
 #add-subscriber-form .auth-btn,

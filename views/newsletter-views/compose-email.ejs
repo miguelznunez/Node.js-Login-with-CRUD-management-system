@@ -32,10 +32,10 @@
 
         <br>
 
-        <form id="create-email-form">
+        <form id="compose-email-form">
           <input type="text" id="subject" placeholder="Subject" required>
-          <textarea id="emailTextarea"></textarea>
-          <button class="auth-btn">Send</button>
+          <textarea id="message"></textarea>
+          <button class="auth-btn button"><span class="button__text">Send</span></button>
         </form>
         
         
@@ -43,8 +43,8 @@
 
   </div>
 
-  <script src="/js/create-email-form.js"></script>
   <script src="/js/sidebar-menu.js"></script>
   <script src="/js/script.js"></script>
+  <script src="/js/compose-email-form.js"></script>
 
 <%- include("partial-views/footer.ejs") %>

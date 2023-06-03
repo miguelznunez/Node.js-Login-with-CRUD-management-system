@@ -63,7 +63,7 @@ const newsletterWelcomeEmail = (email, callback) => {
     from: "mail.modernwebdesigners@gmail.com",
     to: email,
     subject: "Modern Web Designers - Welcome to the Newsletter",
-    html: "<p>Congrats, you have unlocked access to future sales and news.<br><br>The MWD team</p>"
+    html: "<p>This is a test newsletter welcome email.<br><br>The MWD team</p>"
   }, (err, info) => {
     if (err) callback(err, null)
     else callback(null, info)
@@ -71,4 +71,18 @@ const newsletterWelcomeEmail = (email, callback) => {
 
 }
 
-module.exports = {resetPasswordEmail, accountDeletedEmail, activateAccountEmail, newsletterWelcomeEmail};
+const newsletterEmail = (subject, message, emails, callback) => {
+
+  transporter.sendMail( {
+    from: "mail.modernwebdesigners@gmail.com",
+    to: emails,
+    subject: subject,
+    html: message
+  }, (err, info) => {
+    if (err) callback(err, null)
+    else callback(null, info)
+  })
+
+}
+
+module.exports = {resetPasswordEmail, accountDeletedEmail, activateAccountEmail, newsletterWelcomeEmail, newsletterEmail};

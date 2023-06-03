@@ -29,8 +29,20 @@
         <br>
 
         <div class="flex">
-          <h3>eCommerce management</h3>
+          <% if( rows[0].pGender == "men" ) { %>
+            <a href="/ecommerce-management/ecommerce-views/men/view-men-products"><i class="fa-solid fa-arrow-left" style="font-size: 2.5rem;color: #000;"></i></a>
+          <% } else if(rows[0].pGender == "women") { %>
+            <a href="/ecommerce-management/ecommerce-views/women/view-women-products"><i class="fa-solid fa-arrow-left" style="font-size: 2.5rem;color: #000;"></i></a>
+          <% } else { %>
+          <a href="/ecommerce-management/ecommerce-views/dna/view-dna-products"><i class="fa-solid fa-arrow-left" style="font-size: 2.5rem;color: #000;"></i></a>
+          <% } %>
           <button id="show-modal">Delete product</button>
+        </div>
+
+        <br>
+
+        <div class="flex">
+          <h3>eCommerce Management</h3>
         </div>
         
         <br>

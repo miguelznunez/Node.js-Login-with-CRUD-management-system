@@ -61,14 +61,11 @@ router.get("/newsletter-views/add-subscriber", authController.isLoggedIn,(req, r
 })
 
 router.get("/newsletter-views/compose-email", authController.isLoggedIn,(req, res) => {
-
     if(req.user && req.user.admin === "Yes" && !checkBrowser(req.headers)){
         return res.status(200).render("compose-email", {title:"Newsletter Management - Compose email" , user:req.user})
-        
     } else {
         return res.redirect("/auth-management/auth-views/login")
     }
-
 })
 
 // NEWSLETTER MANAGEMENT POST ROUTES  ============================================================
