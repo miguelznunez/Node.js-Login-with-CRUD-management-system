@@ -90,16 +90,16 @@ exports.login = (req, res) => {
 
     // IF EMAIL IS IN THE DATABASE BUT PASSWORD IS NULL
     if(!err && (results[0].email != null && results[0].password == null)){
-      return res.status(401).json({statusMessage:"A Google account exists with this email address, please use Google to login.", status:401})
+      return res.status(401).json({statusMessage:"A Google account with that email address exists, please login with Google.", status:401})
     // IF EMAIL IS NOT IN THE DATABASE OR PASSWORDS DO NOT MATCH
     } else if(!err && (results[0].email == null || !(await bcrypt.compare(password, results[0].password.toString())))){
       return res.status(401).json({statusMessage:"The email or password is incorrect.", status:401})
     // ELSE IF ACCOUNT IS INACTIVE
     } else if (!err && results[0].status === "Inactive") {
-      return res.status(400).json({statusMessage:"This account has not been verified.", status:400})
+      return res.status(400).json({statusMessage:"The email address for that account has not been verified.", status:400})
     // ELSE IF ACCOUNT IS BANNED
     } else if (!err && results[0].status === "Banned") {
-      return res.status(400).json({statusMessage:"This account has been banned.", status:400})
+      return res.status(400).json({statusMessage:"The account associated with those credentials has been banned.", status:400})
     // ELSE ALLOW USER TO LOGIN
     } else if(!err && results[0].status === "Active") {
       const id = results[0].id;

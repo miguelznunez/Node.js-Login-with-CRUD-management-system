@@ -16,7 +16,7 @@ passport.serializeUser((user, cb) => {
 })
 
 passport.deserializeUser((id, cb) => {
-  db.query("SELECT * FROM users WHERE id = ?", [id],(err, results) => {
+  db.query("SELECT * FROM users WHERE id = ?", [id], (err, results) => {
     cb(null, results[0])
   })  
 })
@@ -31,11 +31,14 @@ passport.use(
     // CHECK IF USER ALREADY EXISTS
     db.query("SELECT * FROM federated_credentials WHERE provider = ? AND subject = ?", [profile.provider, profile.id], (err, results) => {
 
-      // IF THEY DO: RETRIEVE USER CREDENTIALS
+      if(err){
+        return cb(null, false, { message: "Internal server error." })
+      }
+
+      // IF THEY DO: RETRIEVE CREDENTIALS
       if(!err && results != ""){
         db.query("SELECT * FROM users WHERE id = ?", [results[0].user_id], (err, results) => {
           if(!err){
-            // CREDENTIALS RETRIEVED
             if(results[0].status === "Active"){
               return cb(null, results[0].id)
             } else {
@@ -45,8 +48,8 @@ passport.use(
             return cb(null, false, { message: "Internal server error." })
           }
        })
-      // IF THEY DON'T: SAVE USER IN USERS TABLE
-      } else if(!err && results[0] === undefined){
+      // IF THEY DON'T: SAVE USER IN USERS & FEDERATED CREDENTIALS TABLE
+      } else {
         db.query("INSERT INTO users (fName, lName, email, member_since, status) VALUES (?,?,?,?,?)", [
         profile.name.givenName, profile.name.familyName, profile.emails[0].value, get_date(), "Active"], (err, results) => {
           // IF NO ERROR: SAVE USER IN FEDERATED_CREDENTIALS TABLE
@@ -58,18 +61,16 @@ passport.use(
                 return cb(null, id)
               // DB ERROR
               } else {
-                return cb(null, false, { message: "Internal server error." })
+                return cb(null, false, { message: "Internal server error" })
               }
             })
           // DB ERROR (LIKELY DUPLICATE ERROR) 
           } else {
-            return cb(null, false, { message: "An account exists with that email address, please use those credentials to log in manually." })
+            return cb(null, false, { message: "An account with that email already exists, please use those credentials to log in manually." })
           }          
         })
-      // DB ERROR 
-      } else {
-        return cb(null, false, { message: "Internal server error." })
       }
+
     })
   })
 )

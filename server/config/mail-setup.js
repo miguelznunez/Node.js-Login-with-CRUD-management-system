@@ -29,7 +29,7 @@ const activateAccountEmail = (email, id, token, callback) => {
 
 }
 
-const accountDeletedEmail = (email, id, token, callback) => {
+const accountDeletedEmail = (email, callback) => {
 
   transporter.sendMail( {
     from: "mail.modernwebdesigners@gmail.com",

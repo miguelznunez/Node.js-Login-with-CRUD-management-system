@@ -144,9 +144,16 @@ router.get("/user-views/delete-user/:status/:id", authController.isLoggedIn, (re
     const {status, id} = req.params
 
     db.query("SELECT * FROM federated_credentials WHERE user_id = ?", [id], (err, row) => {
+
+      if(err){
+        return res.status(500).render(`${status.toLowerCase()}-users`, {title:`User Management - ${status} Users", user:req.user, message:"Internal server error.`})
+      }
+
       // IF USER EXISTS IN FEDERATED CREDENTIALS
-      if(!err && row){
-        // REMOVE
+      if(!err && row != ""){
+
+        console.log("Google user")
+
         db.query("UPDATE federated_credentials SET subject = ? WHERE user_id = ?", [null, id], (err, rows) => {
           if(!err) { 
             db.query("UPDATE users SET email = ?, status = ? WHERE id = ?", [null, "Deleted", id], (err, rows) => {
@@ -161,20 +168,17 @@ router.get("/user-views/delete-user/:status/:id", authController.isLoggedIn, (re
             return res.status(500).render(`${status.toLowerCase()}-users`, {title:`User Management - ${status} Users", user:req.user, message:"Internal server error.`})
           }
         })
-      // IF THEY DONT: DELETE FROM USERS TABLE ONLY
-      } else if(!err && !row) {
+      } else {
+        console.log("Email user")
         db.query("UPDATE users SET email = ?, status = ? WHERE id = ?", [null, "Deleted", id], (err, rows) => {
           if(!err) { 
-            req.flash("message", `Account was deleted successfully.`)
+            req.flash("message", `The selected user was deleted successfully.`)
             return res.redirect(`/user-management/user-views/${status.toLowerCase()}-users`)
           } else { 
             return res.status(500).render(`${status.toLowerCase()}-users`, {title:`User Management - ${status} Users", user:req.user, message:"Internal server error.`})
           }
         })
-      // DB ERROR
-      } else {
-        return res.status(500).render(`${status.toLowerCase()}-users`, {title:`User Management - ${status} Users", user:req.user, message:"Internal server error.`})
-      }
+      } 
     })
   } else { 
     return res.redirect("/auth-management/auth-views/login")

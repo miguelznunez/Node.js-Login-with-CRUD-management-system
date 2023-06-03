@@ -33,7 +33,7 @@ router.get("/auth-views/signup", authController.isLoggedIn, (req, res) => {
 
 router.get("/auth-views/login", authController.isLoggedIn, (req, res) => {
   if(!req.user && !checkBrowser(req.headers)) {
-    const flash = req.flash("message")
+    const flash = req.flash("error")
     return res.status(200).render("login", {title:"Login", flash})
   } else {
     return res.redirect("/")

@@ -1,7 +1,6 @@
 const express = require("express"),
 authController = require("../controllers/auth-controller"),
 profileController = require("../controllers/profile-controller"),
-{check} = require("express-validator"),
 router = express.Router();
 
 // FUNCTION TO CHECK FOR INTERNET EXPLORER ============================================

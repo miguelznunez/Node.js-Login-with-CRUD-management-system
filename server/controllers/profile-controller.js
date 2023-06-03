@@ -1,29 +1,31 @@
 const express = require("express"),
 db = require("../config/db-setup.js"),
-mail = require("../config/mail-setup.js"),
-bcrypt = require("bcrypt"),
-{validationResult} = require("express-validator");
+mail = require("../config/mail-setup.js");
 
 exports.deleteAccount = (req, res) => {
 
   const {id, email} = req.body;
 
   db.query("SELECT * FROM federated_credentials WHERE user_id = ?", [id], (err, row) => {
-    // IF USER EXISTS IN FEDERATED CREDENTIALS
-    if(!err && row){
-      // REMOVE
+
+    if(err){
+      return res.status(500).json({statusMessage:"Internal server error", status:500})
+    }
+    // USER EXISTS IN FEDERATED CREDENTIALS
+    if(!err && row != ""){
+      console.log("Google user")
       db.query("UPDATE federated_credentials SET subject = ? WHERE user_id = ?", [null, id], (err, rows) => {
         if(!err) { 
           db.query("UPDATE users SET email = ?, status = ? WHERE id = ?", [null, "Deleted", id], (err, rows) => {
             if(!err) {
-                mail.accountDeletedEmail(email, (err, info) => {
-                  if(!err) {
-                      return res.status(200).json({status:200})
-                  } else { 
-                    return res.status(500).json({statusMessage:"Internal Server Error", status:500})
-                  }
-                }); 
-                // return res.status(200).json({status:200})
+                // mail.accountDeletedEmail(email, (err, info) => {
+                //   if(!err) {
+                //     return res.status(200).json({status:200})
+                //   } else { 
+                //     return res.status(500).json({statusMessage:"Internal Server Error", status:500})
+                //   }
+                // }); 
+                return res.status(200).json({status:200})
             } else { 
                 return res.status(500).json({statusMessage:"Internal server error", status:500})
             }
@@ -33,24 +35,22 @@ exports.deleteAccount = (req, res) => {
         }
       })
     // IF THEY DONT: DELETE FROM USERS TABLE ONLY
-    } else if(!err && !row) {
+    } else {
+      console.log("Email user")
       db.query("UPDATE users SET email = ?, status = ? WHERE id = ?", [null, "Deleted", id], (err, rows) => {
         if(!err) { 
-            mail.accountDeletedEmail(email, (err, info) => {
-                if(!err) {
-                  return res.status(200).json({status:200})
-                } else { 
-                  return res.status(500).json({statusMessage:"Internal Server Error", status:500})
-                }
-            });
-            // return res.status(200).json({status:200})
+            // mail.accountDeletedEmail(email, (err, info) => {
+            //     if(!err) {
+            //       return res.status(200).json({status:200})
+            //     } else { 
+            //       return res.status(500).json({statusMessage:"Internal Server Error", status:500})
+            //     }
+            // });
+            return res.status(200).json({status:200})
         } else { 
             return res.status(500).json({statusMessage:"Internal server error", status:500})
         }
       })
-    // DB ERROR
-    } else {
-        return res.status(500).json({statusMessage:"Internal server error", status:500})
     }
   })
     
