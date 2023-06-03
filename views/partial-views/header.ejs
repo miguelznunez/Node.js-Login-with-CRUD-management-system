@@ -6,9 +6,52 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css">
-  <link rel="stylesheet" href="/css/my-styles.css">
+  <!-- Google Indexing Verification -->
 
+  <!-- SEO -->
+  <title> <%= title %> | Modern Web Designers - Developers | Salinas, CA</title>
+
+  <!-- <meta name="description"
+    content="Web design and development services in Salinas, CA. Level up your business." />
+  <meta name="robots" content="follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large" />
+  <link rel="canonical" href="https://www.modernwebdesigners.com/" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Modern Web Designers - Developers | Salinas, CA" />
+  <meta property="og:description"
+    content="Web design and development services in Salinas, CA. Level up your business." />
+  <meta property="og:url" content="https://www.modernwebdesigners.com/" />
+  <meta property="og:site_name" content="Modern Web Designers - Developers | Salinas, CA" />
+  <meta property="og:image" content="https://www.modernwebdesigners.com/images/logos/mwd_logo.png" />
+  <meta property="og:image:secure_url" content="https://www.modernwebdesigners.com/images/logos/mwd_logo.png" />
+  <meta property="og:image:width" content="500" />
+  <meta property="og:image:height" content="500" />
+  <meta property="og:image:alt" content="Modern Web Designers - Developers | Salinas, CA" />
+  <meta property="og:image:type" content="image/png" /> -->
+  
+  <!-- TWITTER CARD -->
+  <!-- <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:site" content="@modernwebdes" />
+  <meta name="twitter:title" content="Modern Web Designers" />
+  <meta name="twitter:description" content="Modern Web Designers - Developers | Salinas, CA" />
+  <meta name="twitter:image" content="https://www.modernwebdesigners.com/images/logos/mwd-twitter.png"/> -->
+
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="/css/admin-styles.css">
+
+  <!-- Font Awesome -->
+  <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css"> -->
+
+  <!-- favicon -->
+  <!-- <link rel="icon" type="image/png" href="https://www.modernwebdesigners.com/images/logos/favicon.png"> -->
+
+  <!-- Responsive -->
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+  <!--[if lt IE 9]><script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.js"></script><![endif]-->
+  <!--[if lt IE 9]><script src="js/respond.js"></script><![endif]-->
+
+  <!-- Tiny Cloud API CDN -->
   <script src="https://cdn.tiny.cloud/1/w2r6xxh3evy1d8h049o8c949qa8dzlu3g1tyvt03u6nd55yk/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
   <script>
     tinymce.init({
@@ -16,116 +59,42 @@
       width: "100%"
     });
   </script>
-
+  
+  <!-- Google reCaptcha -->
   <script src="https://www.google.com/recaptcha/api.js" async defer></script>
-
-  <title> <%= title %> </title>
+  
+  <!-- Schema Markup -->
+  <!-- <script type="application/ld+json">
+    {
+      "@context": "http://schema.org/",
+      "@type": "Web Designer",
+      "name": "Modern Web Designers - Developers | Salinas, CA",
+      "alternateName": "Modern Web Designers",
+        "description": "Web design and development services in Salinas, CA. Level up your business.",
+      "url" : "https://www.modernwebdesigners.com/",
+      "logo" : "https://www.modernwebdesigners.com/images/logos/mwd_logo.png",
+      "image" : "https://www.modernwebdesigners.com/images/logos/mwd_logo.png",
+      "telephone": " 831-512-0461",
+      "priceRange": " Free Consultation",
+      "openingHours" : "Mon-Fri 08:00-13:00",
+      "address":
+        {
+          "@type": "PostalAddress",
+          "streetAddress": "",
+          "addressLocality": "Salinas",
+          "addressRegion": "CA",
+          "postalCode": "93907",
+          "addressCountry": "USA"
+        },
+      "sameAs":[
+      "https://www.facebook.com/profile.php?id=100092298505856",
+      "https://www.instagram.com/modernwebdesigners/",
+      "https://twitter.com/modernwebdes",
+      ]
+    }
+  </script> -->
 </head>
 
 <body>
 
-  <header id="header">
-
-    <div class="navbar">
-
-      <a href="/" class="nav-branding" style="font-size: 2rem;font-weight: bold;">COMP.</a>
-      
-      <ul class="nav-menu">
-        
-          <li class="nav-item">
-            <div class="dropdown" data-dropdown>
-
-              <% if (typeof user !="undefined") { %>
-                <button class="link" data-dropdown-button>Hello, <%= user.fName %> <i class="fa-solid fa-angle-down" data-dropdown-button style="color:white"></i></button>
-              <% } else { %>
-                <button class="link" data-dropdown-button>Menu <i class="fa-solid fa-caret-down" data-dropdown-button
-                    style="color:white"></i></button>
-              <% } %>
-
-              <div class="dropdown-menu">
-                <% if (typeof user !="undefined" && user.admin === "Yes" ) { %>
-                  <a href="/">
-                    <div class="dropdown-links">
-                      <h3>Home</h3>
-                    </div>
-                  </a>
-                  <a href="/user-management/user-views/active-users">
-                    <div class="dropdown-links">
-                      <h3>User Management</h3>
-                    </div>
-                  </a>
-                  <a href="/ecommerce-management/ecommerce-views/men/view-men-products">
-                    <div class="dropdown-links">
-                      <h3>eCommerce Management</h3>
-                    </div>
-                  </a>
-                  <a href="/newsletter-management/newsletter-views/subscribers">
-                    <div class="dropdown-links">
-                      <h3>Newsletter Management</h3>
-                    </div>
-                  </a>
-                  <a href="/profile-management/profile-views/profile">
-                    <div class="dropdown-links">
-                      <h3>Profile</h3>
-                    </div>
-                  </a>
-                  <a href="/shop-products">
-                    <div class="dropdown-links">
-                      <h3>Store</h3>
-                    </div>
-                  </a>
-                  <a href="/auth-management/auth-views/logout">
-                    <div class="dropdown-links">
-                      <h3>Log out</h3>
-                    </div>
-                  </a>
-                <% } %>
-
-                <% if (typeof user !="undefined" && user.admin === "No") { %>
-                  <a href="/">
-                    <div class="dropdown-links">
-                      <h3>Home</h3>
-                    </div>
-                  </a>
-                  <a href="/profile-management/profile-views/profile">
-                    <div class="dropdown-links">
-                      <h3>Profile</h3>
-                    </div>
-                  </a>
-                  <a href="/auth-management/auth-views/logout">
-                    <div class="dropdown-links">
-                      <h3>Log out</h3>
-                    </div>
-                  </a>
-                <% } %>
-
-                <% if (typeof user === "undefined") { %>
-                  <a href="/">
-                    <div class="dropdown-links">
-                      <h3>Home</h3>
-                    </div>
-                  </a>
-                  <a href="/auth-management/auth-views/login">
-                    <div class="dropdown-links">
-                      <h3>Log in</h3>
-                    </div>
-                  </a>
-                  <a href="/auth-management/auth-views/signup">
-                    <div class="dropdown-links">
-                      <h3>Sign up</h3>
-                    </div>
-                  </a>
-                <% } %>
-
-              </div>
-            </div>
-          </li>
-      </ul>
-      <div class="hamburger">
-        <span class="bar"></span>
-        <span class="bar"></span>
-        <span class="bar"></span>
-      </div>
-    </div>
-    
-  </header>
+  
