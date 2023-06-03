@@ -364,6 +364,11 @@ th{
   color: white;
 }
 
+.nav-branding a {
+  font-size: 2rem;
+  font-weight: bold;
+}
+
 .nav-menu{
   display: flex;
   justify-content: space-between;
@@ -371,7 +376,9 @@ th{
   gap: 20px;
 }
 
-.nav-link{ transition: 0.7s ease;}
+.nav-link{ 
+  transition: 0.7s ease;
+}
 
 .nav-link:hover{ color: gray;}
 

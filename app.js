@@ -44,6 +44,7 @@ app.use("/auth-management", require("./server/routes/auth-routes"))
 app.use("/profile-management", require("./server/routes/profile-routes"))
 app.use("/newsletter-management", require("./server/routes/newsletter-routes"))
 app.use("/ecommerce-management", require("./server/routes/ecommerce-routes"))
+app.use("/store-management", require("./server/routes/store-routes"))
 app.use("/user-management", require("./server/routes/user-routes"))
 app.use("/", require("./server/routes/page-routes"))
 

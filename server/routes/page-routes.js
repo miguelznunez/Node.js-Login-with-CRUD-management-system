@@ -50,7 +50,7 @@ router.post("/newsletter-form",
 // ROUTE DOES NOT EXIST  ========================================================
 
 router.get("*", authController.isLoggedIn, (req, res) => {
-  return res.render("error", {title: "Error 404 ", user:req.user})
+  return res.render("404-error", {title: "Error 404 ", user:req.user})
 })
 
 module.exports = router
