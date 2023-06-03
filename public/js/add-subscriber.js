@@ -1,9 +1,13 @@
 const addSubForm = document.querySelector("#add-subscriber-form"),
-serverMessage = document.querySelector(".server-message");
+serverMessage = document.querySelector(".server-message"),
+btn = document.querySelector(".button");
 
 addSubForm.addEventListener("submit", (e) => {
   e.preventDefault()
   const nEmail = document.querySelector("#nEmail").value;
+
+  btn.classList.add("button--loading");
+  btn.disabled = true
 
   fetch("/newsletter-management/newsletter-views/add-subscriber", {
     method: "POST",
@@ -21,11 +25,15 @@ addSubForm.addEventListener("submit", (e) => {
     addSubForm.reset()
     serverMessage.innerHTML = response.statusMessage
     serverMessage.style.cssText = "background-color: #d4edda; color:#1b5e20; padding: 16px;"
+    btn.classList.remove("button--loading")
+    btn.disabled = false
   })
 
   .catch(error => {
     serverMessage.innerHTML = error.toString().split(": ")[1]
     serverMessage.style.cssText = "background-color: #f8d7da; color:#b71c1c; padding: 16px;"
+    btn.classList.remove("button--loading")
+    btn.disabled = false
   })
 
 })

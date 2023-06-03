@@ -1,51 +1,56 @@
-const { PI } = require("aws-sdk");
-const mysql = require("mysql"),
+const { PI } = require("aws-sdk"),
+e = require("connect-flash"),
+mysql = require("mysql"),
 multer  = require("multer"),
 path = require("path"),
 multerS3 = require("multer-s3-v2"),
-{s3, deleteImage} = require("../config/s3-setup.js"),
+S3 = require("../config/s3-setup.js"),
 db = require("../config/db-setup.js");
 
 require("dotenv").config();
 
 const storage = multerS3({
-  s3: s3,
+  s3: S3.s3,
   bucket: process.env.AWS_BUCKET_NAME,
-  metadata: function(req, file, cb) {
-    cb(null, { originalname: file.originalname });
+  metadata: (req, file, callback) => {
+    callback(null, { originalname: file.originalname });
   },
-  key: function(req, file, cb) {
+  key: (req, file, callback) => {
     const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9)
-    cb(null, uniqueSuffix + path.extname(file.originalname))
+    callback(null, uniqueSuffix + path.extname(file.originalname))
   }
 })
 
-function checkFileType(file, cb){
+function checkFileType(file, callback){
   const filetypes = /jpeg|png|jpg|gif/
   const extname = filetypes.test(path.extname(file.originalname).toLowerCase())
   const mimetype = filetypes.test(file.mimetype)
 
   if(mimetype && extname){
-    return cb(null,true)
+    return callback(null,true)
   } else {
-    cb("Please upload images only")
+    return callback("Please upload images only")
   }
 }
 
 const upload = multer({ 
   storage: storage,
   limits: { fileSize: 1000000 },
-  fileFilter: function (req, file, cb) {
-    checkFileType(file, cb)
+  fileFilter: (req, file, callback) => {
+    checkFileType(file, callback)
   }
 }).any()
 
-exports.createProduct = (req, res) => {
-
+exports.addProduct = (req, res) => {
   upload(req, res, (err) => {
     if(!err && req.files != "") {
-      saveProductInDB(req.files, req.body)
-      return res.status(200).json({statusMessage:"Product has been added successfully.", status:200})
+      saveProductInDB(req.files, req.body, (err, result) => {
+        if(!err){
+          return res.status(200).json({statusMessage:"Product has been added successfully.", status:200})
+        } else {
+          return res.status(500).json({statusMessage:"Internal server error", status:500})
+        }
+      })
     } else if (!err && req.files == ""){
       return res.status(400).json({statusMessage:"Please select an image to upload.", status:400})
     } else {
@@ -56,17 +61,31 @@ exports.createProduct = (req, res) => {
 }
 
 exports.editProductInfo = (req, res) => {
-  editProductInfoInDB(req.body)
-  return res.status(200).json({statusMessage:"Product has been edited successfully.", status:200})
+  editProductInfoInDB(req.body, (err, result) => {
+    if(!err){
+      return res.status(200).json({statusMessage:"Product has been edited successfully.", status:200})
+    } else {
+      return res.status(500).json({statusMessage:"Internal server error", status:500})
+    }
+  })
 }
 
-exports.editProductImage = (req, res) => {
-
+exports.editProductInfoImage = (req, res) => {
   upload(req, res, (err) => {
     if(!err && req.files != "") { 
-      deleteOldImageFromS3(req.body) 
-      editProductImageInDB(req.files, req.body)
-      return res.status(200).json({statusMessage:"Product has been edited successfully.", status:200})
+      S3.deleteS3Image(req.body.pSavedImage, (err, result) => {
+        if(!err){
+            editProductInfoImageInDB(req.files, req.body, (err, result) => {
+              if(!err){
+                return res.status(200).json({statusMessage:"Product has been edited successfully.", status:200})
+              } else {
+                return res.status(200).json({statusMessage:"Internal server error", status:500})
+              }
+            })
+        } else {
+          return res.status(200).json({statusMessage:"Internal server error", status:500})
+        }
+      })
     } else if (!err && req.files == ""){
       return res.status(400).json({statusMessage:"Please select an image to upload.", status:400})
     } else {
@@ -142,28 +161,26 @@ exports.findDNAProductsByProductNumber = (req, res) => {
   })
 }
 
-function deleteOldImageFromS3(pInfo){
-  const {pSavedImage} = pInfo
-  deleteImage(pSavedImage)
-}
-
-function saveProductInDB(pImage, pInfo){
+saveProductInDB = (pImage, pInfo, callback) => {
   const {pCategory, pGender, pBrand, pNumber, pName, pPrice, pDescription, pQuantity_OS, pQuantity_XS, pQuantity_S, pQuantity_M, pQuantity_L, pQuantity_XL, pQuantity_XXL} = pInfo
   db.query("INSERT INTO products (pCategory, pGender, pImage, pBrand, pNumber, pName, pPrice, pDescription, pQuantity_OS,pQuantity_XS, pQuantity_S, pQuantity_M, pQuantity_L, pQuantity_XL, pQuantity_XXL) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", [pCategory, pGender, pImage[0].key, pBrand, pNumber, pName, pPrice, pDescription, pQuantity_OS, pQuantity_XS, pQuantity_S, pQuantity_M, pQuantity_L, pQuantity_XL, pQuantity_XXL], (err, result) => {
-    if(err) throw new Error(err)
+    if(err) callback(err, null)
+    else callback(null, result)
   })
 }
 
-function editProductInfoInDB(pInfo){
+editProductInfoInDB = (pInfo, callback) => {
   const {pId, pCategory, pGender, pImage, pBrand, pNumber, pName, pPrice, pDescription, pQuantity_OS, pQuantity_XS, pQuantity_S, pQuantity_M, pQuantity_L, pQuantity_XL, pQuantity_XXL} = pInfo
   db.query("UPDATE products SET pCategory = ?, pGender = ?, pImage = ?, pBrand = ?, pNumber = ?, pName = ?, pPrice = ?, pDescription = ?, pQuantity_OS = ?, pQuantity_XS = ?, pQuantity_S = ?, pQuantity_M = ?, pQuantity_L = ?, pQuantity_XL = ?, pQuantity_XXL = ? WHERE pId = ?", [pCategory, pGender, pImage, pBrand, pNumber, pName, pPrice, pDescription, pQuantity_OS, pQuantity_XS, pQuantity_S, pQuantity_M, pQuantity_L, pQuantity_XL, pQuantity_XXL, pId], (err, result) => {
-    if(err) throw new Error(err)
+    if(err) callback(err, null)
+    else callback(null, result)
   })
 }
 
-function editProductImageInDB(pImage, pInfo){
+editProductInfoImageInDB = (pImage, pInfo, callback) => {
   const {pId, pCategory, pGender, pBrand, pNumber, pName, pPrice, pDescription, pQuantity_OS, pQuantity_XS, pQuantity_S, pQuantity_M, pQuantity_L, pQuantity_XL, pQuantity_XXL} = pInfo
   db.query("UPDATE products SET pCategory = ?, pGender = ?, pImage = ?, pBrand = ?, pNumber = ?, pName = ?, pPrice = ?, pDescription = ?, pQuantity_OS = ?, pQuantity_XS = ?, pQuantity_S = ?, pQuantity_M = ?, pQuantity_L = ?, pQuantity_XL = ?, pQuantity_XXL = ? WHERE pId = ?", [pCategory, pGender, pImage[0].key, pBrand, pNumber, pName, pPrice, pDescription, pQuantity_OS, pQuantity_XS, pQuantity_S, pQuantity_M, pQuantity_L, pQuantity_XL, pQuantity_XXL, pId], (err, result) => {
-    if(err) throw new Error(err)
+    if(err) callback(err, null)
+    else callback(null, result)
   })
 }

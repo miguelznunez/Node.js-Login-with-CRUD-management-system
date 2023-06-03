@@ -1,10 +1,15 @@
 const nForm = document.querySelector("#newsletter-form"),
 serverMessage = document.querySelector(".server-message"),
-formInput = document.querySelector(".form-input");
+formInput = document.querySelector(".form-input"),
+btn = document.querySelector(".button");
 
 nForm.addEventListener("submit", (e) => {
   e.preventDefault()
   const email = document.querySelector("#email").value
+
+  btn.classList.add("button--loading");
+  btn.disabled = true
+
   fetch("/newsletter-form", {
     method: "POST",
     headers: {
@@ -21,12 +26,16 @@ nForm.addEventListener("submit", (e) => {
     formInput.innerHTML = ""
     serverMessage.innerHTML = response.statusMessage
     serverMessage.style.cssText = "background-color: #d4edda; color:#1b5e20; padding: 12px;border-radius:5px;width:100%;"
+    btn.classList.remove("button--loading")
+    btn.disabled = false
     setTimeout(removeServerMessage, 15000)
   })
 
   .catch(error => {
     serverMessage.innerHTML = error.toString().split(": ")[1]
     serverMessage.style.cssText = "background-color: #f8d7da; color:#b71c1c; padding: 12px;border-radius:5px;width:100%;"
+    btn.classList.remove("button--loading")
+    btn.disabled = false
     setTimeout(removeServerMessage, 15000)
   })
 

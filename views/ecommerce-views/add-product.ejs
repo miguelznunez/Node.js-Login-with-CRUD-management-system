@@ -14,6 +14,8 @@
 
       <div class="server-message"></div>
 
+      <br>
+
       <h3>eCommerce management</h3>
 
       <br>
@@ -22,7 +24,7 @@
 
       <br>      
 
-      <form id="create-product-form">
+      <form id="add-product-form">
 
         <div>
           <div class="input-image">
@@ -74,7 +76,7 @@
           <textarea id="pDescription" placeholder="Description" required></textarea>
           <br>
           <br>
-          <button class="auth-btn">Add</button>
+          <button class="auth-btn button"><span class="button__text">Add</span></button>
         </div>
 
         <div>
@@ -152,11 +154,12 @@
   <script src="/js/sidebar-menu.js"></script>
   <script src="/js/script.js"></script>
   <script>
-    const createProductForm = document.querySelector("#create-product-form"),
+    const addProductForm = document.querySelector("#add-product-form"),
       queuedImage = document.querySelector('.queued-image'),
       inputImage = document.querySelector('.input-image'),
       input = document.querySelector('.input-image input'),
-      serverMessage = document.querySelector('.server-message');
+      serverMessage = document.querySelector('.server-message'),
+      btn = document.querySelector(".button");
 
     let queuedImageArray = []
 
@@ -184,13 +187,13 @@
       displayQueuedImage()
     })
 
-    createProductForm.addEventListener("submit", (e) => {
+    addProductForm.addEventListener("submit", (e) => {
       e.preventDefault()
       sendQueuedImageToServer()
     });
 
     function sendQueuedImageToServer() {
-      const formData = new FormData(createProductForm),
+      const formData = new FormData(addProductForm),
       pCategory = document.querySelector("#pCategory").value,
       pGender = document.querySelector("#pGender").value,
       pBrand = document.querySelector("#pBrand").value,
@@ -220,24 +223,34 @@
       formData.append("pQuantity_M", pQuantity_M)
       formData.append("pQuantity_L", pQuantity_L)
       formData.append("pQuantity_XL", pQuantity_XL)
-      formData.append("pQuantity_XXL", pQuantity_XXL)
+      formData.append("pQuantity_XXL", pQuantity_XXL);
 
-      fetch("/ecommerce-management/create-product", {
+      btn.classList.add("button--loading");
+      btn.disabled = true
+
+      fetch("/ecommerce-management/add-product", {
         method: "POST",
         body: formData
       })
 
+      .then( response => response.json() )
+
       .then(response => {
         if (response.status !== 200) throw Error(response.statusMessage)
-        createProductForm.reset()
+        console.log(response)
+        addProductForm.reset()
         queuedImage.innerHTML = ""
         serverMessage.innerHTML = response.statusMessage
         serverMessage.style.cssText = "background-color: #d4edda; color:#1b5e20; padding: 16px;"
+        btn.classList.remove("button--loading")
+        btn.disabled = false
       })
 
       .catch(error => {
         serverMessage.innerHTML = error
         serverMessage.style.cssText = "background-color: #f8d7da; color:#b71c1c; padding: 16px;"
+        btn.classList.remove("button--loading")
+        btn.disabled = false
       });
 
     }

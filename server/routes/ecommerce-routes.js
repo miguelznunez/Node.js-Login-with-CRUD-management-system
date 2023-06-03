@@ -2,7 +2,7 @@ const express = require("express"),
 authController = require("../controllers/auth-controller"),
 ecommerceManagementController = require("../controllers/ecommerce-controller"),
 db = require("../config/db-setup.js"),
-{getImageStream} = require("../config/s3-setup.js");
+S3 = require("../config/s3-setup.js");
 
 const router = express.Router();
 
@@ -52,7 +52,7 @@ router.get("/ecommerce-views/edit-product/:pId", authController.isLoggedIn, (req
 })
 
 router.get("/:image_key", (req, res) => {
-  const readStream = getImageStream(req.params.image_key)
+  const readStream = S3.getS3ImageStream(req.params.image_key)
   readStream.pipe(res)
 })
 
@@ -115,11 +115,11 @@ router.get("/ecommerce-views/delete-product/:pGender/:pId", authController.isLog
 
 // USER MANAGEMENT POST ROUTES  ============================================================
 
-router.post("/create-product", ecommerceManagementController.createProduct)
+router.post("/add-product", ecommerceManagementController.addProduct)
 
 router.put("/edit-product-info", ecommerceManagementController.editProductInfo)
 
-router.put("/edit-product-image", ecommerceManagementController.editProductImage)
+router.put("/edit-product-info-image", ecommerceManagementController.editProductInfoImage)
 
 router.post("/search-men-products-by-brand-and-category", ecommerceManagementController.findMenProductsByBrandCategory)
 

@@ -12,12 +12,17 @@ const s3 = new S3({
   secretAccessKey
 });
 
-function getImageStream(imageKey){
+const getS3ImageStream = (imageKey) => {
   return s3.getObject({Bucket: bucketName, Key: imageKey}).createReadStream()
 }
 
-function deleteImage(imageKey){
-  return s3.deleteObject({Bucket: bucketName, Key: imageKey}).promise()
+const deleteS3Image = (imageKey, callback) => {
+  s3.deleteObject({
+    Bucket: bucketName,
+    Key: imageKey }, (err, result) => {
+      if(err) callback(err, null)
+      else callback(null, result)
+  })
 }
 
-module.exports = {s3, getImageStream, deleteImage}
+module.exports = {s3, getS3ImageStream, deleteS3Image}

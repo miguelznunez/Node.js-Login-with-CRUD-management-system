@@ -26,6 +26,7 @@
 
         <div class="server-message"></div>
 
+        <br>
 
         <div class="flex">
           <h3>eCommerce management</h3>
@@ -89,7 +90,7 @@
             <textarea id="pDescription" placeholder="Description" required><%= rows[0].pDescription %></textarea>
             <br>
             <br>
-            <button class="auth-btn">Update</button>
+            <button class="auth-btn button"><span class="button__text">Update</span></button>
           </div>
         
           <div>
@@ -131,7 +132,8 @@
           inputImage = document.querySelector('.input-image'),
           input = document.querySelector('.input-image input'),
           serverMessage = document.querySelector('.server-message'),
-          savedImage = JSON.parse('<%-JSON.stringify(rows[0].pImage)%>');
+          savedImage = JSON.parse('<%-JSON.stringify(rows[0].pImage)%>'),
+          btn = document.querySelector(".button");
 
         let queuedImageArray = []
 
@@ -216,6 +218,9 @@
 
           if (queuedImageArray[0] === savedImage) {
 
+            btn.classList.add("button--loading");
+            btn.disabled = true
+
             fetch("/ecommerce-management/edit-product-info", {
               method: "PUT",
               headers: {
@@ -225,32 +230,47 @@
               body: JSON.stringify({ pId: pId, pCategory: pCategory, pGender: pGender, pImage: savedImage, pBrand: pBrand, pNumber: pNumber, pName: pName, pPrice: pPrice, pDescription: pDescription, pQuantity_OS: pQuantity_OS, pQuantity_XS: pQuantity_XS, pQuantity_S: pQuantity_S, pQuantity_M: pQuantity_M, pQuantity_L: pQuantity_L, pQuantity_XL: pQuantity_XL, pQuantity_XXL: pQuantity_XXL })
             })
 
+            .then( response => response.json() )
+
             .then(response => {
               if (response.status !== 200) throw Error(response.statusMessage)
               serverMessage.innerHTML = response.statusMessage
               serverMessage.style.cssText = "background-color: #d4edda; color:#1b5e20; padding: 16px;"
+              btn.classList.remove("button--loading")
+              btn.disabled = false
             })
 
             .catch(error => {
               serverMessage.innerHTML = error
               serverMessage.style.cssText = "background-color: #f8d7da; color:#b71c1c; padding: 16px;"
+              btn.classList.remove("button--loading")
+              btn.disabled = false
             });
           } else {
 
-            fetch("/ecommerce-management/edit-product-image", {
+            btn.classList.add("button--loading");
+            btn.disabled = true
+
+            fetch("/ecommerce-management/edit-product-info-image", {
               method: "PUT",
               body: formData
             })
 
+            .then( response => response.json() )
+
             .then(response => {
               if (response.status !== 200) throw Error(response.statusMessage)
               serverMessage.innerHTML = response.statusMessage
               serverMessage.style.cssText = "background-color: #d4edda; color:#1b5e20; padding: 16px;"
+              btn.classList.remove("button--loading")
+              btn.disabled = false
             })
 
             .catch(error => {
               serverMessage.innerHTML = error
               serverMessage.style.cssText = "background-color: #f8d7da; color:#b71c1c; padding: 16px;"
+              btn.classList.remove("button--loading")
+              btn.disabled = false
             });
           }
 

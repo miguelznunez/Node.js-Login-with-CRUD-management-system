@@ -616,7 +616,7 @@ th{
   z-index: 0;
 }
 
-#create-product-form,
+#add-product-form,
 #edit-product-form{
   width: 100%;
   display: grid;
@@ -626,10 +626,10 @@ th{
 
 #add-user-form input[type="text"],
 #add-user-form input[type="email"],
-#create-product-form input[type="text"],
-#create-product-form input[type="file"],
-#create-product-form input[type="number"],
-#create-product-form textarea,
+#add-product-form input[type="text"],
+#add-product-form input[type="file"],
+#add-product-form input[type="number"],
+#add-product-form textarea,
 #edit-product-form input[type="text"],
 #edit-product-form input[type="file"],
 #edit-product-form input[type="number"],
@@ -642,7 +642,7 @@ th{
   width: 100%;
 }
 
-#create-product-form textarea,
+#add-product-form textarea,
 #edit-product-form textarea{
   border: 1px solid lightgray;
   border-radius: 5px;
@@ -653,9 +653,10 @@ th{
 
 #add-user-form .auth-btn,
 #create-email-form .auth-btn,
-#create-product-form .auth-btn,
+#add-product-form .auth-btn,
 #edit-product-form .auth-btn,
-#add-subscriber-form .auth-btn{
+#add-subscriber-form .auth-btn,
+#newsletter-form .auth-btn{
   width: 100%;
 }
 
@@ -669,19 +670,6 @@ th{
   border: 1px solid red;
   color: white;
 }
-
-/* #delete-user-form{
-  padding: none;
-  margin: none;
-  display: inline;
-} */
-
-/* #delete-user-form button{
-  outline: none;
-  border: none;
-  padding: 5px;
-  font-size: 0.9rem;
-} */
 
 .admin-user-radios{
   width: 100%;

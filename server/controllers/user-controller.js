@@ -90,7 +90,7 @@ exports.addUser = (req, res) => {
           db.query("INSERT INTO users (fName, lName, email, password, member_since, status) VALUES (?,?,?,?,?,?)", [fName, lName, email, hash, member_since, "Active"],
             async (err, results) => {
               if (!err) {
-                return res.status(200).json({statusMessage:`A new user with an email address of ${email} has been created successfully.`, status:200})
+                return res.status(200).json({statusMessage:`A new user with an email address of ${email} has been successfully created.`, status:200})
               // DATABASE ERROR
               } else { 
                 return res.status(500).json({statusMessage:"Internal server error", status:500})
@@ -112,7 +112,7 @@ exports.updateUser = (req, res) => {
 
   db.query("UPDATE users SET status = ?, admin = ? WHERE id = ?", [status, admin, id], async (err, results) => {
     if (!err) {
-      return res.status(200).json({statusMessage:`This user has been updated successfully.`, status:200})
+      return res.status(200).json({statusMessage:`This user has been successfully updated.`, status:200})
     } else {
       return res.status(500).json({statusMessage:"Internal server error", status:500})
     }

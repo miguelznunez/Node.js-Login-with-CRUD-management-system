@@ -2,7 +2,8 @@ const showPassword = document.querySelector("#show-password"),
 passwordField = document.querySelector("#password"),
 passwordMatchField = document.querySelector("#confirm-password"),
 addUserForm = document.querySelector("#add-user-form"),
-serverMessage = document.querySelector(".server-message");
+serverMessage = document.querySelector(".server-message"),
+btn = document.querySelector(".button");
 
 showPassword.addEventListener("click", function (e) {
   if (showPassword.checked) {
@@ -23,6 +24,9 @@ addUserForm.addEventListener("submit", (e) => {
   password = document.querySelector("#password").value,
   cPassword = document.querySelector("#confirm-password").value;
 
+  btn.classList.add("button--loading");
+  btn.disabled = true
+
   fetch("/user-management/user-views/add-user", {
     method: "POST",
     headers: {
@@ -39,11 +43,15 @@ addUserForm.addEventListener("submit", (e) => {
     addUserForm.reset()
     serverMessage.innerHTML = response.statusMessage
     serverMessage.style.cssText = "background-color: #d4edda; color:#1b5e20; padding: 16px;"
+    btn.classList.remove("button--loading")
+    btn.disabled = false
   })
 
   .catch(error => {
     serverMessage.innerHTML = error.toString().split(": ")[1]
     serverMessage.style.cssText = "background-color: #f8d7da; color:#b71c1c; padding: 16px;"
+    btn.classList.remove("button--loading")
+    btn.disabled = false
   })
 
 })
