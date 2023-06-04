@@ -45,7 +45,7 @@ router.get("/auth-views/google", passport.authenticate("google", {
 }))
 
 router.get("/auth-views/google/redirect", passport.authenticate("google", {
-  successRedirect:'/',
+  successRedirect:"/",
   failureRedirect:"/auth-management/auth-views/login",
   failureFlash : true
 }))
@@ -53,11 +53,10 @@ router.get("/auth-views/google/redirect", passport.authenticate("google", {
 router.get("/auth-views/facebook", passport.authenticate("facebook"))
 
 router.get("/auth-views/facebook/redirect", passport.authenticate("facebook", {
-  failureRedirect: "/auth-management/auth-views/login"
-}), function(req, res) {
-    // Successful authentication, redirect home.
-    res.redirect('/')
-});
+  successRedirect: "/",
+  failureRedirect: "/auth-management/auth-views/login",
+  failureFlash: true
+}))
 
 router.get("/auth-views/password-reset", authController.isLoggedIn, (req, res) => {
   if(!req.user && !checkBrowser(req.headers)) {

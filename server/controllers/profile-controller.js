@@ -13,7 +13,7 @@ exports.deleteAccount = (req, res) => {
     }
     // USER EXISTS IN FEDERATED CREDENTIALS
     if(!err && row != ""){
-      console.log("Google user")
+      console.log("A social media user")
       db.query("UPDATE federated_credentials SET subject = ? WHERE user_id = ?", [null, id], (err, rows) => {
         if(!err) { 
           db.query("UPDATE users SET email = ?, status = ? WHERE id = ?", [null, "Deleted", id], (err, rows) => {
@@ -36,7 +36,7 @@ exports.deleteAccount = (req, res) => {
       })
     // IF THEY DONT: DELETE FROM USERS TABLE ONLY
     } else {
-      console.log("Email user")
+      console.log("Manual email user")
       db.query("UPDATE users SET email = ?, status = ? WHERE id = ?", [null, "Deleted", id], (err, rows) => {
         if(!err) { 
             // mail.accountDeletedEmail(email, (err, info) => {

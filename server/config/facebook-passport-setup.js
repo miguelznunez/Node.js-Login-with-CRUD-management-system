@@ -1,5 +1,6 @@
 const passport = require("passport"),
 FacebookStrategy = require("passport-facebook"),
+request = require("request"),
 db = require("./mysql-db-setup.js");
 
 require("dotenv").config()
@@ -11,16 +12,6 @@ function get_date(){
     return yourDate.toISOString().split('T')[0]
 }
 
-// passport.serializeUser((user, cb) => {
-//     cb(null, user)
-// })
-  
-// passport.deserializeUser((id, cb) => {
-// db.query("SELECT * FROM users WHERE id = ?", [id], (err, results) => {
-//     cb(null, results[0])
-// })  
-// })
-
 passport.use(new FacebookStrategy({
     clientID: process.env.FACEBOOK_APP_ID,
     clientSecret: process.env.FACEBOOK_APP_SECRET,
@@ -28,6 +19,8 @@ passport.use(new FacebookStrategy({
     profileFields: ['id', 'photos', 'name', 'displayName', 'emails']
   },
   function verify(accessToken, refreshToken, profile, cb) {
+
+    
     // CHECK IF USER ALREADY EXISTS
     db.query("SELECT * FROM federated_credentials WHERE provider = ? AND subject = ?", [profile.provider, profile.id], (err, results) => {
 
@@ -51,14 +44,27 @@ passport.use(new FacebookStrategy({
         // IF THEY DON'T: SAVE USER IN USERS & FEDERATED CREDENTIALS TABLE
         } else {
 
-            if(profile.emails){
-                console.log(profile.emails)
-            } 
-            
-            const facebookEmail = `${profile.id}@facebook.com`
-            
+            // let url = "https://graph.facebook.com/v3.2/me?" +
+            //       "fields=id,name,email,first_name,last_name&access_token=" + accessToken;
+
+            // request({
+            //     url: url,
+            //     json: true
+            // }, function (err, response, body) {
+            //     let email = body.email;  // body.email contains your email
+            //     console.log(body); 
+            // });
+
+            let email = ""
+
+            if(profile.emails !== undefined){
+                email = profile.emails[0].value
+            } else {
+                email = `${profile.id}@facebook.com`
+            }
+        
             db.query("INSERT INTO users (fName, lName, email, member_since, status) VALUES (?,?,?,?,?)", [
-            profile.name.givenName, profile.name.familyName, facebookEmail, get_date(), "Active"], (err, results) => {
+            profile.name.givenName, profile.name.familyName, email, get_date(), "Active"], (err, results) => {
                 // IF NO ERROR: SAVE USER IN FEDERATED_CREDENTIALS TABLE
                 if(!err){
                     let id = results.insertId
