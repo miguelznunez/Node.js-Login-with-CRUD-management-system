@@ -4,8 +4,8 @@ mysql = require("mysql"),
 multer  = require("multer"),
 path = require("path"),
 multerS3 = require("multer-s3-v2"),
-S3 = require("../config/s3-setup.js"),
-db = require("../config/db-setup.js");
+S3 = require("../config/aws-s3-setup.js"),
+db = require("../config/mysql-db-setup.js");
 
 require("dotenv").config();
 

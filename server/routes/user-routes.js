@@ -1,7 +1,7 @@
 const express = require("express"),
 userManagementController = require("../controllers/user-controller"),
 authController = require("../controllers/auth-controller"),
-db = require("../config/db-setup.js"),
+db = require("../config/mysql-db-setup.js"),
 {check} = require("express-validator"),
 router = express.Router();
 

@@ -1,5 +1,5 @@
 const mysql = require("mysql"),
-db = require("../config/db-setup.js"),
+db = require("../config/mysql-db-setup.js"),
 bcrypt = require("bcrypt"),
 saltRounds = 10,
 {validationResult} = require("express-validator");

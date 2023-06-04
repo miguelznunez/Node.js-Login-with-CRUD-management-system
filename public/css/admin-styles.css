@@ -533,6 +533,9 @@ th{
 .passport-login{
   width: 100%;
   text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 
 .auth-btn{
@@ -549,6 +552,16 @@ th{
 .google{
   background-color: #DB4437;
   border: 1px solid #DB4437;
+}
+
+.facebook{
+  background-color: #4267B2;
+  border: 1px solid #4267B2;
+}
+
+.twitter{
+  background-color: #1DA1F2;
+  border: 1px solid #1DA1F2;
 }
 
 /* USER MANAGEMENT */

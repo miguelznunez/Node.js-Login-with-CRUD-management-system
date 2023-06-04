@@ -1,8 +1,8 @@
 const express = require("express"),
 authController = require("../controllers/auth-controller"),
 ecommerceManagementController = require("../controllers/ecommerce-controller"),
-db = require("../config/db-setup.js"),
-S3 = require("../config/s3-setup.js");
+db = require("../config/mysql-db-setup.js"),
+S3 = require("../config/aws-s3-setup.js");
 
 const router = express.Router();
 

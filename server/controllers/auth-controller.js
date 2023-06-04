@@ -1,9 +1,9 @@
 const mysql = require("mysql"),
-db = require("../config/db-setup.js"),
+db = require("../config/mysql-db-setup.js"),
 jwt = require("jsonwebtoken"),
 bcrypt = require("bcrypt"),
 saltRounds = 10,
-mail = require("../config/mail-setup.js"),
+mail = require("../config/nodemailer-email-setup.js"),
 {promisify} = require("util"),
 {validationResult} = require("express-validator");
 

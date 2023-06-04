@@ -1,6 +1,7 @@
 const express = require("express"),
 path = require("path"),
 googlePassportSetup = require("./server/config/google-passport-setup"),
+facebookPassportSetup = require("./server/config/facebook-passport-setup"),
 cookieParser = require("cookie-parser"),
 session = require('express-session'),
 passport = require("passport"),

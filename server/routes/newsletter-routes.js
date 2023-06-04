@@ -1,5 +1,5 @@
 const express = require("express"),
-db = require("../config/db-setup.js"),
+db = require("../config/mysql-db-setup.js"),
 authController = require("../controllers/auth-controller"),
 newsletterController = require("../controllers/newsletter-controller"),
 {check} = require("express-validator"),

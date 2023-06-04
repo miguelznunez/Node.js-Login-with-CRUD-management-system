@@ -1,7 +1,7 @@
-const { verify } = require("jsonwebtoken");
 const passport = require("passport"),
 GoogleStrategy = require("passport-google-oauth20"),
-db = require("./db-setup.js");
+db = require("./mysql-db-setup.js");
+
 require("dotenv").config()
 
 function get_date(){
@@ -70,7 +70,7 @@ passport.use(
           }          
         })
       }
-
     })
+    
   })
 )

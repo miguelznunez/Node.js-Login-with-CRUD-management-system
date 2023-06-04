@@ -1,6 +1,6 @@
 const express = require("express"),
 authController = require("../controllers/auth-controller"),
-db = require("../config/db-setup.js"),
+db = require("../config/mysql-db-setup.js"),
 passport = require("passport"),
 {check} = require("express-validator"),
 router = express.Router();
@@ -44,11 +44,20 @@ router.get("/auth-views/google", passport.authenticate("google", {
   scope: ["profile","email"]
 }))
 
-router.get("/auth-views/google/redirect", passport.authenticate("google",{
+router.get("/auth-views/google/redirect", passport.authenticate("google", {
   successRedirect:'/',
   failureRedirect:"/auth-management/auth-views/login",
   failureFlash : true
 }))
+
+router.get("/auth-views/facebook", passport.authenticate("facebook"))
+
+router.get("/auth-views/facebook/redirect", passport.authenticate("facebook", {
+  failureRedirect: "/auth-management/auth-views/login"
+}), function(req, res) {
+    // Successful authentication, redirect home.
+    res.redirect('/')
+});
 
 router.get("/auth-views/password-reset", authController.isLoggedIn, (req, res) => {
   if(!req.user && !checkBrowser(req.headers)) {

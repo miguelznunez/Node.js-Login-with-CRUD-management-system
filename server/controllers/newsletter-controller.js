@@ -1,6 +1,6 @@
 const express = require("express"),
-db = require("../config/db-setup.js"),
-mail = require("../config/mail-setup.js"),
+db = require("../config/mysql-db-setup.js"),
+mail = require("../config/nodemailer-email-setup.js"),
 {validationResult} = require("express-validator");
 
 function get_date(){
