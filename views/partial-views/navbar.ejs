@@ -1,107 +1,94 @@
 <header id="header">
-
-    <div class="navbar">
-
-      <div class="nav-branding">
-        <a href="/" >My Admin</a>
-      </div>
-      
-      <ul class="nav-menu">
-        
-        <li class="nav-item">
-          <div class="dropdown" data-dropdown>
-
-            <% if (typeof user !="undefined") { %>
-              <button class="link" data-dropdown-button>Hello, <%= user.fName %> <i class="fa-solid fa-angle-down" data-dropdown-button style="color:white"></i></button>
-            <% } else { %>
-              <button class="link" data-dropdown-button>Menu <i class="fa-solid fa-caret-down" data-dropdown-button
-                  style="color:white"></i></button>
+  <div class="navbar">
+    <div class="nav-branding">
+      <a href="/" >My Admin</a>
+    </div>
+    <ul class="nav-menu">
+      <li class="nav-item">
+        <div class="dropdown" data-dropdown>
+          <% if (typeof user !="undefined") { %>
+            <button class="link" data-dropdown-button>Hello, <%= user.fName %> <i class="fa-solid fa-angle-down" data-dropdown-button></i></button>
+          <% } else { %>
+            <button class="link" data-dropdown-button>Menu <i class="fa-solid fa-caret-down" data-dropdown-button></i></button>
+          <% } %>
+          <div class="dropdown-menu">
+            <% if (typeof user !="undefined" && user.admin === "Yes" ) { %>
+              <a href="/">
+                <div class="dropdown-links">
+                  <h3>Home</h3>
+                </div>
+              </a>
+              <a href="/user-management/user-views/active-users">
+                <div class="dropdown-links">
+                  <h3>User Management</h3>
+                </div>
+              </a>
+              <a href="/ecommerce-management/ecommerce-views/men/view-men-products">
+                <div class="dropdown-links">
+                  <h3>eCommerce Management</h3>
+                </div>
+              </a>
+              <a href="/newsletter-management/newsletter-views/subscribers">
+                <div class="dropdown-links">
+                  <h3>Newsletter Management</h3>
+                </div>
+              </a>
+              <a href="/profile-management/profile-views/profile">
+                <div class="dropdown-links">
+                  <h3>Profile</h3>
+                </div>
+              </a>
+              <a href="/shop-products">
+                <div class="dropdown-links">
+                  <h3>Store</h3>
+                </div>
+              </a>
+              <a href="/auth-management/auth-views/logout">
+                <div class="dropdown-links">
+                  <h3>Log out</h3>
+                </div>
+              </a>
             <% } %>
 
-            <div class="dropdown-menu">
-              <% if (typeof user !="undefined" && user.admin === "Yes" ) { %>
-                <a href="/">
-                  <div class="dropdown-links">
-                    <h3>Home</h3>
-                  </div>
-                </a>
-                <a href="/user-management/user-views/active-users">
-                  <div class="dropdown-links">
-                    <h3>User Management</h3>
-                  </div>
-                </a>
-                <a href="/ecommerce-management/ecommerce-views/men/view-men-products">
-                  <div class="dropdown-links">
-                    <h3>eCommerce Management</h3>
-                  </div>
-                </a>
-                <a href="/newsletter-management/newsletter-views/subscribers">
-                  <div class="dropdown-links">
-                    <h3>Newsletter Management</h3>
-                  </div>
-                </a>
-                <a href="/profile-management/profile-views/profile">
-                  <div class="dropdown-links">
-                    <h3>Profile</h3>
-                  </div>
-                </a>
-                <a href="/shop-products">
-                  <div class="dropdown-links">
-                    <h3>Store</h3>
-                  </div>
-                </a>
-                <a href="/auth-management/auth-views/logout">
-                  <div class="dropdown-links">
-                    <h3>Log out</h3>
-                  </div>
-                </a>
-              <% } %>
+            <% if (typeof user !="undefined" && user.admin === "No") { %>
+              <a href="/">
+                <div class="dropdown-links">
+                  <h3>Home</h3>
+                </div>
+              </a>
+              <a href="/profile-management/profile-views/profile">
+                <div class="dropdown-links">
+                  <h3>Profile</h3>
+                </div>
+              </a>
+              <a href="/auth-management/auth-views/logout">
+                <div class="dropdown-links">
+                  <h3>Log out</h3>
+                </div>
+              </a>
+            <% } %>
 
-              <% if (typeof user !="undefined" && user.admin === "No") { %>
-                <a href="/">
-                  <div class="dropdown-links">
-                    <h3>Home</h3>
-                  </div>
-                </a>
-                <a href="/profile-management/profile-views/profile">
-                  <div class="dropdown-links">
-                    <h3>Profile</h3>
-                  </div>
-                </a>
-                <a href="/auth-management/auth-views/logout">
-                  <div class="dropdown-links">
-                    <h3>Log out</h3>
-                  </div>
-                </a>
-              <% } %>
+            <% if (typeof user === "undefined") { %>
+              <a href="/">
+                <div class="dropdown-links">
+                  <h3>Home</h3>
+                </div>
+              </a>
+              <a href="/auth-management/auth-views/login">
+                <div class="dropdown-links">
+                  <h3>Log in</h3>
+                </div>
+              </a>
+              <a href="/auth-management/auth-views/signup">
+                <div class="dropdown-links">
+                  <h3>Sign up</h3>
+                </div>
+              </a>
+            <% } %>
 
-              <% if (typeof user === "undefined") { %>
-                <a href="/">
-                  <div class="dropdown-links">
-                    <h3>Home</h3>
-                  </div>
-                </a>
-                <a href="/auth-management/auth-views/login">
-                  <div class="dropdown-links">
-                    <h3>Log in</h3>
-                  </div>
-                </a>
-                <a href="/auth-management/auth-views/signup">
-                  <div class="dropdown-links">
-                    <h3>Sign up</h3>
-                  </div>
-                </a>
-              <% } %>
-
-            </div>
           </div>
-        </li>
-      </ul>
-      <div class="hamburger">
-        <span class="bar"></span>
-        <span class="bar"></span>
-        <span class="bar"></span>
-      </div>
-    </div>
-    
-  </header>
+        </div>
+      </li>
+    </ul>
+  </div> 
+</header>

@@ -1,22 +1,4 @@
-const hamburger = document.querySelector(".hamburger"),
-navMenu = document.querySelector(".nav-menu");
 
-hamburger.addEventListener("click", () => {
-    hamburger.classList.toggle("active");
-    navMenu.classList.toggle("active");
-})
-
-document.querySelectorAll(".nav-link").forEach(n => n.addEventListener("click", () => {
-    hamburger.classList.remove("active");
-    navMenu.classList.remove("active");
-}))
-
-window.addEventListener("scroll", () => {
-	hamburger.classList.remove("active");
-	navMenu.classList.remove("active");
-})
-
-// DROP DOWN MENU
 document.addEventListener("click", e => {
   const isDropdownButton = e.target.matches("[data-dropdown-button]")
   if (!isDropdownButton && e.target.closest("[data-dropdown]") != null) return
