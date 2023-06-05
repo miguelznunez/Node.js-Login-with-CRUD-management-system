@@ -45,47 +45,45 @@
               </a>
               <a href="/auth-management/auth-views/logout">
                 <div class="dropdown-links">
-                  <h3>Log out</h3>
+                  <i class="fa-solid fa-right-from-bracket"></i><span>Log out</span>
                 </div>
               </a>
-            <% } %>
-
-            <% if (typeof user !="undefined" && user.admin === "No") { %>
-              <a href="/">
-                <div class="dropdown-links">
-                  <h3>Home</h3>
-                </div>
-              </a>
+            <% } else if(typeof user !="undefined" && user.admin === "No") { %>
               <a href="/profile-management/profile-views/profile">
                 <div class="dropdown-links">
-                  <h3>Profile</h3>
+                  <i class="fa-solid fa-user"></i><span>My Account</span>
+                </div>
+              </a>
+              <a href="/">
+                <div class="dropdown-links">
+                  <i class="fa-solid fa-house"></i><span>Home</span>
                 </div>
               </a>
               <a href="/auth-management/auth-views/logout">
                 <div class="dropdown-links">
-                  <h3>Log out</h3>
+                  <i class="fa-solid fa-right-from-bracket"></i><span>Log out</span>
                 </div>
               </a>
-            <% } %>
-
-            <% if (typeof user === "undefined") { %>
+            <% } else { %>
               <a href="/">
                 <div class="dropdown-links">
-                  <h3>Home</h3>
+                  <i class="fa-solid fa-house"></i><span>Home</span>
                 </div>
               </a>
-              <a href="/auth-management/auth-views/login">
-                <div class="dropdown-links">
-                  <h3>Log in</h3>
-                </div>
-              </a>
-              <a href="/auth-management/auth-views/signup">
-                <div class="dropdown-links">
-                  <h3>Sign up</h3>
-                </div>
-              </a>
+              <% if(title === "Log in") { %>
+                <a href="/auth-management/auth-views/signup">
+                  <div class="dropdown-links">
+                    <i class="fa-solid fa-user-plus"></i><span>Sign up</span>
+                  </div>
+                </a>
+              <% } else { %>
+                <a href="/auth-management/auth-views/login">
+                  <div class="dropdown-links">
+                    <i class="fa-solid fa-user"></i><span>Log in</span>
+                  </div>
+                </a>
+              <% } %>
             <% } %>
-
           </div>
         </div>
       </li>

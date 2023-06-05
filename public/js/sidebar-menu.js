@@ -1,7 +1,10 @@
 const sidebarHamburger = document.querySelector(".sidebar-hamburger"),
 navBranding = document.querySelector(".nav-branding"),
 sidebarMenu = document.querySelector(".sidebar-menu"),
-content = document.querySelector(".content");
+content = document.querySelector(".content"),
+dropdown = document.querySelectorAll(".dropdown-btn");
+
+let index;
 
 sidebarHamburger.addEventListener("click", () => {
   sidebarHamburger.classList.toggle("active")
@@ -10,12 +13,9 @@ sidebarHamburger.addEventListener("click", () => {
   content.classList.toggle("active")
 })
 
-const dropdown = document.querySelectorAll(".dropdown-btn");
-let i;
-
-for (i = 0; i < dropdown.length; i++) {
-  dropdown[i].addEventListener("click", function() {
-    this.classList.toggle("active");
+for (index = 0; index < dropdown.length; index++) {
+  dropdown[index].addEventListener("click", function() {
+    this.classList.toggle("activate");
     var panel = this.nextElementSibling;
     if (panel.style.maxHeight) {
       panel.style.maxHeight = null;

@@ -156,7 +156,8 @@ th{
 }
 
 .flex .fa-users,
-.flex .fa-cart-shopping{
+.flex .fa-cart-shopping,
+.flex .fa-envelope{
   color: var(--soft-black);
 }
 
@@ -567,9 +568,11 @@ th{
   font-weight: 900;
 }
 
-.active:after {
+.activate:after {
   content: "\2303";
-}
+  font-family: 'Font Awesome\ 5 Free';
+  font-weight: 900;
+} 
 
 /* END DROP DOWN */
 
