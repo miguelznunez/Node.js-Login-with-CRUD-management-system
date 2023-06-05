@@ -151,6 +151,14 @@ th{
   justify-content: space-between;
 }
 
+.flex span{
+  margin-left: 12px;
+}
+
+.flex .fa-users{
+  color: var(--soft-black);
+}
+
 .flex button{
   padding: 8px 10px;
 }
@@ -178,7 +186,7 @@ th{
 }
 
 .column i{
-  color: #000;
+  color: var(--soft-black);
   font-size: 2.5rem;
 }
 
