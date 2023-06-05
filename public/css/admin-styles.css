@@ -155,7 +155,8 @@ th{
   margin-left: 12px;
 }
 
-.flex .fa-users{
+.flex .fa-users,
+.flex .fa-cart-shopping{
   color: var(--soft-black);
 }
 
