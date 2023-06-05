@@ -35,14 +35,19 @@
 
         <table>
           <tr>
+            <th>Id</th>
             <th>First</th>
             <th>Last</th>
             <th>Email</th>
             <th>Status</th>
+            <th>Provider</th>
             <th>Member Since</th>
             <th>Admin</th>
           </tr>
           <tr>
+            <td>
+              <%= userId %>
+            </td>
             <td>
               <%= rows[0].fName %>
             </td>
@@ -54,6 +59,9 @@
             </td>
             <td>
               <%= rows[0].status %>
+            </td>
+            <td>
+              <%= rows[0].provider %>
             </td>
             <td>
               <%= rows[0].member_since %>

@@ -46,6 +46,7 @@
         
         <table>
           <tr>
+            <th>Id</th>
             <th>First</th>
             <th>Last</th>
             <th>Email</th>
@@ -54,6 +55,9 @@
           </tr>
           <% for(let i=0;i < rows.length;i++) { %>
             <tr>
+              <td>
+                <%= rows[i].id %>
+              </td>
               <td>
                 <%= rows[i].fName %>
               </td>

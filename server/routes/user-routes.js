@@ -97,12 +97,13 @@ router.get("/user-views/admin-users", authController.isLoggedIn, (req, res) => {
 
 router.get("/user-views/view-user/:id", authController.isLoggedIn, (req, res) => {
   if(req.user && req.user.admin === "Yes" && !checkBrowser(req.headers)){
-    db.query("SELECT * FROM users WHERE id = ?",[req.params.id], (err, rows) => {
+    db.query("SELECT * FROM users LEFT JOIN federated_credentials ON users.id = federated_credentials.user_id WHERE users.id = ?",[req.params.id], (err, rows) => {
       if(err) { // DATABASE ERROR
         return res.status(500).render("view-user", {title:"View user", user:req.user, message:"Internal server error."})
       }
-      if(!err && rows.length >= 1) { // USER EXISTS
-        return res.status(200).render("view-user", {title:"View User" , user:req.user, rows:rows})
+      if(!err && rows.length == 1) { // USER EXISTS
+        const userId = req.params.id
+        return res.status(200).render("view-user", {title:"View User" , user:req.user, rows:rows, userId:userId})
       } else { // USER DOES NOT EXIST
         return res.status(400).render("view-user", {title:"View user", user:req.user, message:"That user does not exist."})
       }
