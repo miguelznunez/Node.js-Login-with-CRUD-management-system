@@ -10,7 +10,7 @@ delAccountForm.addEventListener("submit", (e) => {
   btn.classList.add("button--loading");
   btn.disabled = true
 
-  fetch("/profile-management/profile-views/delete-account", {
+  fetch("/my-account-management/my-account-views/delete-account", {
     method: "POST",
     headers: {
       "Accept": "application/json, text/plain, */*",

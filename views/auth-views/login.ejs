@@ -5,17 +5,17 @@
 
     <div class="container">
 
-      <br>
-
       <% if(typeof flash !="undefined" && flash !="" ) { %>
+        <br>
         <div class="server-message error">
           <%= flash %>
         </div>
+        <br>
       <% } else { %>
+          <br>
           <div class="server-message"></div>
+          <br>
       <% } %>
-
-      <br>
 
       <div class="title">
         <h2>Welcome, please log in.</h2>

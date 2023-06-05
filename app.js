@@ -31,7 +31,7 @@ app.set('views', [path.join(__dirname, 'views'),
                   path.join(__dirname, 'views/page-views/'),
                   path.join(__dirname, 'views/auth-views/'),
                   path.join(__dirname, 'views/user-views/'),
-                  path.join(__dirname, 'views/profile-views/'),
+                  path.join(__dirname, 'views/my-account-views/'),
                   path.join(__dirname, 'views/ecommerce-views/'),
                   path.join(__dirname, 'views/ecommerce-views/men/'),
                   path.join(__dirname, 'views/ecommerce-views/women/'),
@@ -42,7 +42,7 @@ app.use(passport.initialize())
 app.use(passport.session())
 
 app.use("/auth-management", require("./server/routes/auth-routes"))
-app.use("/profile-management", require("./server/routes/profile-routes"))
+app.use("/my-account-management", require("./server/routes/my-account-routes"))
 app.use("/newsletter-management", require("./server/routes/newsletter-routes"))
 app.use("/ecommerce-management", require("./server/routes/ecommerce-routes"))
 app.use("/store-management", require("./server/routes/store-routes"))

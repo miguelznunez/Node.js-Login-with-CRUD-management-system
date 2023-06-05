@@ -1,6 +1,6 @@
 const express = require("express"),
 authController = require("../controllers/auth-controller"),
-profileController = require("../controllers/profile-controller"),
+myAccountController = require("../controllers/my-account-controller"),
 router = express.Router();
 
 // FUNCTION TO CHECK FOR INTERNET EXPLORER ============================================
@@ -19,15 +19,15 @@ function checkBrowser(headers){
   else return false
 }
 
-router.get("/profile-views/profile", authController.isLoggedIn, (req, res) => {
+router.get("/my-account-views/my-account", authController.isLoggedIn, (req, res) => {
   if(req.user && !checkBrowser(req.headers)) {
     const flash = req.flash("message") 
-    return res.status(200).render("profile", {title:"Profile", user:req.user, flash} )
+    return res.status(200).render("my-account", {title:"My Account", user:req.user, flash} )
   } else { 
     return res.redirect("/auth-management/auth-views/login")
   }
 })
 
-router.post("/profile-views/delete-account", profileController.deleteAccount)
+router.post("/my-account-views/delete-account", myAccountController.deleteAccount)
 
 module.exports = router;
