@@ -9,16 +9,6 @@
 
       <main class="content">
 
-        <br>
-
-        <% if(typeof flash !="undefined" && flash !="" ) { %>
-          <div class="server-message success">
-            <%= flash %>
-          </div>
-        <% } %>
-
-        <br>
-
         <div class="flex">
           <h3><i class="fa-solid fa-users"></i><span>Users -> View Active</span></h3>
           <div>
@@ -28,6 +18,13 @@
         </div>
 
         <br>
+
+        <% if(typeof flash !="undefined" && flash !="" ) { %>
+          <div class="server-message success">
+            <%= flash %>
+          </div>
+          <br>
+        <% } %>
 
         <h4>Active users (<%= rows.length %>)</h4>
 

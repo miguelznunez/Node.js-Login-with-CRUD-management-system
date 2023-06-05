@@ -15,16 +15,6 @@
           <span class="sbar"></span>
         </div>
 
-        <br>
-      
-        <% if(typeof flash !="undefined" && flash !="" ) { %>
-          <div class="server-message success">
-            <%= flash %>
-          </div>
-        <% } %>
-          
-        <br>
-
         <div class="flex">
           <h3><i class="fa-solid fa-users"></i><span>Users -> View Banned</span></h3>
           <div>
@@ -32,11 +22,17 @@
             <button><a href="/user-management/user-views/add-user"><i class="fa-solid fa-plus"></i> Add User</a></button>
           </div>
         </div>
-        
+
         <br>
+
+        <% if(typeof flash !="undefined" && flash !="" ) { %>
+          <div class="server-message success">
+            <%= flash %>
+          </div>
+          <br>
+        <% } %>
       
-        <h4>Banned users (<%= rows.length %>)
-        </h4>
+        <h4>Banned users (<%= rows.length %>)</h4>
       
         <br>
       

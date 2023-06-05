@@ -13,17 +13,7 @@
           <span class="sbar"></span>
           <span class="sbar"></span>
           <span class="sbar"></span>
-        </div>
-
-        <br>
-      
-        <% if(typeof flash !="undefined" && flash !="" ) { %>
-          <div class="server-message success">
-            <%= flash %>
-          </div>
-        <% } %>
-
-        <br>
+        </div>   
 
         <div class="flex">
           <h3><i class="fa-solid fa-users"></i><span>Users -> View Deleted</span></h3>
@@ -34,6 +24,13 @@
         </div>
         
         <br>
+
+        <% if(typeof flash !="undefined" && flash !="" ) { %>
+          <div class="server-message success">
+            <%= flash %>
+          </div>
+          <br>
+        <% } %>
       
         <h4>Deleted users (<%= rows.length %>)</h4>
       

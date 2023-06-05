@@ -30,7 +30,7 @@ router.get("/user-views/active-users", authController.isLoggedIn, (req, res) => 
         const flash = req.flash("message")
         return res.status(200).render("active-users", {title:"User Management - Active Users" , user:req.user, rows:rows, flash})
       } else {
-        return res.status(500).render("active-users", {title:"User Management - Active Users", user:req.user, message:"Internal server error."})
+        return res.status(500).render("active-users", {title:"User Management - Active Users", user:req.user, message:"Internal server error"})
       }
     })
   } else { 
@@ -158,7 +158,7 @@ router.get("/user-views/delete-user/:status/:id", authController.isLoggedIn, (re
           if(!err) { 
             db.query("UPDATE users SET email = ?, status = ? WHERE id = ?", [null, "Deleted", id], (err, rows) => {
               if(!err) { 
-                req.flash("message", `User was deleted successfully.`)
+                req.flash("message", `The selected user was successfully deleted.`)
                 return res.redirect(`/user-management/user-views/${status.toLowerCase()}-users`)
               } else { 
                 return res.status(500).render(`${status.toLowerCase()}-users`, {title:`User Management - ${status} Users", user:req.user, message:"Internal server error.`})
@@ -172,7 +172,7 @@ router.get("/user-views/delete-user/:status/:id", authController.isLoggedIn, (re
         console.log("Email user")
         db.query("UPDATE users SET email = ?, status = ? WHERE id = ?", [null, "Deleted", id], (err, rows) => {
           if(!err) { 
-            req.flash("message", `The selected user was deleted successfully.`)
+            req.flash("message", `The selected user was successfully deleted.`)
             return res.redirect(`/user-management/user-views/${status.toLowerCase()}-users`)
           } else { 
             return res.status(500).render(`${status.toLowerCase()}-users`, {title:`User Management - ${status} Users", user:req.user, message:"Internal server error.`})

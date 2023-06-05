@@ -19,7 +19,7 @@ exports.searchActiveUsers = (req, res) => {
     if(!err) { 
       return res.status(200).render("active-users", {title:"User Management - Active Users" , user:req.user, rows:rows})
     } else { 
-      return res.status(500).render("active-users", {title:"User Management - Active Users" , user:req.user, success:false, message:"Internal server error."})
+      return res.status(500).render("active-users", {title:"User Management - Active Users" , user:req.user, success:false, message:"Internal server error"})
     }
   })
 }
@@ -30,7 +30,7 @@ exports.searchBannedUsers = (req, res) => {
     if(!err) { 
       return res.status(200).render("banned-users", {title:"User Management - Banned Users" , user:req.user, rows:rows})
     } else { 
-      return res.status(500).render("banned-users", {title:"User Management - Banned Users" , user:req.user, success:false, message:"Internal server error."})
+      return res.status(500).render("banned-users", {title:"User Management - Banned Users" , user:req.user, success:false, message:"Internal server error"})
     }
   })
 }
@@ -41,7 +41,7 @@ exports.searchInactiveUsers = (req, res) => {
     if(!err) { 
       return res.status(200).render("inactive-users", {title:"User Management - Inactive Users" , user:req.user, rows:rows})
     } else { 
-      return res.status(500).render("inactive-users", {title:"User Management - Inactive Users" , user:req.user, success:false, message:"Internal server error."})
+      return res.status(500).render("inactive-users", {title:"User Management - Inactive Users" , user:req.user, success:false, message:"Internal server error"})
     }
   })
 }
@@ -52,7 +52,7 @@ exports.searchDeletedUsers = (req, res) => {
     if(!err) { 
       return res.status(200).render("deleted-users", {title:"User Management - Deleted Users" , user:req.user, rows:rows})
     } else { 
-      return res.status(500).render("deleted-users", {title:"User Management - Deleted Users" , user:req.user, success:false, message:"Internal server error."})
+      return res.status(500).render("deleted-users", {title:"User Management - Deleted Users" , user:req.user, success:false, message:"Internal server error"})
     }
   })
 }
@@ -63,7 +63,7 @@ exports.searchAdminUsers = (req, res) => {
     if(!err) { 
       return res.status(200).render("admin-users", {title:"User Management - Admin Users" , user:req.user, rows:rows})
     } else { 
-      return res.status(500).render("admin-users", {title:"User Management - Admin Users" , user:req.user, success:false, message:"Internal server error."})
+      return res.status(500).render("admin-users", {title:"User Management - Admin Users" , user:req.user, success:false, message:"Internal server error"})
     }
   })
 }
