@@ -21,15 +21,15 @@ function checkBrowser(headers){
   else return false
 }
 
-router.get("/newsletter-views/subscribers", authController.isLoggedIn,(req, res) => {
+router.get("/newsletter-views/view-subscribers", authController.isLoggedIn,(req, res) => {
 
     if(req.user && req.user.admin === "Yes" && !checkBrowser(req.headers)){
         db.query("SELECT * FROM newsletter", (err, rows) => {
           if(!err) {
             const flash = req.flash("message") 
-            return res.status(200).render("subscribers", {title:"Newsletter Management - Subscribers" , user:req.user, rows:rows, flash})
+            return res.status(200).render("view-subscribers", {title:"Newsletter Management - Subscribers" , user:req.user, rows:rows, flash})
           } else {
-            return res.status(500).render("subscribers", {title:"Newsletter Management - Subscribers", user:req.user, message:"Internal server error."})
+            return res.status(500).render("view-subscribers", {title:"Newsletter Management - Subscribers", user:req.user, message:"Internal server error."})
           }
         })
       } else {

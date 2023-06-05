@@ -161,6 +161,11 @@ th{
   color: var(--soft-black);
 }
 
+.flex .fa-arrow-left{
+  font-size: 2rem;
+  color: var(--soft-black);
+}
+
 .flex button{
   padding: 8px 10px;
 }

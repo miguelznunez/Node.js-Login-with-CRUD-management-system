@@ -27,38 +27,37 @@
           <span class="sbar"></span>
         </div>
 
-        <br>
-
-        <% if(typeof flash !="undefined" && flash !="" && flash != "Please select at least one email to unsubscribe." && flash != "Internal server error") { %>
-          <div class="server-message success">
-            <%= flash %>
-          </div>
-        <% } %>
-
-        <% if(typeof flash !="undefined" && flash !="" && flash == "Please select at least one email to unsubscribe.") { %>
-          <div class="server-message error">
-            <%= flash %>
-          </div>
-        <% } %>
-
-        <% if(typeof flash !="undefined" && flash !="" && flash == "Internal server error") { %>
-          <div class="server-message error">
-            <%= flash %>
-          </div>
-        <% } %>
-
-        <br>
-
         <div class="flex">
           <h3><i class="fa-sharp fa-solid fa-envelope"></i><span>Newsletter -> View Subscribers</span></h3>
           <div>
-            <button><a href="/newsletter-management/newsletter-views/subscribers"><i class="fa-solid fa-eye"></i> All Subscribers</a></button>
+            <button><a href="/newsletter-management/newsletter-views/view-subscribers"><i class="fa-solid fa-eye"></i> All Subscribers</a></button>
             <button><a href="/newsletter-management/newsletter-views/compose-email"><i class="fa-solid fa-envelope"></i> Compose Email</a></button>
             <button><a href="/newsletter-management/newsletter-views/add-subscriber"><i class="fa-solid fa-plus"></i> Add Subscriber</a></button>
           </div>
         </div>
 
         <br>
+
+        <% if(typeof flash !="undefined" && flash !="" && flash != "Please select at least one email to unsubscribe." && flash != "Internal server error") { %>
+          <div class="server-message success">
+            <%= flash %>
+          </div>
+          <br>
+        <% } %>
+
+        <% if(typeof flash !="undefined" && flash !="" && flash == "Please select at least one email to unsubscribe.") { %>
+          <div class="server-message error">
+            <%= flash %>
+          </div>
+          <br>
+        <% } %>
+
+        <% if(typeof flash !="undefined" && flash !="" && flash == "Internal server error") { %>
+          <div class="server-message error">
+            <%= flash %>
+          </div>
+          <br>
+        <% } %>
 
         <h4>Subscribers (<%= rows.length %>)</h4>
 

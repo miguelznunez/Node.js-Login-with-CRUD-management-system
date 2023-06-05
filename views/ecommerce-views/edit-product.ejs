@@ -25,17 +25,13 @@
           <span class="sbar"></span>
         </div>
 
-        <div class="server-message"></div>
-
-        <br>
-
         <div class="flex">
           <% if( rows[0].pGender == "men" ) { %>
-            <a href="/ecommerce-management/ecommerce-views/men/view-men-products"><i class="fa-solid fa-arrow-left" style="font-size: 2.5rem;color: #000;"></i></a>
+            <a href="/ecommerce-management/ecommerce-views/men/view-men-products"><i class="fa-solid fa-arrow-left"></i></a>
           <% } else if(rows[0].pGender == "women") { %>
-            <a href="/ecommerce-management/ecommerce-views/women/view-women-products"><i class="fa-solid fa-arrow-left" style="font-size: 2.5rem;color: #000;"></i></a>
+            <a href="/ecommerce-management/ecommerce-views/women/view-women-products"><i class="fa-solid fa-arrow-left"></i></a>
           <% } else { %>
-          <a href="/ecommerce-management/ecommerce-views/dna/view-dna-products"><i class="fa-solid fa-arrow-left" style="font-size: 2.5rem;color: #000;"></i></a>
+          <a href="/ecommerce-management/ecommerce-views/dna/view-dna-products"><i class="fa-solid fa-arrow-left"></i></a>
           <% } %>
           <button id="show-modal">Delete product</button>
         </div>
@@ -46,6 +42,10 @@
           <h3><i class="fa-solid fa-cart-shopping"></i><span>Ecommerce -> Edit Product</span></h3>
         </div>
         
+        <br>
+
+        <div class="server-message"></div>
+
         <br>
 
         <form id="edit-product-form">
