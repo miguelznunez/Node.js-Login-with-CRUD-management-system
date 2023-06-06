@@ -75,24 +75,35 @@
         
         <div class="cards">
           <% for(let i=0;i < rows.length;i++) { %>
-            <div class="card">
-              <div class="card-img">
+            <div class="product-card">
+              <!-- <div class="badge">New</div> -->
+              <div class="product-tumb">
                 <img src="http://localhost:5000/ecommerce-management/<%= rows[i].pImage %>" alt="image">
               </div>
-              <div class="card-details">
-                <div class="card-name">
-                  <h4>
-                    <%= rows[i].pName %>
-                  </h4>
+              <div class="product-details">
+                <span class="product-category"><%= rows[i].pGender %> - <%= rows[i].pCategory %></span>
+
+                <div class="product-brand">
+                  <h4><a href=""><%= rows[i].pBrand %></a></h4>
                 </div>
-                <div class="card-price">
-                  <p class="price">
-                    $<%= rows[i].pPrice %>
-                  </p>
+
+                <div style="padding-bottom: 20px;">
+                  <div class="product-description">
+                    <p><%= rows[i].pDescription %></p>
+                  </div>
                 </div>
-                <a href="/ecommerce-management/ecommerce-views/edit-product/<%= rows[i].pId %>"><i class="fa-solid fa-pencil"></i> Edit</a>
+   
+                <div class="product-bottom-details">
+                  <div class="product-price">$<%= rows[i].pPrice %></div>
+                  <div class="product-links">
+                    <a href=""><i class="fa-solid fa-eye"></i></a>
+                    <a href="/ecommerce-management/ecommerce-views/edit-product/<%= rows[i].pId %>"><i class="fa-solid fa-pen-to-square"></i></a>
+                  </div>
+                </div>
+
               </div>
             </div>
+           
           <% } %>
         </div>
 
