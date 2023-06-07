@@ -117,6 +117,37 @@ exports.findMenProductsByProductNumber = (req, res) => {
   })
 }
 
+exports.removeMenProducts = (req, res) => {
+  const products = JSON.parse(req.body.removeProducts)
+
+  // NEED TO FIGURE OUT HOW TO DELETE MULTIPLE IMAGES FROM S3
+  S3.deleteS3Image(req.body.pSavedImage, (err, result) => {
+    if(!err){
+        // editProductInfoImageInDB(req.files, req.body, (err, result) => {
+        //   if(!err){
+        //     return res.status(200).json({statusMessage:"Product has been edited successfully.", status:200})
+        //   } else {
+        //     return res.status(200).json({statusMessage:"Internal server error", status:500})
+        //   }
+        // })
+    } else {
+        req.flash("message", "Internal server error")
+        return res.redirect("/ecommerce-management/ecommerce-views/men/view-men-products")
+    }
+  })
+
+    // deleteProductsFromDb(products, (err, results) => {
+    //   if(!err){
+    //     req.flash("message", `The ${products.length} selected product(s) have been successfully removed from your store.`)
+    //     return res.redirect("/ecommerce-management/ecommerce-views/men/view-men-products")
+    //   } else {
+    //     req.flash("message", "Internal server error")
+    //     return res.redirect("/ecommerce-management/ecommerce-views/men/view-men-products")
+    //   }
+    // })
+
+}
+
 exports.findWomenProductsByBrandCategory = (req, res) => {
   const {pBrand, pCategory} = req.body
   db.query("SELECT * FROM products WHERE pGender = ? && pBrand = ? && pCategory = ?", ["women", pBrand, pCategory], (err, rows) => {

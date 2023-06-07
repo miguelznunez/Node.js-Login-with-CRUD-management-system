@@ -28,20 +28,15 @@ exports.searchSubscribers = (req, res) => {
 exports.removeSubscribers = (req, res) => {
 
   const emails = JSON.parse(req.body.removeEmails)
-  if(emails != ""){
-      deleteEmailsFromDb(emails, (err, results) => {
-        if(!err){
-          req.flash("message", `The ${emails.length} selected email(s) have been successfully removed from your newsletter.`)
-          return res.redirect("/newsletter-management/newsletter-views/subscribers")
-        } else {
-          req.flash("message", "Internal server error")
-          return res.redirect("/newsletter-management/newsletter-views/subscribers")
-        }
-      })
-  } else {
-      req.flash("message", "Please select at least one email to unsubscribe.")
-      return res.redirect("/newsletter-management/newsletter-views/subscribers")
-  }
+  deleteEmailsFromDb(emails, (err, results) => {
+    if(!err){
+      req.flash("message", `The ${emails.length} selected email(s) have been successfully removed from your newsletter.`)
+      return res.redirect("/newsletter-management/newsletter-views/view-subscribers")
+    } else {
+      req.flash("message", "Internal server error")
+      return res.redirect("/newsletter-management/newsletter-views/view-subscribers")
+    }
+  })
 }
   
 exports.addSubscriber = (req, res) => {

@@ -7,6 +7,17 @@
 
     <% if (typeof message=="undefined" ) { %>
 
+      <div class="modal-overlay">
+        <div class="modal">
+          <i class="fa-solid fa-xmark" id="close-modal"></i>
+          <form action="/ecommerce-management/remove-men-products" method="POST">
+            <input type="hidden" name="removeProducts" value="[]">
+            <h4>Are you sure?</h4>
+            <button>Yes</button>
+          </form>
+        </div>
+      </div>
+
       <main class="content">
 
         <div class="sidebar-hamburger">
@@ -25,15 +36,24 @@
 
         <br>
 
-        <% if(typeof flash !="undefined" && flash !="" ) { %>
+        <% if(typeof flash !="undefined" && flash !="" && flash != "Internal server error") { %>
           <div class="server-message success">
             <%= flash %>
           </div>
+          <br>
         <% } %>
 
-        <div class="server-message"></div>
-        
-        <br>
+        <% if(typeof flash !="undefined" && flash !="" && flash == "Internal server error") { %>
+          <div class="server-message error">
+            <%= flash %>
+          </div>
+          <br>
+        <% } %>
+
+        <% if (typeof flash != "undefined" && flash == "") { %>
+          <div class="server-message"></div>
+          <br>
+        <% } %>
 
         <div>
           <h4>Search by brand and category</h4>
@@ -67,6 +87,24 @@
 
         <br>
 
+        <div class="flex">
+          <div>
+            <div class="edit-controller">
+              <div class="flex">
+                <button id="edit-product-btn"><a><i class="fa-solid fa-pen-to-square"></i> Edit Products</a></button>
+              </div>
+            </div>
+            <div class="delete-controller">
+              <div class="flex flex-start">
+                <button id="cancel-product-btn"><a><i class="fa-solid fa-xmark"></i> Cancel</a></button>
+                <button id="show-modal"><a><i class="fa-solid fa-trash"></i> Delete Selected</a></button>
+              </div>  
+            </div>  
+          </div>
+        </div>
+
+        <br>
+
         <h4>Men's Products (<%= rows.length %>)</h4>
         
         <br>
@@ -76,12 +114,20 @@
         <div class="cards">
           <% for(let i=0;i < rows.length;i++) { %>
             <div class="product-card">
-              <!-- <div class="badge">New</div> -->
-              <div class="product-tumb">
+
+              <div class="product-box-wrapper"><input type="checkbox" value="<%= rows[i].pId %>" class="product-box"></div>
+
+              <div class="product-thumb">
                 <img src="http://localhost:5000/ecommerce-management/<%= rows[i].pImage %>" alt="image">
               </div>
+
               <div class="product-details">
-                <span class="product-category"><%= rows[i].pGender %> - <%= rows[i].pCategory %></span>
+
+                <div class="flex">
+                  <span class="product-category"><%= rows[i].pGender %> - <%= rows[i].pCategory %></span>
+                  <span class="product-category"><%= rows[i].pNumber %> </span>
+                </div>
+                
 
                 <div class="product-brand">
                   <h4><a href=""><%= rows[i].pBrand %></a></h4>
@@ -108,6 +154,73 @@
         </div>
 
       </main>
+
+      <script>
+        
+        const productCard = document.querySelectorAll(".product-card"),
+        productBox = document.querySelectorAll(".product-box"),
+        editController = document.querySelector(".edit-controller"),
+        deleteController = document.querySelector(".delete-controller"),
+        serverMessage = document.querySelector(".server-message");
+        let removeProducts = [];
+
+
+        document.querySelector("#edit-product-btn").addEventListener("click", () => {
+          editController.style.display = "none";
+          deleteController.style.display = "block";
+
+          productCard.forEach((pc,i) => {
+            pc.style.opacity = 0.5
+            pc.style.cursor = "pointer"
+            pc.addEventListener("click", () => {
+              if(productBox[i].checked === false) {
+                productBox[i].checked = true
+                pc.style.opacity = 1
+                pc.style.boxShadow = "0 2px 7px #343a40"
+                removeProducts.push(productBox[i].value)
+              } else {
+                pc.style.opacity = 0.5
+                pc.style.boxShadow = "0 2px 7px #dfdfdf"
+                productBox[i].checked = false
+                let index = removeProducts.indexOf(productBox[i].value);
+                removeProducts.splice(index, 1);
+              }
+              document.querySelector('[name="removeProducts"]').value = JSON.stringify(removeProducts)
+            })
+          })
+
+          productBox.forEach((pb, i) => {
+            pb.style.visibility = "visible"
+          })
+
+        })
+
+        document.querySelector("#cancel-product-btn").addEventListener("click", () => {
+          editController.style.display = "block";
+          deleteController.style.display = "none";
+
+          productCard.forEach((pc,i) => {
+            pc.style.opacity = 1
+            pc.style.cursor = "auto"
+            pc.style.boxShadow = "0 2px 7px #dfdfdf"
+            pc.addEventListener("click", () => {
+              pc.style.opacity = 1
+              pc.style.boxShadow = "0 2px 7px #dfdfdf"
+              productBox[i].checked = false
+            })
+          })
+
+          productBox.forEach((pb) => {
+            pb.checked = false
+            pb.style.visibility = "hidden"
+          })
+
+          removeProducts = []
+
+        })
+
+      </script>
+      <script src="/js/ecommerce-js/ecommerce-modal.js"></script>
 
     <% } else { %>
       <main class="content">
