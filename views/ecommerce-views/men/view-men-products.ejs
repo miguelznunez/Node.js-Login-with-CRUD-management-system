@@ -13,7 +13,7 @@
           <form action="/ecommerce-management/remove-men-products" method="POST">
             <input type="hidden" name="removeProducts" value="[]">
             <h4>Are you sure?</h4>
-            <button>Yes</button>
+            <button class="auth-btn">Yes</button>
           </form>
         </div>
       </div>
@@ -115,7 +115,7 @@
           <% for(let i=0;i < rows.length;i++) { %>
             <div class="product-card">
 
-              <div class="product-box-wrapper"><input type="checkbox" value="<%= rows[i].pId %>" class="product-box"></div>
+              <div class="product-box-wrapper"><input type="checkbox" value="<%= rows[i].pImage %>" class="product-box"></div>
 
               <div class="product-thumb">
                 <img src="http://localhost:5000/ecommerce-management/<%= rows[i].pImage %>" alt="image">
@@ -130,7 +130,7 @@
                 
 
                 <div class="product-brand">
-                  <h4><a href=""><%= rows[i].pBrand %></a></h4>
+                  <h4><%= rows[i].pBrand %></h4>
                 </div>
 
                 <div style="padding-bottom: 20px;">
@@ -162,8 +162,7 @@
         editController = document.querySelector(".edit-controller"),
         deleteController = document.querySelector(".delete-controller"),
         serverMessage = document.querySelector(".server-message");
-        let removeProducts = [];
-
+        let removeProducts = []
 
         document.querySelector("#edit-product-btn").addEventListener("click", () => {
           editController.style.display = "none";
@@ -177,13 +176,14 @@
                 productBox[i].checked = true
                 pc.style.opacity = 1
                 pc.style.boxShadow = "0 2px 7px #343a40"
-                removeProducts.push(productBox[i].value)
+                let object = { Key:productBox[i].value }
+                removeProducts.push(object)
               } else {
                 pc.style.opacity = 0.5
                 pc.style.boxShadow = "0 2px 7px #dfdfdf"
                 productBox[i].checked = false
-                let index = removeProducts.indexOf(productBox[i].value);
-                removeProducts.splice(index, 1);
+                const productToBeRemoved = { Key:productBox[i].value}
+                removeProducts.splice(removeProducts.findIndex(i => i.Key === productToBeRemoved.Key), 1)
               }
               document.querySelector('[name="removeProducts"]').value = JSON.stringify(removeProducts)
             })

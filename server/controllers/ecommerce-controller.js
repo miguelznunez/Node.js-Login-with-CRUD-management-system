@@ -1,5 +1,4 @@
 const { PI } = require("aws-sdk"),
-e = require("connect-flash"),
 mysql = require("mysql"),
 multer  = require("multer"),
 path = require("path"),
@@ -118,34 +117,29 @@ exports.findMenProductsByProductNumber = (req, res) => {
 }
 
 exports.removeMenProducts = (req, res) => {
-  const products = JSON.parse(req.body.removeProducts)
 
-  // NEED TO FIGURE OUT HOW TO DELETE MULTIPLE IMAGES FROM S3
-  S3.deleteS3Image(req.body.pSavedImage, (err, result) => {
-    if(!err){
-        // editProductInfoImageInDB(req.files, req.body, (err, result) => {
-        //   if(!err){
-        //     return res.status(200).json({statusMessage:"Product has been edited successfully.", status:200})
-        //   } else {
-        //     return res.status(200).json({statusMessage:"Internal server error", status:500})
-        //   }
-        // })
+  const products = JSON.parse(req.body.removeProducts)
+  let images = []
+
+  S3.deleteS3Images(products, (err, result) => {
+    if(!err){ 
+        products.forEach( p => {
+          images.push(p.Key)
+        })
+        deleteProductsFromDb(images, (err, result) => {
+          if(!err){
+              req.flash("message", `The ${images.length} selected product(s) have been successfully removed from your store.`)
+              return res.redirect("/ecommerce-management/ecommerce-views/men/view-men-products")
+          } else {
+              req.flash("message", "Internal server error")
+              return res.redirect("/ecommerce-management/ecommerce-views/men/view-men-products")
+          }
+        })
     } else {
         req.flash("message", "Internal server error")
         return res.redirect("/ecommerce-management/ecommerce-views/men/view-men-products")
     }
   })
-
-    // deleteProductsFromDb(products, (err, results) => {
-    //   if(!err){
-    //     req.flash("message", `The ${products.length} selected product(s) have been successfully removed from your store.`)
-    //     return res.redirect("/ecommerce-management/ecommerce-views/men/view-men-products")
-    //   } else {
-    //     req.flash("message", "Internal server error")
-    //     return res.redirect("/ecommerce-management/ecommerce-views/men/view-men-products")
-    //   }
-    // })
-
 }
 
 exports.findWomenProductsByBrandCategory = (req, res) => {
@@ -211,6 +205,13 @@ editProductInfoInDB = (pInfo, callback) => {
 editProductInfoImageInDB = (pImage, pInfo, callback) => {
   const {pId, pCategory, pGender, pBrand, pNumber, pName, pPrice, pDescription, pQuantity_OS, pQuantity_XS, pQuantity_S, pQuantity_M, pQuantity_L, pQuantity_XL, pQuantity_XXL} = pInfo
   db.query("UPDATE products SET pCategory = ?, pGender = ?, pImage = ?, pBrand = ?, pNumber = ?, pName = ?, pPrice = ?, pDescription = ?, pQuantity_OS = ?, pQuantity_XS = ?, pQuantity_S = ?, pQuantity_M = ?, pQuantity_L = ?, pQuantity_XL = ?, pQuantity_XXL = ? WHERE pId = ?", [pCategory, pGender, pImage[0].key, pBrand, pNumber, pName, pPrice, pDescription, pQuantity_OS, pQuantity_XS, pQuantity_S, pQuantity_M, pQuantity_L, pQuantity_XL, pQuantity_XXL, pId], (err, result) => {
+    if(err) callback(err, null)
+    else callback(null, result)
+  })
+}
+
+deleteProductsFromDb = (images, callback) => {
+  db.query("DELETE FROM products WHERE pImage IN (?)", [images], (err, result) => {
     if(err) callback(err, null)
     else callback(null, result)
   })

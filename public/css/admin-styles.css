@@ -1011,12 +1011,12 @@ input.product-box {
   margin-bottom: 18px;
 }
 
-.product-details h4 a {
-  font-weight: 500;
+.product-details h4 {
+  /* font-weight: 500; */
   display: block;
   margin-bottom: 18px;
   text-transform: uppercase;
-  color: #363636;
+  color: var(--soft-black);
   text-decoration: none;
   transition: 0.3s;
 }

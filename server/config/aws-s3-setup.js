@@ -25,4 +25,13 @@ const deleteS3Image = (imageKey, callback) => {
   })
 }
 
-module.exports = {s3, getS3ImageStream, deleteS3Image}
+const deleteS3Images = (imageKeys, callback) => {
+  s3.deleteObjects({
+    Bucket: bucketName,
+    Delete: { Objects: imageKeys, Quiet:false }}, (err, result) => {
+      if(err) callback(err, null)
+      else callback(null, result)
+  })
+}
+
+module.exports = {s3, getS3ImageStream, deleteS3Image, deleteS3Images}
