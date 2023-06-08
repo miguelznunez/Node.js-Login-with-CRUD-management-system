@@ -286,7 +286,7 @@ th{
 }
 
 .button:active {
-  background: black;
+  background: var(--soft-black);
 }
 
 .button__text {
@@ -349,6 +349,10 @@ th{
 }
 
 .delete-controller{
+  display: none;
+}
+
+#deselect-all-subs-btn{
   display: none;
 }
 
@@ -686,7 +690,7 @@ th{
 .auth-btn{
   width: 400px;
   color: white;
-  background-color: black;
+  background-color: var(--soft-black);
 }
 
 .auth-btn i{
@@ -1080,6 +1084,7 @@ input.product-box {
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
 }
+
 
 
 @media(max-width:1024px){

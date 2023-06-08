@@ -79,6 +79,8 @@
             <div class="delete-controller">
               <div class="flex flex-start">
                 <button id="cancel-subs-btn"><a><i class="fa-solid fa-xmark"></i> Cancel</a></button>
+                <button id="select-all-subs-btn"><a><i class="fa-solid fa-square-check"></i> Select All</a></button>
+                <button id="deselect-all-subs-btn"><a><i class="fa-solid fa-square-check"></i> Deselect All</a></button>
                 <button id="show-modal"><a><i class="fa-solid fa-user-minus"></i> Unsubscribe</a></button>
               </div>  
             </div>  
@@ -86,7 +88,7 @@
         </div>
 
         <br>
-        
+   
         <table id="subscriber-table">
           <tr>
             <th><input id="select-all" type="checkbox" disabled></th>
@@ -112,60 +114,94 @@
       <script>
 
         const subscriberTable = document.querySelector("#subscriber-table"),
-        checkItAll = subscriberTable.querySelector("#select-all"),
-        inputs = subscriberTable.querySelectorAll('tbody>tr>td>input'),
         editController = document.querySelector(".edit-controller"),
         deleteController = document.querySelector(".delete-controller"),
+        topCheckbox = subscriberTable.querySelector("#select-all"),
+        checkbox = subscriberTable.querySelectorAll('tbody>tr>td>input'),
+        selectBtn = document.querySelector("#select-all-subs-btn"),
+        deselectBtn = document.querySelector("#deselect-all-subs-btn"),
         serverMessage = document.querySelector(".server-message");
         let removeEmails = [];
 
-        inputs.forEach(i => {
-          i.addEventListener("change", () => {
-            if(i.checked){
-              removeEmails.push(i.value);
-            } else {
-              var index = removeEmails.indexOf(i.value);
-              removeEmails.splice(index, 1);
-            }
-            document.querySelector('[name="removeEmails"]').value = JSON.stringify(removeEmails);
-          })
+        // FUNCTION TO CHECK ONE CHECKBOX AT A TIME
+        const checkOne = function(e) {
+          if(e.currentTarget.checked){
+            removeEmails.push(e.currentTarget.value)
+          } else {
+            let i = removeEmails.indexOf(e.currentTarget.value)
+            removeEmails.splice(i, 1)
+          }
+          document.querySelector('[name="removeEmails"]').value = JSON.stringify(removeEmails)
+        }   
+
+        // ADD CHECKONE ONE FUNCTION TO EACH CHECKBOX
+        checkbox.forEach((cb) => {
+          cb.addEventListener("change", checkOne)
         })
 
-        checkItAll.addEventListener('change', () => {
-          if (checkItAll.checked) {
+        // TOP CHECKBOX 
+        topCheckbox.addEventListener("change", () => {
+          if (topCheckbox.checked) {
             removeEmails = []
-            inputs.forEach(i => {
-              i.checked = true;
-              removeEmails.push(i.value);
+            checkbox.forEach((cb) => {
+              cb.checked = true;
+              removeEmails.push(cb.value);
             })
           } else {
             removeEmails = []
-            inputs.forEach(i => {
-              i.checked = false
+            checkbox.forEach((cb) => {
+              cb.checked = false
             })
           }
           document.querySelector('[name="removeEmails"]').value = JSON.stringify(removeEmails);
-        });
+        })
 
+        // EDIT BUTTON
         document.querySelector("#edit-subs-btn").addEventListener("click", () => {
           editController.style.display = "none";
           deleteController.style.display = "block";
-          checkItAll.disabled = false
-          inputs.forEach(i => {
-            i.disabled = false
+          topCheckbox.disabled = false
+          checkbox.forEach(cb => {
+            cb.disabled = false
           })
         })
 
+        // CANCEL BUTTON
         document.querySelector("#cancel-subs-btn").addEventListener("click", () => {
           editController.style.display = "block";
           deleteController.style.display = "none";
-          checkItAll.disabled = true
-          checkItAll.checked = false
-          inputs.forEach(i => {
-            i.disabled = true
-            i.checked = false
+          topCheckbox.disabled = true
+          topCheckbox.checked = false
+          checkbox.forEach(cb => {
+            cb.disabled = true
+            cb.checked = false
           })
           removeEmails = []
+        })
+
+        // SELECT ALL BUTTON
+        selectBtn.addEventListener("click", () => {
+          topCheckbox.checked = true
+          removeEmails = []
+          checkbox.forEach((cb) => {
+            cb.checked = true;
+            removeEmails.push(cb.value);
+          })
+          document.querySelector('[name="removeEmails"]').value = JSON.stringify(removeEmails);
+          deselectBtn.style.display = "block"
+          selectBtn.style.display = "none"
+        })
+
+        // DESELECT ALL BUTTON
+        deselectBtn.addEventListener("click", () => {
+          topCheckbox.checked = false
+          removeEmails = []
+            checkbox.forEach((cb) => {
+              cb.checked = false
+          })
+          document.querySelector('[name="removeEmails"]').value = JSON.stringify(removeEmails);
+          deselectBtn.style.display = "none"
+          selectBtn.style.display = "block"
         })
 
       </script>
