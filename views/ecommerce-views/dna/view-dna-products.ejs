@@ -7,6 +7,18 @@
 
     <% if (typeof message=="undefined" ) { %>
 
+      <div class="modal-overlay">
+        <div class="modal">
+          <i class="fa-solid fa-xmark" id="close-modal"></i>
+          <form action="/ecommerce-management/remove-dna-products" method="POST">
+            <input type="hidden" name="removeProducts" value="[]">
+            <h4>Are you sure?</h4>
+            <button class="auth-btn">Yes</button>
+          </form>
+        </div>
+      </div>
+
+
       <main class="content">
 
         <div class="sidebar-hamburger">
@@ -67,6 +79,26 @@
 
         <br>
 
+        <div class="flex">
+          <div>
+            <div class="edit-controller">
+              <div class="flex">
+                <button id="edit-product-btn"><a><i class="fa-solid fa-pen-to-square"></i> Edit Products</a></button>
+              </div>
+            </div>
+            <div class="delete-controller">
+              <div class="flex flex-start">
+                <button id="cancel-product-btn"><a><i class="fa-solid fa-xmark"></i> Cancel</a></button>
+                <button id="select-all-product-btn"><a><i class="fa-solid fa-square-check"></i> Select All</a></button>
+                <button id="deselect-all-product-btn"><a><i class="fa-solid fa-square-check"></i> Deselect All</a></button>
+                <button id="show-modal"><a><i class="fa-solid fa-trash"></i> Delete Selected</a></button>
+              </div>  
+            </div>  
+          </div>
+        </div>
+
+        <br>
+
         <h4>DNA Products (<%= rows.length %>)</h4>
 
         <br>
@@ -75,29 +107,49 @@
 
         <div class="cards">
           <% for(let i=0;i < rows.length;i++) { %>
-            <div class="card">
-              <div class="card-img">
+            <div class="product-card">
+
+              <div class="product-box-wrapper"><input type="checkbox" value="<%= rows[i].pImage %>" class="product-box"></div>
+
+              <div class="product-thumb">
                 <img src="http://localhost:5000/ecommerce-management/<%= rows[i].pImage %>" alt="image">
               </div>
-              <div class="card-details">
-                <div class="card-name">
-                  <h4>
-                    <%= rows[i].pName %>
-                  </h4>
+
+              <div class="product-details">
+
+                <div class="flex">
+                  <span class="product-category"><%= rows[i].pGender %> - <%= rows[i].pCategory %></span>
+                  <span class="product-category"><%= rows[i].pSKU %> </span>
                 </div>
-                <div class="card-price">
-                  <p class="price">
-                    $<%= rows[i].pPrice %>
-                  </p>
+                
+
+                <div class="product-brand">
+                  <h4><%= rows[i].pBrand %></h4>
                 </div>
-                <a href="/ecommerce-management/ecommerce-views/edit-product/<%= rows[i].pId %>"><i class="fa-solid fa-pencil"></i>
-                  Edit</a>
+
+                <div style="padding-bottom: 20px;">
+                  <div class="product-description">
+                    <p><%= rows[i].pDescription %></p>
+                  </div>
+                </div>
+   
+                <div class="product-bottom-details">
+                  <div class="product-price">$<%= rows[i].pPrice %></div>
+                  <div class="product-links">
+                    <a href=""><i class="fa-solid fa-eye"></i></a>
+                    <a href="/ecommerce-management/ecommerce-views/edit-product/<%= rows[i].pId %>"><i class="fa-solid fa-pen-to-square"></i></a>
+                  </div>
+                </div>
+
               </div>
             </div>
           <% } %>
         </div>
 
       </main>
+
+      <script src="/js/ecommerce-js/select-product-cards.js"></script>
+      <script src="/js/ecommerce-js/delete-product-modal.js"></script>
 
     <% } else { %>
       <main class="content">
