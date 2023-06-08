@@ -35,7 +35,7 @@
           <br>
           <select id="pCategory" required>
             <option selected value="">Category</option>
-            <option value="shirts">Shirts</option>
+            <option value="t-shirts">T-Shirts</option>
             <option value="pants">Pants</option>
             <option value="sweaters">Jackets</option>
             <option value="jackets">Sweaters</option>
@@ -60,7 +60,7 @@
           <input type="text" id="pBrand" maxlength="100" placeholder="Brand" value="" required>
           <br>
           <br>
-          <input type="text" id="pNumber" maxlength="100" placeholder="Product number" value="" required>
+          <input type="text" id="pSKU" maxlength="7" OnInput="add_hyphen()" placeholder="SKU" value="" required>
           <br>
           <br>
           <input type="text" id="pName" maxlength="100" placeholder="Name" value="" required>
@@ -162,6 +162,16 @@
 
     let queuedImageArray = []
 
+    function add_hyphen() {
+      const pSKUInput = document.querySelector("#pSKU")
+      let str = pSKUInput.value;
+      str = str.replace("-","");
+      if (str.length > 3) {
+          str = str.substring(0,3) + "-" + str.substring(3)
+      }
+      pSKUInput.value = str
+    }
+
     function displayQueuedImage() {
       let images = "";
       queuedImageArray.forEach((image, index) => {
@@ -189,14 +199,15 @@
     addProductForm.addEventListener("submit", (e) => {
       e.preventDefault()
       sendQueuedImageToServer()
-    });
+    })
 
     function sendQueuedImageToServer() {
+
       const formData = new FormData(addProductForm),
       pCategory = document.querySelector("#pCategory").value,
       pGender = document.querySelector("#pGender").value,
       pBrand = document.querySelector("#pBrand").value,
-      pNumber = document.querySelector("#pNumber").value,
+      pSKU = document.querySelector("#pSKU").value,
       pName = document.querySelector("#pName").value,
       pPrice = document.querySelector("#pPrice").value,
       pDescription = document.querySelector("#pDescription").value,
@@ -212,7 +223,7 @@
       formData.append("pCategory", pCategory)
       formData.append("pGender", pGender)
       formData.append("pBrand", pBrand)
-      formData.append("pNumber", pNumber)
+      formData.append("pSKU", pSKU)
       formData.append("pName", pName)
       formData.append("pPrice", pPrice)
       formData.append("pDescription", pDescription)
@@ -236,7 +247,6 @@
 
       .then(response => {
         if (response.status !== 200) throw Error(response.statusMessage)
-        console.log(response)
         addProductForm.reset()
         queuedImage.innerHTML = ""
         serverMessage.innerHTML = response.statusMessage

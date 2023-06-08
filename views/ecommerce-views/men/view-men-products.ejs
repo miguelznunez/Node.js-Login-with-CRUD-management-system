@@ -97,6 +97,7 @@
             <div class="delete-controller">
               <div class="flex flex-start">
                 <button id="cancel-product-btn"><a><i class="fa-solid fa-xmark"></i> Cancel</a></button>
+                <button id="select-all-product-btn"><a><i class="fa-solid fa-check"></i> Select All</a></button>
                 <button id="show-modal"><a><i class="fa-solid fa-trash"></i> Delete Selected</a></button>
               </div>  
             </div>  
@@ -125,7 +126,7 @@
 
                 <div class="flex">
                   <span class="product-category"><%= rows[i].pGender %> - <%= rows[i].pCategory %></span>
-                  <span class="product-category"><%= rows[i].pNumber %> </span>
+                  <span class="product-category"><%= rows[i].pSKU %> </span>
                 </div>
                 
 
@@ -158,69 +159,109 @@
       <script>
         
         const productCard = document.querySelectorAll(".product-card"),
-        productBox = document.querySelectorAll(".product-box"),
+        checkBox = document.querySelectorAll(".product-box"),
         editController = document.querySelector(".edit-controller"),
         deleteController = document.querySelector(".delete-controller"),
         serverMessage = document.querySelector(".server-message");
         let removeProducts = []
+        let pcHandlers = []
+        let cbHandlers = []
+
+        var productCardEvent = function(index) {
+          if(checkBox[index].checked === false) {
+            checkBox[index].checked = true
+            productCard[index].style.opacity = 1
+            productCard[index].style.boxShadow = "0 2px 7px #343a40"
+            let object = { Key:checkBox[index].value }
+            removeProducts.push(object)
+          } else {
+            checkBox[index].checked = false
+            productCard[index].style.opacity = 0.5
+            productCard[index].style.boxShadow = "0 2px 7px #dfdfdf"
+            const productToBeRemoved = { Key:checkBox[index].value}
+            removeProducts.splice(removeProducts.findIndex(i => i.Key === productToBeRemoved.Key), 1)
+          }
+          document.querySelector('[name="removeProducts"]').value = JSON.stringify(removeProducts)
+        }
+
+        var checkBoxEvent = function(index){
+          if(checkBox[index].checked === false) {
+            checkBox[index].checked = true
+            productCard[index].style.opacity = 1
+            productCard[index].style.boxShadow = "0 2px 7px #343a40"
+            let object = { Key:checkBox[index].value }
+            removeProducts.push(object)
+          } else {
+            checkBox[index].checked = false
+            productCard[index].style.opacity = 0.5
+            productCard[index].style.boxShadow = "0 2px 7px #dfdfdf"
+            const productToBeRemoved = { Key:checkBox[index].value}
+            removeProducts.splice(removeProducts.findIndex(i => i.Key === productToBeRemoved.Key), 1)
+          }
+          document.querySelector('[name="removeProducts"]').value = JSON.stringify(removeProducts)
+        }
+
+        // EDIT PRODUCT BUTTON 
 
         document.querySelector("#edit-product-btn").addEventListener("click", () => {
           editController.style.display = "none";
           deleteController.style.display = "block";
 
-          productCard.forEach((pc,i) => {
+          productCard.forEach((pc, i) => {
             pc.style.opacity = 0.5
             pc.style.cursor = "pointer"
-            pc.addEventListener("click", () => {
-              if(productBox[i].checked === false) {
-                productBox[i].checked = true
-                pc.style.opacity = 1
-                pc.style.boxShadow = "0 2px 7px #343a40"
-                let object = { Key:productBox[i].value }
-                removeProducts.push(object)
-              } else {
-                pc.style.opacity = 0.5
-                pc.style.boxShadow = "0 2px 7px #dfdfdf"
-                productBox[i].checked = false
-                const productToBeRemoved = { Key:productBox[i].value}
-                removeProducts.splice(removeProducts.findIndex(i => i.Key === productToBeRemoved.Key), 1)
-              }
-              document.querySelector('[name="removeProducts"]').value = JSON.stringify(removeProducts)
-            })
+            const wrappedFunc = productCardEvent.bind(this, i)
+            pcHandlers.push(wrappedFunc)
+            pc.addEventListener("click", wrappedFunc)
           })
 
-          productBox.forEach((pb, i) => {
-            pb.style.visibility = "visible"
+          checkBox.forEach((cb, i) => {
+            cb.style.visibility = "visible"
+            const wrappedFunc = checkBoxEvent.bind(this, i)
+            cbHandlers.push(wrappedFunc)
+            cb.addEventListener("click", wrappedFunc)
           })
 
         })
+
+        // CANCEL PRODUCT BUTTON
 
         document.querySelector("#cancel-product-btn").addEventListener("click", () => {
           editController.style.display = "block";
           deleteController.style.display = "none";
 
-          productCard.forEach((pc,i) => {
+          productCard.forEach((pc, i) => {
             pc.style.opacity = 1
             pc.style.cursor = "auto"
             pc.style.boxShadow = "0 2px 7px #dfdfdf"
-            pc.addEventListener("click", () => {
-              pc.style.opacity = 1
-              pc.style.boxShadow = "0 2px 7px #dfdfdf"
-              productBox[i].checked = false
-            })
+            pc.removeEventListener("click", pcHandlers[i])
           })
 
-          productBox.forEach((pb) => {
-            pb.checked = false
-            pb.style.visibility = "hidden"
+          checkBox.forEach((cb, i) => {
+            cb.checked = false
+            cb.style.visibility = "hidden"
+            cb.removeEventListener("click", cbHandlers[i])
           })
 
           removeProducts = []
+          pcHandlers = []
+          cbHandlers = []
 
         })
 
+        document.querySelector("#select-all-product-btn").addEventListener("click", () => {
+          checkBox.forEach((cb, i) => {
+            cb.checked = true;
+            productCard[i].style.opacity = 1
+            productCard[i].style.boxShadow = "0 2px 7px #343a40"
+            let object = { Key:checkBox[i].value }
+            removeProducts.push(object)
+          })       
+          document.querySelector('[name="removeProducts"]').value = JSON.stringify(removeProducts);
+        })
+
       </script>
-      <script src="/js/ecommerce-js/ecommerce-modal.js"></script>
+      <script src="/js/ecommerce-js/delete-product-modal.js"></script>
 
     <% } else { %>
       <main class="content">

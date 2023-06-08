@@ -41,6 +41,7 @@ const upload = multer({
 }).any()
 
 exports.addProduct = (req, res) => {
+
   upload(req, res, (err) => {
     if(!err && req.files != "") {
       saveProductInDB(req.files, req.body, (err, result) => {
@@ -57,6 +58,7 @@ exports.addProduct = (req, res) => {
       return res.status(400).json({statusMessage:error, status:400})
     }
   })  
+
 }
 
 exports.editProductInfo = (req, res) => {
@@ -64,12 +66,13 @@ exports.editProductInfo = (req, res) => {
     if(!err){
       return res.status(200).json({statusMessage:"Product has been edited successfully.", status:200})
     } else {
-      return res.status(500).json({statusMessage:"Internal server error", status:500})
+      return res.status(500).json({statusMessage:err.sqlMessage, status:500})
     }
   })
 }
 
-exports.editProductInfoImage = (req, res) => {
+exports.editProductInfoAndImage = (req, res) => {
+
   upload(req, res, (err) => {
     if(!err && req.files != "") { 
       S3.deleteS3Image(req.body.pSavedImage, (err, result) => {
@@ -92,6 +95,7 @@ exports.editProductInfoImage = (req, res) => {
       return res.status(400).json({statusMessage:error, status:400})
     }
   }) 
+
 }
 
 exports.findMenProductsByBrandCategory = (req, res) => {
@@ -106,8 +110,8 @@ exports.findMenProductsByBrandCategory = (req, res) => {
 }
 
 exports.findMenProductsByProductNumber = (req, res) => {
-  const pNumber = req.body.pNumber
-  db.query("SELECT * FROM products WHERE pGender = ? && pNumber = ?", ["men", pNumber], (err, rows) => {
+  const pSKU = req.body.pSKU
+  db.query("SELECT * FROM products WHERE pGender = ? && pSKU = ?", ["men", pSKU], (err, rows) => {
     if(!err) { 
       return res.status(200).render("view-men-products", {title:"User Management - View men products" , user:req.user, rows:rows})
     } else { 
@@ -154,8 +158,8 @@ exports.findWomenProductsByBrandCategory = (req, res) => {
 }
 
 exports.findWomenProductsByProductNumber = (req, res) => {
-  const pNumber = req.body.pNumber
-  db.query("SELECT * FROM products WHERE pGender = ? && pNumber = ?", ["women", pNumber], (err, rows) => {
+  const pSKU = req.body.pSKU
+  db.query("SELECT * FROM products WHERE pGender = ? && pSKU = ?", ["women", pSKU], (err, rows) => {
     if(!err) { 
       return res.status(200).render("view-women-products", {title:"User Management - View women products" , user:req.user, rows:rows})
     } else { 
@@ -176,8 +180,8 @@ exports.findDNAProductsByBrandCategory = (req, res) => {
 }
 
 exports.findDNAProductsByProductNumber = (req, res) => {
-  const pNumber = req.body.pNumber
-  db.query("SELECT * FROM products WHERE pGender = ? && pNumber = ?", ["DNA", pNumber], (err, rows) => {
+  const pSKU = req.body.pSKU
+  db.query("SELECT * FROM products WHERE pGender = ? && pSKU = ?", ["DNA", pSKU], (err, rows) => {
     if(!err) { 
       return res.status(200).render("view-dna-products", {title:"User Management - View DNA products" , user:req.user, rows:rows})
     } else { 
@@ -187,24 +191,24 @@ exports.findDNAProductsByProductNumber = (req, res) => {
 }
 
 saveProductInDB = (pImage, pInfo, callback) => {
-  const {pCategory, pGender, pBrand, pNumber, pName, pPrice, pDescription, pQuantity_OS, pQuantity_XS, pQuantity_S, pQuantity_M, pQuantity_L, pQuantity_XL, pQuantity_XXL} = pInfo
-  db.query("INSERT INTO products (pCategory, pGender, pImage, pBrand, pNumber, pName, pPrice, pDescription, pQuantity_OS,pQuantity_XS, pQuantity_S, pQuantity_M, pQuantity_L, pQuantity_XL, pQuantity_XXL) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", [pCategory, pGender, pImage[0].key, pBrand, pNumber, pName, pPrice, pDescription, pQuantity_OS, pQuantity_XS, pQuantity_S, pQuantity_M, pQuantity_L, pQuantity_XL, pQuantity_XXL], (err, result) => {
+  const {pCategory, pGender, pBrand, pSKU, pName, pPrice, pDescription, pQuantity_OS, pQuantity_XS, pQuantity_S, pQuantity_M, pQuantity_L, pQuantity_XL, pQuantity_XXL} = pInfo
+  db.query("INSERT INTO products (pCategory, pGender, pImage, pBrand, pSKU, pName, pPrice, pDescription, pQuantity_OS,pQuantity_XS, pQuantity_S, pQuantity_M, pQuantity_L, pQuantity_XL, pQuantity_XXL) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", [pCategory, pGender, pImage[0].key, pBrand, pSKU, pName, pPrice, pDescription, pQuantity_OS, pQuantity_XS, pQuantity_S, pQuantity_M, pQuantity_L, pQuantity_XL, pQuantity_XXL], (err, result) => {
     if(err) callback(err, null)
     else callback(null, result)
   })
 }
 
 editProductInfoInDB = (pInfo, callback) => {
-  const {pId, pCategory, pGender, pImage, pBrand, pNumber, pName, pPrice, pDescription, pQuantity_OS, pQuantity_XS, pQuantity_S, pQuantity_M, pQuantity_L, pQuantity_XL, pQuantity_XXL} = pInfo
-  db.query("UPDATE products SET pCategory = ?, pGender = ?, pImage = ?, pBrand = ?, pNumber = ?, pName = ?, pPrice = ?, pDescription = ?, pQuantity_OS = ?, pQuantity_XS = ?, pQuantity_S = ?, pQuantity_M = ?, pQuantity_L = ?, pQuantity_XL = ?, pQuantity_XXL = ? WHERE pId = ?", [pCategory, pGender, pImage, pBrand, pNumber, pName, pPrice, pDescription, pQuantity_OS, pQuantity_XS, pQuantity_S, pQuantity_M, pQuantity_L, pQuantity_XL, pQuantity_XXL, pId], (err, result) => {
+  const {pId, pCategory, pGender, pImage, pBrand, pSKU, pName, pPrice, pDescription, pQuantity_OS, pQuantity_XS, pQuantity_S, pQuantity_M, pQuantity_L, pQuantity_XL, pQuantity_XXL} = pInfo
+  db.query("UPDATE products SET pCategory = ?, pGender = ?, pImage = ?, pBrand = ?, pSKU = ?, pName = ?, pPrice = ?, pDescription = ?, pQuantity_OS = ?, pQuantity_XS = ?, pQuantity_S = ?, pQuantity_M = ?, pQuantity_L = ?, pQuantity_XL = ?, pQuantity_XXL = ? WHERE pId = ?", [pCategory, pGender, pImage, pBrand, pSKU, pName, pPrice, pDescription, pQuantity_OS, pQuantity_XS, pQuantity_S, pQuantity_M, pQuantity_L, pQuantity_XL, pQuantity_XXL, pId], (err, result) => {
     if(err) callback(err, null)
     else callback(null, result)
   })
 }
 
 editProductInfoImageInDB = (pImage, pInfo, callback) => {
-  const {pId, pCategory, pGender, pBrand, pNumber, pName, pPrice, pDescription, pQuantity_OS, pQuantity_XS, pQuantity_S, pQuantity_M, pQuantity_L, pQuantity_XL, pQuantity_XXL} = pInfo
-  db.query("UPDATE products SET pCategory = ?, pGender = ?, pImage = ?, pBrand = ?, pNumber = ?, pName = ?, pPrice = ?, pDescription = ?, pQuantity_OS = ?, pQuantity_XS = ?, pQuantity_S = ?, pQuantity_M = ?, pQuantity_L = ?, pQuantity_XL = ?, pQuantity_XXL = ? WHERE pId = ?", [pCategory, pGender, pImage[0].key, pBrand, pNumber, pName, pPrice, pDescription, pQuantity_OS, pQuantity_XS, pQuantity_S, pQuantity_M, pQuantity_L, pQuantity_XL, pQuantity_XXL, pId], (err, result) => {
+  const {pId, pCategory, pGender, pBrand, pSKU, pName, pPrice, pDescription, pQuantity_OS, pQuantity_XS, pQuantity_S, pQuantity_M, pQuantity_L, pQuantity_XL, pQuantity_XXL} = pInfo
+  db.query("UPDATE products SET pCategory = ?, pGender = ?, pImage = ?, pBrand = ?, pSKU = ?, pName = ?, pPrice = ?, pDescription = ?, pQuantity_OS = ?, pQuantity_XS = ?, pQuantity_S = ?, pQuantity_M = ?, pQuantity_L = ?, pQuantity_XL = ?, pQuantity_XXL = ? WHERE pId = ?", [pCategory, pGender, pImage[0].key, pBrand, pSKU, pName, pPrice, pDescription, pQuantity_OS, pQuantity_XS, pQuantity_S, pQuantity_M, pQuantity_L, pQuantity_XL, pQuantity_XXL, pId], (err, result) => {
     if(err) callback(err, null)
     else callback(null, result)
   })

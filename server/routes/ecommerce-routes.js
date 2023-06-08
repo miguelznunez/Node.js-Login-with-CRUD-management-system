@@ -112,14 +112,13 @@ router.get("/ecommerce-views/delete-product/:pGender/:pId", authController.isLog
   })
 })
 
-
 // USER MANAGEMENT POST ROUTES  ============================================================
 
 router.post("/add-product", ecommerceManagementController.addProduct)
 
 router.put("/edit-product-info", ecommerceManagementController.editProductInfo)
 
-router.put("/edit-product-info-image", ecommerceManagementController.editProductInfoImage)
+router.put("/edit-product-info-and-image", ecommerceManagementController.editProductInfoAndImage)
 
 router.post("/search-men-products-by-brand-and-category", ecommerceManagementController.findMenProductsByBrandCategory)
 

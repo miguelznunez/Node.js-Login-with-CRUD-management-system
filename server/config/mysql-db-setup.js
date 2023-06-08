@@ -53,7 +53,7 @@ dbConnection.connect(function(err){
     pGender VARCHAR(255),
     pImage VARCHAR(255),
     pBrand VARCHAR(255),
-    pNumber VARCHAR(255),
+    pSKU VARCHAR(7),
     pName VARCHAR(255),
     pPrice VARCHAR(255),
     pDiscount VARCHAR(255),
@@ -66,7 +66,8 @@ dbConnection.connect(function(err){
     pQuantity_XL VARCHAR(255),
     pQuantity_XXL VARCHAR(255),
 
-    PRIMARY KEY(pId) );`
+    PRIMARY KEY(pId),
+    UNIQUE INDEX pSKU_UNIQUE (pSKU) );`
 
   let newsletter = `
     CREATE TABLE newsletter (

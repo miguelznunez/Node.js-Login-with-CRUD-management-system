@@ -60,7 +60,7 @@
             <input type="hidden" id="pId" value="<%= rows[0].pId %>">
             <select id="pCategory" required>
               <option selected value="<%= rows[0].pCategory %>"><%= rows[0].pCategory %></option>
-              <option value="shirts">Shirts</option>
+              <option value="t-shirts">T-Shirts</option>
               <option value="pants">Pants</option>
               <option value="sweaters">Jackets</option>
               <option value="jackets">Sweaters</option>
@@ -84,7 +84,7 @@
             <input type="text" id="pBrand" maxlength="100" placeholder="Brand" value="<%= rows[0].pBrand %>" required>
             <br>
             <br>
-            <input type="text" id="pNumber" maxlength="100" placeholder="Product number" value="<%= rows[0].pNumber %>" required>
+            <input type="text" id="pSKU" maxlength="7" OnInput="add_hyphen()" placeholder="SKU number" value="<%= rows[0].pSKU %>" required>
             <br>
             <br>
             <input type="text" id="pName" maxlength="100" placeholder="Name" value="<%= rows[0].pName %>" required>
@@ -150,6 +150,16 @@
           displaySavedImage()
         }
 
+        function add_hyphen() {
+          const pSKUInput = document.querySelector("#pSKU")
+          let str = pSKUInput.value;
+          str = str.replace("-","");
+          if (str.length > 3) {
+              str = str.substring(0,3) + "-" + str.substring(3)
+          }
+          pSKUInput.value = str
+        }
+
         function displaySavedImage() {
           queuedImageArray.push(savedImage)
           queuedImage.innerHTML = `<div class="image">
@@ -193,7 +203,7 @@
             pCategory = document.querySelector("#pCategory").value,
             pGender = document.querySelector("#pGender").value,
             pBrand = document.querySelector("#pBrand").value,
-            pNumber = document.querySelector("#pNumber").value,
+            pSKU = document.querySelector("#pSKU").value,
             pName = document.querySelector("#pName").value,
             pPrice = document.querySelector("#pPrice").value,
             pDescription = document.querySelector("#pDescription").value,
@@ -213,7 +223,7 @@
           // image to delete
           formData.append("pSavedImage", savedImage)
           formData.append("pBrand", pBrand)
-          formData.append("pNumber", pNumber)
+          formData.append("pSKU", pSKU)
           formData.append("pName", pName)
           formData.append("pPrice", pPrice)
           formData.append("pDescription", pDescription)
@@ -236,7 +246,7 @@
                 "Accept": "application/json, text/plain, */*",
                 "Content-type": "application/json"
               },
-              body: JSON.stringify({ pId: pId, pCategory: pCategory, pGender: pGender, pImage: savedImage, pBrand: pBrand, pNumber: pNumber, pName: pName, pPrice: pPrice, pDescription: pDescription, pQuantity_OS: pQuantity_OS, pQuantity_XS: pQuantity_XS, pQuantity_S: pQuantity_S, pQuantity_M: pQuantity_M, pQuantity_L: pQuantity_L, pQuantity_XL: pQuantity_XL, pQuantity_XXL: pQuantity_XXL })
+              body: JSON.stringify({ pId: pId, pCategory: pCategory, pGender: pGender, pImage: savedImage, pBrand: pBrand, pSKU: pSKU, pName: pName, pPrice: pPrice, pDescription: pDescription, pQuantity_OS: pQuantity_OS, pQuantity_XS: pQuantity_XS, pQuantity_S: pQuantity_S, pQuantity_M: pQuantity_M, pQuantity_L: pQuantity_L, pQuantity_XL: pQuantity_XL, pQuantity_XXL: pQuantity_XXL })
             })
 
             .then( response => response.json() )
@@ -260,7 +270,7 @@
             btn.classList.add("button--loading");
             btn.disabled = true
 
-            fetch("/ecommerce-management/edit-product-info-image", {
+            fetch("/ecommerce-management/edit-product-info-and-image", {
               method: "PUT",
               body: formData
             })
@@ -285,7 +295,7 @@
 
         }
       </script>
-      <script src="/js/modal.js"></script>
+      <script src="/js/ecommerce-js/edit-product-modal.js"></script>
 
     <% } else { %>
 
