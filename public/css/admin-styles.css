@@ -858,7 +858,7 @@ th{
   gap: 5px;
 }
 
-/* CREATE PRODUCT */
+/* ECOMMERCE  */
 
 select{
   width: 100%;
@@ -1085,6 +1085,9 @@ input.product-box {
   -webkit-box-orient: vertical;
 }
 
+#deselect-all-product-btn{
+  display: none;
+}
 
 
 @media(max-width:1024px){

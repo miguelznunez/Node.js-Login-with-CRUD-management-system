@@ -118,12 +118,15 @@
         deleteController = document.querySelector(".delete-controller"),
         topCheckbox = subscriberTable.querySelector("#select-all"),
         checkbox = subscriberTable.querySelectorAll('tbody>tr>td>input'),
-        selectBtn = document.querySelector("#select-all-subs-btn"),
-        deselectBtn = document.querySelector("#deselect-all-subs-btn"),
+        editSubscribersBtn = document.querySelector("#edit-subs-btn"),
+        selectSubscribersBtn = document.querySelector("#select-all-subs-btn"),
+        cancelSubscribersBtn = document.querySelector("#cancel-subs-btn"),
+        deselectSubscribersBtn = document.querySelector("#deselect-all-subs-btn"),
         serverMessage = document.querySelector(".server-message");
         let removeEmails = [];
 
         // FUNCTION TO CHECK ONE CHECKBOX AT A TIME
+
         const checkOne = function(e) {
           if(e.currentTarget.checked){
             removeEmails.push(e.currentTarget.value)
@@ -135,11 +138,13 @@
         }   
 
         // ADD CHECKONE ONE FUNCTION TO EACH CHECKBOX
+
         checkbox.forEach((cb) => {
           cb.addEventListener("change", checkOne)
         })
 
         // TOP CHECKBOX 
+
         topCheckbox.addEventListener("change", () => {
           if (topCheckbox.checked) {
             removeEmails = []
@@ -157,7 +162,8 @@
         })
 
         // EDIT BUTTON
-        document.querySelector("#edit-subs-btn").addEventListener("click", () => {
+
+        editSubscribersBtn.addEventListener("click", () => {
           editController.style.display = "none";
           deleteController.style.display = "block";
           topCheckbox.disabled = false
@@ -167,7 +173,8 @@
         })
 
         // CANCEL BUTTON
-        document.querySelector("#cancel-subs-btn").addEventListener("click", () => {
+
+        cancelSubscribersBtn.addEventListener("click", () => {
           editController.style.display = "block";
           deleteController.style.display = "none";
           topCheckbox.disabled = true
@@ -176,11 +183,14 @@
             cb.disabled = true
             cb.checked = false
           })
+          deselectSubscribersBtn.style.display = "none"
+          selectSubscribersBtn.style.display = "block"
           removeEmails = []
         })
 
         // SELECT ALL BUTTON
-        selectBtn.addEventListener("click", () => {
+
+        selectSubscribersBtn.addEventListener("click", () => {
           topCheckbox.checked = true
           removeEmails = []
           checkbox.forEach((cb) => {
@@ -188,20 +198,21 @@
             removeEmails.push(cb.value);
           })
           document.querySelector('[name="removeEmails"]').value = JSON.stringify(removeEmails);
-          deselectBtn.style.display = "block"
-          selectBtn.style.display = "none"
+          deselectSubscribersBtn.style.display = "block"
+          selectSubscribersBtn.style.display = "none"
         })
 
         // DESELECT ALL BUTTON
-        deselectBtn.addEventListener("click", () => {
+
+        deselectSubscribersBtn.addEventListener("click", () => {
           topCheckbox.checked = false
           removeEmails = []
-            checkbox.forEach((cb) => {
-              cb.checked = false
+          checkbox.forEach((cb) => {
+            cb.checked = false
           })
           document.querySelector('[name="removeEmails"]').value = JSON.stringify(removeEmails);
-          deselectBtn.style.display = "none"
-          selectBtn.style.display = "block"
+          deselectSubscribersBtn.style.display = "none"
+          selectSubscribersBtn.style.display = "block"
         })
 
       </script>
