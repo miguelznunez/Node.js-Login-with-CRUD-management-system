@@ -1,30 +1,15 @@
 const express = require("express"),
 authController = require("../controllers/auth-controller"),
 db = require("../config/mysql-db-setup.js"),
+functions = require("../config/helper-functions.js"),
 passport = require("passport"),
 {check} = require("express-validator"),
 router = express.Router();
 
-// FUNCTION TO CHECK FOR INTERNET EXPLORER ============================================
-
-function checkBrowser(headers){
-  var ba = ["Chrome","Firefox","Safari","Opera","MSIE","Trident", "Edge"];
-  var b, ua = headers['user-agent'];
-  for(var i=0; i < ba.length;i++){
-    if(ua.indexOf(ba[i]) > -1){
-      b = ba[i];
-      break;
-    }
-  }
-  // IF INTERNET EXPLORER IS BEING USED RETURN TRUE OTHERWISE RETURN FALSE
-  if(b === "MSIE" || b === "Trident") return true;
-  else return false
-}
-
 // AUTH GET ROUTES ==============================================================
 
 router.get("/auth-views/signup", authController.isLoggedIn, (req, res) => {
-  if(!req.user && !checkBrowser(req.headers)){
+  if(!req.user && !functions.checkBrowser(req.headers)){
     return res.status(200).render("signup", {title:"Sign up"});
   } else {
     return res.redirect("/")
@@ -32,7 +17,7 @@ router.get("/auth-views/signup", authController.isLoggedIn, (req, res) => {
 })
 
 router.get("/auth-views/login", authController.isLoggedIn, (req, res) => {
-  if(!req.user && !checkBrowser(req.headers)) {
+  if(!req.user && !functions.checkBrowser(req.headers)) {
     const flash = req.flash("error")
     return res.status(200).render("login", {title:"Log in", flash})
   } else {
@@ -59,7 +44,7 @@ router.get("/auth-views/facebook/redirect", passport.authenticate("facebook", {
 }))
 
 router.get("/auth-views/password-reset", authController.isLoggedIn, (req, res) => {
-  if(!req.user && !checkBrowser(req.headers)) {
+  if(!req.user && !functions.checkBrowser(req.headers)) {
     return res.status(200).render("password-reset", {title:"Password Reset"} )
   } else {
     return res.redirect("/")
@@ -68,7 +53,7 @@ router.get("/auth-views/password-reset", authController.isLoggedIn, (req, res) =
 
 router.get("/auth-views/account-verification/:id/:token", authController.isLoggedIn, (req, res) => {
 
-  if(!req.user && !checkBrowser(req.headers)){
+  if(!req.user && !functions.checkBrowser(req.headers)){
     db.query("SELECT * FROM users WHERE id = ? && token = ?", [req.params.id, req.params.token], (err, results) => {
       if((results != "")) {
         db.query("UPDATE users SET token = ?, status = ? WHERE id = ?", [null, "Active", req.params.id], (err, results) => {
@@ -89,7 +74,7 @@ router.get("/auth-views/account-verification/:id/:token", authController.isLogge
 
 router.get("/auth-views/password-update/:id/:token", authController.isLoggedIn, (req, res) => {
 
-  if(!req.user && !checkBrowser(req.headers)){
+  if(!req.user && !functions.checkBrowser(req.headers)){
     db.query("SELECT * FROM users WHERE id = ? && token = ?", [req.params.id, req.params.token], (err, results) => {
       // DATABASE ERROR
       if(err){

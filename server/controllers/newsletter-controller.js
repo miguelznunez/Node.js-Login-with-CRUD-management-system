@@ -1,7 +1,7 @@
 const express = require("express"),
 db = require("../config/mysql-db-setup.js"),
 mail = require("../config/nodemailer-email-setup.js"),
-functions = require("../functions/get-date.js"),
+functions = require("../config/helper-functions.js"),
 {validationResult} = require("express-validator");
 
 exports.searchSubscribers = (req, res) => {

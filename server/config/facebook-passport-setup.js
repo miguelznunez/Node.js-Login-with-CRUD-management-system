@@ -2,7 +2,7 @@ const passport = require("passport"),
 FacebookStrategy = require("passport-facebook"),
 request = require("request"),
 db = require("./mysql-db-setup.js"),
-functions = require("../functions/get-date.js");
+functions = require("../config/helper-functions.js");
 
 require("dotenv").config()
 

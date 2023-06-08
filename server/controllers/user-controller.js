@@ -2,7 +2,7 @@ const mysql = require("mysql"),
 bcrypt = require("bcrypt"),
 saltRounds = 10,
 db = require("../config/mysql-db-setup.js"),
-functions = require("../functions/get-date.js"),
+functions = require("../config/helper-functions.js"),
 {validationResult} = require("express-validator");
 
 require("dotenv").config();

@@ -2,30 +2,14 @@ const express = require("express"),
 userManagementController = require("../controllers/user-controller"),
 authController = require("../controllers/auth-controller"),
 db = require("../config/mysql-db-setup.js"),
-functions = require("../functions/get-date.js"),
+functions = require("../config/helper-functions.js"),
 {check} = require("express-validator"),
 router = express.Router();
-
-// FUNCTION TO CHECK FOR INTERNET EXPLORER ============================================
-
-function checkBrowser(headers){
-  var ba = ["Chrome","Firefox","Safari","Opera","MSIE","Trident", "Edge"];
-  var b, ua = headers['user-agent'];
-  for(var i=0; i < ba.length;i++){
-    if(ua.indexOf(ba[i]) > -1){
-      b = ba[i];
-      break;
-    }
-  }
-  // IF INTERNET EXPLORER IS BEING USED RETURN TRUE OTHERWISE RETURN FALSE
-  if(b === "MSIE" || b === "Trident") return true;
-  else return false
-}
 
 // USER MANAGEMENT GET ROUTES ==============================================================
 
 router.get("/user-views/active-users", authController.isLoggedIn, (req, res) => {
-  if(req.user && req.user.admin === "Yes" && !checkBrowser(req.headers)) {
+  if(req.user && req.user.admin === "Yes" && !functions.checkBrowser(req.headers)) {
     db.query("SELECT * FROM users WHERE status = 'Active'", (err, rows) => {
       if(!err) { 
         const flash = req.flash("message")
@@ -40,7 +24,7 @@ router.get("/user-views/active-users", authController.isLoggedIn, (req, res) => 
 })
 
 router.get("/user-views/banned-users", authController.isLoggedIn, (req, res) => {
-  if(req.user && req.user.admin === "Yes" && !checkBrowser(req.headers)) {
+  if(req.user && req.user.admin === "Yes" && !functions.checkBrowser(req.headers)) {
     db.query("SELECT * FROM users WHERE status = 'Banned'", (err, rows) => {
       if(!err) { 
         const flash = req.flash("message")
@@ -55,7 +39,7 @@ router.get("/user-views/banned-users", authController.isLoggedIn, (req, res) => 
 })
 
 router.get("/user-views/deleted-users", authController.isLoggedIn, (req, res) => {
-  if(req.user && req.user.admin === "Yes" && !checkBrowser(req.headers)) {
+  if(req.user && req.user.admin === "Yes" && !functions.checkBrowser(req.headers)) {
     db.query("SELECT * FROM users WHERE status = 'Deleted'", (err, rows) => {
       if(!err) { 
         return res.status(200).render("deleted-users", {title:"User Management - Deleted Users" , user:req.user, rows:rows})
@@ -69,7 +53,7 @@ router.get("/user-views/deleted-users", authController.isLoggedIn, (req, res) =>
 })
 
 router.get("/user-views/inactive-users", authController.isLoggedIn, (req, res) => {
-  if(req.user && req.user.admin === "Yes" && !checkBrowser(req.headers)) {
+  if(req.user && req.user.admin === "Yes" && !functions.checkBrowser(req.headers)) {
     db.query("SELECT * FROM users WHERE status = 'Inactive'", (err, rows) => {
       if(!err) { 
         return res.status(200).render("inactive-users", {title:"User Management - Inactive Users" , user:req.user, rows:rows})
@@ -83,7 +67,7 @@ router.get("/user-views/inactive-users", authController.isLoggedIn, (req, res) =
 })
 
 router.get("/user-views/admin-users", authController.isLoggedIn, (req, res) => {
-  if(req.user && req.user.admin === "Yes" && !checkBrowser(req.headers)) {
+  if(req.user && req.user.admin === "Yes" && !functions.checkBrowser(req.headers)) {
     db.query("SELECT * FROM users WHERE admin = 'Yes' AND status != 'Deleted'", (err, rows) => {
       if(!err) { 
         return res.status(200).render("admin-users", {title:"User Management - Admin Users" , user:req.user, rows:rows})
@@ -97,7 +81,7 @@ router.get("/user-views/admin-users", authController.isLoggedIn, (req, res) => {
 })
 
 router.get("/user-views/view-user/:id", authController.isLoggedIn, (req, res) => {
-  if(req.user && req.user.admin === "Yes" && !checkBrowser(req.headers)){
+  if(req.user && req.user.admin === "Yes" && !functions.checkBrowser(req.headers)){
     db.query("SELECT * FROM users LEFT JOIN federated_credentials ON users.id = federated_credentials.user_id WHERE users.id = ?",[req.params.id], (err, rows) => {
       if(err) { // DATABASE ERROR
         return res.status(500).render("view-user", {title:"View user", user:req.user, message:"Internal server error."})
@@ -115,7 +99,7 @@ router.get("/user-views/view-user/:id", authController.isLoggedIn, (req, res) =>
 })
 
 router.get("/user-views/edit-user/:id", authController.isLoggedIn, (req, res) => {
-  if(req.user && req.user.admin === "Yes" && !checkBrowser(req.headers)) {
+  if(req.user && req.user.admin === "Yes" && !functions.checkBrowser(req.headers)) {
     db.query("SELECT * FROM users WHERE id = ?",[req.params.id], (err, rows) => {
       if(err) { // DATABASE ERROR
         return res.status(500).render("edit-user", {title:"Edit user", user:req.user, message:"Internal server error."})
@@ -133,7 +117,7 @@ router.get("/user-views/edit-user/:id", authController.isLoggedIn, (req, res) =>
 })
 
 router.get("/user-views/add-user", authController.isLoggedIn, (req, res) => {
-  if(req.user && req.user.admin === "Yes" && !checkBrowser(req.headers)) {
+  if(req.user && req.user.admin === "Yes" && !functions.checkBrowser(req.headers)) {
     return res.render("add-user", {title:"Add User", user:req.user})
   } else { 
     return res.redirect("/auth-management/auth-views/login")
@@ -141,7 +125,7 @@ router.get("/user-views/add-user", authController.isLoggedIn, (req, res) => {
 })
 
 router.get("/user-views/delete-user/:status/:id", authController.isLoggedIn, (req, res) => {
-  if(req.user && req.user.admin === "Yes" && !checkBrowser(req.headers)) {
+  if(req.user && req.user.admin === "Yes" && !functions.checkBrowser(req.headers)) {
 
     const {status, id} = req.params
 

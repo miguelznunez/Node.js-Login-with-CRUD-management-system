@@ -2,28 +2,14 @@ const express = require("express"),
 db = require("../config/mysql-db-setup.js"),
 authController = require("../controllers/auth-controller"),
 newsletterController = require("../controllers/newsletter-controller"),
+functions = require("../config/helper-functions.js"),
 {check} = require("express-validator"),
 router = express.Router();
 
-// FUNCTION TO CHECK FOR INTERNET EXPLORER ============================================
-
-function checkBrowser(headers){
-  var ba = ["Chrome","Firefox","Safari","Opera","MSIE","Trident", "Edge"];
-  var b, ua = headers['user-agent'];
-  for(var i=0; i < ba.length;i++){
-    if(ua.indexOf(ba[i]) > -1){
-      b = ba[i];
-      break;
-    }
-  }
-  // IF INTERNET EXPLORER IS BEING USED RETURN TRUE OTHERWISE RETURN FALSE
-  if(b === "MSIE" || b === "Trident") return true;
-  else return false
-}
 
 router.get("/newsletter-views/view-subscribers", authController.isLoggedIn,(req, res) => {
 
-    if(req.user && req.user.admin === "Yes" && !checkBrowser(req.headers)){
+    if(req.user && req.user.admin === "Yes" && !functions.checkBrowser(req.headers)){
         db.query("SELECT * FROM newsletter", (err, rows) => {
           if(!err) {
             const flash = req.flash("message") 
@@ -39,7 +25,7 @@ router.get("/newsletter-views/view-subscribers", authController.isLoggedIn,(req,
 })
 
 router.get("/newsletter-views/edit-subscriber/:nId", authController.isLoggedIn,(req, res) => {
-    if(req.user && req.user.admin === "Yes" && !checkBrowser(req.headers)){
+    if(req.user && req.user.admin === "Yes" && !functions.checkBrowser(req.headers)){
         db.query("SELECT * FROM newsletter WHERE nId = ?", [req.params.nId], (err, rows) => {
           if(!err) {
             return res.status(200).render("edit-subscriber", {title:"Newsletter Management - Edit subscriber" , user:req.user, rows:rows})
@@ -53,7 +39,7 @@ router.get("/newsletter-views/edit-subscriber/:nId", authController.isLoggedIn,(
 })
 
 router.get("/newsletter-views/add-subscriber", authController.isLoggedIn,(req, res) => {
-    if(req.user && req.user.admin === "Yes" && !checkBrowser(req.headers)){          
+    if(req.user && req.user.admin === "Yes" && !functions.checkBrowser(req.headers)){          
         return res.status(200).render("add-subscriber", {title:"Newsletter Management - Add subscriber" , user:req.user})
     } else {
         return res.redirect("/auth-management/auth-views/login")
@@ -61,7 +47,7 @@ router.get("/newsletter-views/add-subscriber", authController.isLoggedIn,(req, r
 })
 
 router.get("/newsletter-views/compose-email", authController.isLoggedIn,(req, res) => {
-    if(req.user && req.user.admin === "Yes" && !checkBrowser(req.headers)){
+    if(req.user && req.user.admin === "Yes" && !functions.checkBrowser(req.headers)){
         return res.status(200).render("compose-email", {title:"Newsletter Management - Compose email" , user:req.user})
     } else {
         return res.redirect("/auth-management/auth-views/login")

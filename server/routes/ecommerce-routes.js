@@ -2,30 +2,15 @@ const express = require("express"),
 authController = require("../controllers/auth-controller"),
 ecommerceManagementController = require("../controllers/ecommerce-controller"),
 db = require("../config/mysql-db-setup.js"),
-S3 = require("../config/aws-s3-setup.js");
+S3 = require("../config/aws-s3-setup.js"),
+functions = require("../config/helper-functions.js"),
+router = express.Router();
 
-const router = express.Router();
-
-// FUNCTION TO CHECK FOR INTERNET EXPLORER ============================================
-
-function checkBrowser(headers){
-  var ba = ["Chrome","Firefox","Safari","Opera","MSIE","Trident", "Edge"];
-  var b, ua = headers['user-agent'];
-  for(var i=0; i < ba.length;i++){
-    if(ua.indexOf(ba[i]) > -1){
-      b = ba[i];
-      break;
-    }
-  }
-  // IF INTERNET EXPLORER IS BEING USED RETURN TRUE OTHERWISE RETURN FALSE
-  if(b === "MSIE" || b === "Trident") return true;
-  else return false
-}
 
 // USER MANAGEMENT GET ROUTES ==============================================================
 
 router.get("/ecommerce-views/add-product", authController.isLoggedIn, (req, res) => {
-  if(req.user && req.user.admin === "Yes" && !checkBrowser(req.headers)){
+  if(req.user && req.user.admin === "Yes" && !functions.checkBrowser(req.headers)){
     return res.status(200).render("add-product", {title:"eCommerce Management - Add product", user:req.user});
   } else {
     return res.redirect("/auth-management/auth-views/login")
@@ -33,7 +18,7 @@ router.get("/ecommerce-views/add-product", authController.isLoggedIn, (req, res)
 })
 
 router.get("/ecommerce-views/edit-product/:pId", authController.isLoggedIn, (req, res) => {
-  if(req.user && req.user.admin === "Yes" && !checkBrowser(req.headers)){
+  if(req.user && req.user.admin === "Yes" && !functions.checkBrowser(req.headers)){
 
     db.query("SELECT * FROM products WHERE pId = ?", [req.params.pId], (err, rows) => {
       if(err) { // DATABASE ERROR
@@ -57,7 +42,7 @@ router.get("/:image_key", (req, res) => {
 })
 
 router.get("/ecommerce-views/men/view-men-products", authController.isLoggedIn, (req, res) => {
-  if(req.user && req.user.admin === "Yes" && !checkBrowser(req.headers)){
+  if(req.user && req.user.admin === "Yes" && !functions.checkBrowser(req.headers)){
     db.query("SELECT * FROM products WHERE pGender = ?", ["men"], (err, rows) => {
       if(!err) { 
         const flash = req.flash("message")
@@ -72,7 +57,7 @@ router.get("/ecommerce-views/men/view-men-products", authController.isLoggedIn, 
 })
 
 router.get("/ecommerce-views/women/view-women-products", authController.isLoggedIn, (req, res) => {
-  if(req.user && req.user.admin === "Yes" && !checkBrowser(req.headers)){
+  if(req.user && req.user.admin === "Yes" && !functions.checkBrowser(req.headers)){
     db.query("SELECT * FROM products WHERE pGender = ?", ["women"], (err, rows) => {
       if(!err) {
         const flash = req.flash("message") 
@@ -87,7 +72,7 @@ router.get("/ecommerce-views/women/view-women-products", authController.isLogged
 })
 
 router.get("/ecommerce-views/dna/view-dna-products", authController.isLoggedIn, (req, res) => {
-  if(req.user && req.user.admin === "Yes" && !checkBrowser(req.headers)){
+  if(req.user && req.user.admin === "Yes" && !functions.checkBrowser(req.headers)){
     db.query("SELECT * FROM products WHERE pGender = ?", ["DNA"], (err, rows) => {
       if(!err) {
         const flash = req.flash("message") 

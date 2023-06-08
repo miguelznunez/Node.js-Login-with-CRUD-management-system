@@ -1,7 +1,7 @@
 const passport = require("passport"),
 GoogleStrategy = require("passport-google-oauth20"),
 db = require("./mysql-db-setup.js"),
-functions = require("../functions/get-date.js");
+functions = require("../config/helper-functions.js");
 
 require("dotenv").config()
 
