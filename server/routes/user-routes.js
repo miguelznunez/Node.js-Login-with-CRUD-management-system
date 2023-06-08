@@ -2,6 +2,7 @@ const express = require("express"),
 userManagementController = require("../controllers/user-controller"),
 authController = require("../controllers/auth-controller"),
 db = require("../config/mysql-db-setup.js"),
+functions = require("../functions/get-date.js"),
 {check} = require("express-validator"),
 router = express.Router();
 
@@ -157,7 +158,7 @@ router.get("/user-views/delete-user/:status/:id", authController.isLoggedIn, (re
 
         db.query("UPDATE federated_credentials SET subject = ? WHERE user_id = ?", [null, id], (err, rows) => {
           if(!err) { 
-            db.query("UPDATE users SET email = ?, status = ? WHERE id = ?", [null, "Deleted", id], (err, rows) => {
+            db.query("UPDATE users SET email = ?, status = ?, deleted = ? WHERE id = ?", [null, "Deleted", functions.getDate(), id], (err, rows) => {
               if(!err) { 
                 req.flash("message", `The selected user was successfully deleted.`)
                 return res.redirect(`/user-management/user-views/${status.toLowerCase()}-users`)
@@ -171,7 +172,7 @@ router.get("/user-views/delete-user/:status/:id", authController.isLoggedIn, (re
         })
       } else {
         console.log("Email user")
-        db.query("UPDATE users SET email = ?, status = ? WHERE id = ?", [null, "Deleted", id], (err, rows) => {
+        db.query("UPDATE users SET email = ?, status = ?, deleted = ? WHERE id = ?", [null, "Deleted", functions.getDate(), id], (err, rows) => {
           if(!err) { 
             req.flash("message", `The selected user was successfully deleted.`)
             return res.redirect(`/user-management/user-views/${status.toLowerCase()}-users`)

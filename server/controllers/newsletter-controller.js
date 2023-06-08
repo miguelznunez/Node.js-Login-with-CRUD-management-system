@@ -1,16 +1,8 @@
 const express = require("express"),
 db = require("../config/mysql-db-setup.js"),
 mail = require("../config/nodemailer-email-setup.js"),
+functions = require("../functions/get-date.js"),
 {validationResult} = require("express-validator");
-
-function get_date(){
-    let yourDate = new Date()
-    const offset = yourDate.getTimezoneOffset();
-    yourDate = new Date(yourDate.getTime() - (offset*60*1000));
-    yourDate = yourDate.toISOString().split('T')[0]
-    yourDate = yourDate.split("-")
-    return `${yourDate[1]}-${yourDate[2]}-${yourDate[0]}` 
-}
 
 exports.searchSubscribers = (req, res) => {
 
@@ -49,13 +41,12 @@ exports.addSubscriber = (req, res) => {
     }
 
     const email = req.body.nEmail
-    const date_subscribed = get_date();
 
      // CHECK IF THIS EMAIL EXISTS IN DB
      db.query("SELECT * FROM newsletter WHERE email = ?", [email], (err, results) => {
         // IF IT DOESN'T: SAVE IT IN DB
         if(!err && results[0] === undefined){
-            db.query("INSERT INTO newsletter (email, date_subscribed) VALUES (?,?)", [email, date_subscribed], (err, results) => {
+            db.query("INSERT INTO newsletter (email, date_subscribed) VALUES (?,?)", [email, functions.getDate()], (err, results) => {
               if(!err){
                 // mail.newsletterWelcomeEmail(email, (err, info) => {
                 //   if(!err) {

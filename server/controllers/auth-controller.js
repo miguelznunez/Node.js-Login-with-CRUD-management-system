@@ -1,24 +1,16 @@
 const mysql = require("mysql"),
-db = require("../config/mysql-db-setup.js"),
 jwt = require("jsonwebtoken"),
 bcrypt = require("bcrypt"),
-saltRounds = 10,
+db = require("../config/mysql-db-setup.js"),
 mail = require("../config/nodemailer-email-setup.js"),
+functions = require("../functions/get-date.js"),
+saltRounds = 10,
 {promisify} = require("util"),
 {validationResult} = require("express-validator");
 
 var request = require("request")
 var randomstring = require("randomstring");
 require("dotenv").config();
-
-function get_date(){
-  let yourDate = new Date()
-  const offset = yourDate.getTimezoneOffset();
-  yourDate = new Date(yourDate.getTime() - (offset*60*1000));
-  yourDate = yourDate.toISOString().split('T')[0]
-  yourDate = yourDate.split("-")
-  return `${yourDate[1]}-${yourDate[2]}-${yourDate[0]}` 
-}
 
 
 // SIGN UP -------------------------------------------------------
@@ -34,33 +26,28 @@ exports.signup = (req, res) => {
   }
 
   const { fName, lName, email, password } = req.body;  
-  const member_since = get_date();
+  const created = functions.getDate();
 
   db.query("SELECT email FROM users WHERE email = ?", [email], (err, results) => {
-    // CHECK IF EMAIL ALREADY EXISTS IN DATABASE
     if (!err && results != "") {
       return res.status(401).json({statusMessage:"An account with that email address already exists.", status:401})
-    // ELSE CREATE A NEW USER
     } else if(!err && results[0] === undefined){
-        let token = randomstring.generate(40)
+        let token = randomstring.generate(255)
         bcrypt.hash(password, saltRounds, (err, hash) => {
-          db.query("INSERT INTO users (fName, lName, email, password, token, member_since) VALUES (?,?,?,?,?,?)", [fName, lName, email, hash, token, member_since], (err, results) => {
+          db.query("INSERT INTO users (fName, lName, email, password, token, created) VALUES (?,?,?,?,?,?)", [fName, lName, email, hash, token, created], (err, results) => {
               if (!err) {
                 mail.activateAccountEmail(email, results.insertId, token, (err, info) => {
                   if(!err) {
                     return res.status(200).json({statusMessage:`We sent an email to ${email}, please click the link included to verify your email address.`, status:200})
                   } else {
-                    // MAILGUN ERROR
                     return res.status(err.status).json({statusMessage:err.message, status:err.status})
                   }
                 })
-              // DATABASE ERROR
               } else { 
                 return res.status(500).json({statusText:"Internal server error.", status:500})
               }
-          })//function
-        });//bcrypt
-    // DATABASE ERROR
+          })
+        })
     } else { 
         return res.status(500).json({statusText:"Internal server error.", status:500})
      } 
@@ -96,10 +83,10 @@ exports.login = (req, res) => {
       return res.status(401).json({statusMessage:"The email or password is incorrect.", status:401})
     // ELSE IF ACCOUNT IS INACTIVE
     } else if (!err && results[0].status === "Inactive") {
-      return res.status(400).json({statusMessage:"The email address for that account has not been verified.", status:400})
+      return res.status(400).json({statusMessage:"The email address associated with that account has not been verified.", status:400})
     // ELSE IF ACCOUNT IS BANNED
     } else if (!err && results[0].status === "Banned") {
-      return res.status(400).json({statusMessage:"The account associated with those credentials has been banned.", status:400})
+      return res.status(400).json({statusMessage:"The email address associated with those credentials has been banned.", status:400})
     // ELSE ALLOW USER TO LOGIN
     } else if(!err && results[0].status === "Active") {
       const id = results[0].id;
@@ -192,7 +179,7 @@ exports.passwordReset = (req, res) => {
       // EMAIL FOUND
       if(!err && results[0] != undefined) {
         const id = results[0].id
-        const token = randomstring.generate(40)
+        const token = randomstring.generate(255)
         const token_expires = Date.now() + 3600000
         const data = { token: token, token_expires: token_expires}
 
@@ -202,11 +189,9 @@ exports.passwordReset = (req, res) => {
               if(!err) {
                 return res.status(200).json({statusMessage:"If an account with that email exists, you will receive an email with instructions on how to reset your password.", status:200})
               } else { 
-                // MAILGUN ERROR
                 return res.status(err.status).json({statusMessage:err.message, status:err.status})
               }
             });
-          // DATABASE ERROR
           } else {
             return res.status(500).json({statusMessage:"Internal Server Error", status:500})
           }

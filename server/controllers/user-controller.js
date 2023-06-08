@@ -1,17 +1,11 @@
 const mysql = require("mysql"),
-db = require("../config/mysql-db-setup.js"),
 bcrypt = require("bcrypt"),
 saltRounds = 10,
+db = require("../config/mysql-db-setup.js"),
+functions = require("../functions/get-date.js"),
 {validationResult} = require("express-validator");
 
 require("dotenv").config();
-
-function get_date(){
-  let yourDate = new Date()
-  const offset = yourDate.getTimezoneOffset();
-  yourDate = new Date(yourDate.getTime() - (offset*60*1000));
-  return yourDate.toISOString().split('T')[0]
-}
 
 exports.searchActiveUsers = (req, res) => {
   const searchTerm = req.body.search
@@ -78,7 +72,6 @@ exports.addUser = (req, res) => {
   }
 
   const { fName, lName, email, password } = req.body;  
-  const member_since = get_date();
 
   db.query("SELECT email FROM users WHERE email = ?", [email], async (err, results) => {
     // CHECK IF EMAIL ALREADY EXISTS IN DATABASE
@@ -87,7 +80,7 @@ exports.addUser = (req, res) => {
     // ELSE CREATE A NEW USER
     } else if(!err && results[0] === undefined){
         bcrypt.hash(password, saltRounds, (err, hash) => {
-          db.query("INSERT INTO users (fName, lName, email, password, member_since, status) VALUES (?,?,?,?,?,?)", [fName, lName, email, hash, member_since, "Active"],
+          db.query("INSERT INTO users (fName, lName, email, password, status, created) VALUES (?,?,?,?,?,?)", [fName, lName, email, hash, "Active", functions.getDate()],
             async (err, results) => {
               if (!err) {
                 return res.status(200).json({statusMessage:`A new user with an email address of ${email} has been successfully created.`, status:200})

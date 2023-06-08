@@ -1,15 +1,9 @@
 const passport = require("passport"),
 GoogleStrategy = require("passport-google-oauth20"),
-db = require("./mysql-db-setup.js");
+db = require("./mysql-db-setup.js"),
+functions = require("../functions/get-date.js");
 
 require("dotenv").config()
-
-function get_date(){
-  let yourDate = new Date()
-  const offset = yourDate.getTimezoneOffset();
-  yourDate = new Date(yourDate.getTime() - (offset*60*1000));
-  return yourDate.toISOString().split('T')[0]
-}
 
 passport.serializeUser((user, cb) => {
   cb(null, user)
@@ -50,8 +44,8 @@ passport.use(
        })
       // IF THEY DON'T: SAVE USER IN USERS & FEDERATED CREDENTIALS TABLE
       } else {
-        db.query("INSERT INTO users (fName, lName, email, member_since, status) VALUES (?,?,?,?,?)", [
-        profile.name.givenName, profile.name.familyName, profile.emails[0].value, get_date(), "Active"], (err, results) => {
+        db.query("INSERT INTO users (fName, lName, email, status, created) VALUES (?,?,?,?,?)", [
+        profile.name.givenName, profile.name.familyName, profile.emails[0].value, "Active", functions.getDate()], (err, results) => {
           // IF NO ERROR: SAVE USER IN FEDERATED_CREDENTIALS TABLE
           if(!err){
             let id = results.insertId
@@ -66,7 +60,8 @@ passport.use(
             })
           // DB ERROR (LIKELY DUPLICATE ERROR) 
           } else {
-            return cb(null, false, { message: "An account with that email already exists, please use those credentials to log in manually." })
+            console.log(err.sqlMessage)
+            return cb(null, false, { message:err.code })
           }          
         })
       }

@@ -1,6 +1,7 @@
 const express = require("express"),
 db = require("../config/mysql-db-setup.js"),
-mail = require("../config/nodemailer-email-setup.js");
+mail = require("../config/nodemailer-email-setup.js"),
+functions = require("../functions/get-date.js");
 
 exports.deleteAccount = (req, res) => {
 
@@ -16,7 +17,7 @@ exports.deleteAccount = (req, res) => {
       console.log("A social media user")
       db.query("UPDATE federated_credentials SET subject = ? WHERE user_id = ?", [null, id], (err, rows) => {
         if(!err) { 
-          db.query("UPDATE users SET email = ?, status = ? WHERE id = ?", [null, "Deleted", id], (err, rows) => {
+          db.query("UPDATE users SET email = ?, status = ?, deleted = ? WHERE id = ?", [null, "Deleted", functions.getDate(), id], (err, rows) => {
             if(!err) {
                 // mail.accountDeletedEmail(email, (err, info) => {
                 //   if(!err) {
@@ -37,7 +38,7 @@ exports.deleteAccount = (req, res) => {
     // IF THEY DONT: DELETE FROM USERS TABLE ONLY
     } else {
       console.log("Manual email user")
-      db.query("UPDATE users SET email = ?, status = ? WHERE id = ?", [null, "Deleted", id], (err, rows) => {
+      db.query("UPDATE users SET email = ?, status = ?, deleted = ? WHERE id = ?", [null, "Deleted", functions.getDate(), id], (err, rows) => {
         if(!err) { 
             // mail.accountDeletedEmail(email, (err, info) => {
             //     if(!err) {

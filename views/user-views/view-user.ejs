@@ -61,25 +61,37 @@
         <table>
           <tr>
             <th>Status</th>
-            <th>Provider</th>
-            <th>Created</th>
             <th>Admin</th>
+            <th>Created</th>
+            <th>Deleted</th>
           </tr>
           <tr>
             <td>
               <%= rows[0].status %>
             </td>
             <td>
-              <%= rows[0].provider %>
-            </td>
-            <td>
-              <%= rows[0].member_since %>
-            </td>
-            <td>
               <%= rows[0].admin %>
             </td>
+            <td>
+              <%= rows[0].created %>
+            </td>
+            <td>
+              <%= rows[0].deleted %>
+            </td>
           </tr>
+        </table>
 
+        <br>
+
+        <table>
+          <tr>
+            <th>Provider</th>
+          </tr>
+          <tr>
+            <td>
+              <%= rows[0].provider %>
+            </td>
+          </tr>
         </table>
 
       </main>

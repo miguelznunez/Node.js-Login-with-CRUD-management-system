@@ -1,16 +1,10 @@
 const passport = require("passport"),
 FacebookStrategy = require("passport-facebook"),
 request = require("request"),
-db = require("./mysql-db-setup.js");
+db = require("./mysql-db-setup.js"),
+functions = require("../functions/get-date.js");
 
 require("dotenv").config()
-
-function get_date(){
-    let yourDate = new Date()
-    const offset = yourDate.getTimezoneOffset();
-    yourDate = new Date(yourDate.getTime() - (offset*60*1000));
-    return yourDate.toISOString().split('T')[0]
-}
 
 passport.use(new FacebookStrategy({
     clientID: process.env.FACEBOOK_APP_ID,
@@ -63,8 +57,8 @@ passport.use(new FacebookStrategy({
                 email = `${profile.id}@facebook.com`
             }
         
-            db.query("INSERT INTO users (fName, lName, email, member_since, status) VALUES (?,?,?,?,?)", [
-            profile.name.givenName, profile.name.familyName, email, get_date(), "Active"], (err, results) => {
+            db.query("INSERT INTO users (fName, lName, email, status, created) VALUES (?,?,?,?,?)", [
+            profile.name.givenName, profile.name.familyName, email, "Active", functions.getDate()], (err, results) => {
                 // IF NO ERROR: SAVE USER IN FEDERATED_CREDENTIALS TABLE
                 if(!err){
                     let id = results.insertId
