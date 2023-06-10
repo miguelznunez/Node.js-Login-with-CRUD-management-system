@@ -5,166 +5,183 @@
 
     <%- include("partial-views/sidebar-menu.ejs") %>
 
-      <% if (typeof message=="undefined" ) { %>
+    <% if (typeof message=="undefined" ) { %>
 
-        <div class="modal-overlay">
-          <div class="modal">
-            <i class="fa-solid fa-xmark" id="close-modal"></i>
-            <form action="/ecommerce-management/remove-women-products" method="POST">
-              <input type="hidden" name="removeProducts" value="[]">
-              <h4>Are you sure?</h4>
-              <button class="auth-btn">Yes</button>
-            </form>
+      <div class="modal-overlay">
+        <div class="modal">
+          <i class="fa-solid fa-xmark" id="close-modal"></i>
+          <form action="/ecommerce-management/remove-women-products" method="POST">
+            <input type="hidden" name="removeProducts" value="[]">
+            <h4>Are you sure?</h4>
+            <button class="auth-btn">Yes</button>
+          </form>
+        </div>
+      </div>
+
+      <main class="content">
+
+        <div class="sidebar-hamburger">
+          <span class="sbar"></span>
+          <span class="sbar"></span>
+          <span class="sbar"></span>
+        </div>
+
+        <div class="flex">
+          <h3><i class="fa-solid fa-cart-shopping"></i><span>Ecommerce -> View Women</span></h3>
+          <div>
+            <button><a href="/ecommerce-management/ecommerce-views/women/view-women-products"><i class="fa-solid fa-eye"></i> All Women's Products</a></button>
+            <button><a href="/ecommerce-management/ecommerce-views/add-product"><i class="fa-solid fa-plus"></i> Add Product</a></button>
           </div>
         </div>
 
-        <main class="content">
+        <br>
 
-          <div class="sidebar-hamburger">
-            <span class="sbar"></span>
-            <span class="sbar"></span>
-            <span class="sbar"></span>
+        <% if(typeof flash !="undefined" && flash !="" && flash != "Internal server error") { %>
+          <div class="server-message success">
+            <%= flash %>
           </div>
-
-          <div class="flex">
-            <h3><i class="fa-solid fa-cart-shopping"></i><span>Ecommerce -> View Women</span></h3>
-            <div>
-              <button><a href="/ecommerce-management/ecommerce-views/women/view-women-products"><i class="fa-solid fa-eye"></i> All Women's Products</a></button>
-              <button><a href="/ecommerce-management/ecommerce-views/add-product"><i class="fa-solid fa-plus"></i> Add Product</a></button>
-            </div>
-          </div>
-
           <br>
+        <% } %>
 
-          <% if(typeof flash !="undefined" && flash !="" ) { %>
-            <div class="server-message success">
-              <%= flash %>
-            </div>
-          <% } %>
-
-          <div class="server-message"></div>
-
-          <br>
-          
-          <div>
-            <h4>Search by brand and category</h4>
-            <br>
-            <form action="/ecommerce-management/search-women-products-by-brand-and-category" method="POST">
-              <div class="user-management filter">
-                <input type="text" name="pBrand" placeholder="Brand..."><select name="pCategory" required>
-                  <option selected value="">Category</option>
-                  <option value="shirts">Shirts</option>
-                  <option value="pants">Pants</option>
-                  <option value="sweaters">Jackets</option>
-                  <option value="jackets">Sweaters</option>
-                  <option value="shoes">Shoes</option>
-                  <option value="hats">Hats</option>
-                  <option value="accessories">Accessories</option>
-                  <option value="cosmetics">Cosmetics</option>
-                  <option value="fragrances">Fragrances</option>
-                  <option value="electronics">Electronics</option>
-                </select><button>Search</button>
-              </div>
-            </form>
-            <br>
-            <h4>Search by product number</h4>
-            <br>
-            <form action="/ecommerce-management/search-women-products-by-product-number" method="POST">
-              <div class="user-management">
-                <input type="text" name="pNumber" placeholder="Product number..."><button>Search</button>
-              </div>
-            </form>
-          </div>
-          
-          <br>
-
-          <div class="flex">
-            <div>
-              <div class="edit-controller">
-                <div class="flex">
-                  <button id="edit-product-btn"><a><i class="fa-solid fa-pen-to-square"></i> Edit Products</a></button>
-                </div>
-              </div>
-              <div class="delete-controller">
-                <div class="flex flex-start">
-                  <button id="cancel-product-btn"><a><i class="fa-solid fa-xmark"></i> Cancel</a></button>
-                  <button id="select-all-product-btn"><a><i class="fa-solid fa-square-check"></i> Select All</a></button>
-                  <button id="deselect-all-product-btn"><a><i class="fa-solid fa-square-check"></i> Deselect All</a></button>
-                  <button id="show-modal"><a><i class="fa-solid fa-trash"></i> Delete Selected</a></button>
-                </div>  
-              </div>  
-            </div>
-          </div>
-
-          <br>
-          
-          <h4>Women's Products (<%= rows.length %>)</h4>
-
-          <br>
-
-          <br>
-
-          <div class="cards">
-            <% for(let i=0;i < rows.length;i++) { %>
-              <div class="product-card">
-
-                <div class="product-box-wrapper"><input type="checkbox" value="<%= rows[i].pImage %>" class="product-box"></div>
-  
-                <div class="product-thumb">
-                  <img src="http://localhost:5000/ecommerce-management/<%= rows[i].pImage %>" alt="image">
-                </div>
-  
-                <div class="product-details">
-  
-                  <div class="flex">
-                    <span class="product-category"><%= rows[i].pGender %> - <%= rows[i].pCategory %></span>
-                    <span class="product-category"><%= rows[i].pSKU %> </span>
-                  </div>
-                  
-  
-                  <div class="product-brand">
-                    <h4><%= rows[i].pBrand %></h4>
-                  </div>
-  
-                  <div style="padding-bottom: 20px;">
-                    <div class="product-description">
-                      <p><%= rows[i].pDescription %></p>
-                    </div>
-                  </div>
-     
-                  <div class="product-bottom-details">
-                    <div class="product-price">$<%= rows[i].pPrice %></div>
-                    <div class="product-links">
-                      <a href=""><i class="fa-solid fa-eye"></i></a>
-                      <a href="/ecommerce-management/ecommerce-views/edit-product/<%= rows[i].pId %>"><i class="fa-solid fa-pen-to-square"></i></a>
-                    </div>
-                  </div>
-  
-                </div>
-              </div>
-            <% } %>
-          </div>
-
-        </main>
-
-        <script src="/js/ecommerce-js/select-product-cards.js"></script>
-        <script src="/js/ecommerce-js/delete-product-modal.js"></script>
-
-      <% } else { %>
-        <main class="content">
-
-          <div class="sidebar-hamburger">
-            <span class="sbar"></span>
-            <span class="sbar"></span>
-            <span class="sbar"></span>
-          </div>
-
+        <% if(typeof flash !="undefined" && flash !="" && flash == "Internal server error") { %>
           <div class="server-message error">
-            <%= message %>
+            <%= flash %>
           </div>
+          <br>
+        <% } %>
 
-        </main>
-      <% } %>
+        <% if (typeof flash != "undefined" && flash == "") { %>
+          <div class="server-message"></div>
+          <br>
+        <% } %>
+
+        <div>
+          <h4>Search by brand and category</h4>
+          <br>
+          <form action="/ecommerce-management/search-women-products-by-brand-and-category" method="POST">
+            <div class="user-management filter">
+              <input type="text" name="brand" placeholder="Brand..."><select name="category" required>
+                <option selected value="">Category</option>
+                <option value="shirts">Shirts</option>
+                <option value="pants">Pants</option>
+                <option value="sweaters">Jackets</option>
+                <option value="jackets">Sweaters</option>
+                <option value="shoes">Shoes</option>
+                <option value="hats">Hats</option>
+                <option value="accessories">Accessories</option>
+                <option value="cosmetics">Cosmetics</option>
+                <option value="fragrances">Fragrances</option>
+                <option value="electronics">Electronics</option>
+              </select><button>Search</button>
+            </div>
+          </form>
+          <br>
+          <h4>Search by product number</h4>
+          <br>
+          <form action="/ecommerce-management/search-women-products-by-product-number" method="POST">
+              <div class="user-management">
+                <input type="text" name="number" placeholder="Product number..."><button>Search</button>
+              </div>
+          </form>
+        </div>
+
+        <br>
+
+        <div class="flex">
+          <div>
+            <div class="edit-controller">
+              <div class="flex">
+                <button id="edit-product-btn"><a><i class="fa-solid fa-pen-to-square"></i> Edit Products</a></button>
+              </div>
+            </div>
+            <div class="delete-controller">
+              <div class="flex flex-start">
+                <button id="cancel-product-btn"><a><i class="fa-solid fa-xmark"></i> Cancel</a></button>
+                <button id="select-all-product-btn"><a><i class="fa-solid fa-square-check"></i> Select All</a></button>
+                <button id="deselect-all-product-btn"><a><i class="fa-solid fa-square-check"></i> Deselect All</a></button>
+                <button id="show-modal"><a><i class="fa-solid fa-trash"></i> Delete Selected</a></button>
+              </div>  
+            </div>  
+          </div>
+        </div>
+
+        <br>
+
+        <h4>Women's Products (<%= result.length %>)</h4>
+        
+        <br>
+
+        <br>
+        
+        <div class="cards">
+          <% for(let i=0;i < result.length;i++) { %>
+            <div class="product-card">
+
+              <div class="product-box-wrapper"><input type="checkbox" value="<%= result[i].image %>" class="product-box"></div>
+
+              <div class="product-thumb">
+                <img src="http://localhost:5000/ecommerce-management/<%= result[i].image %>" alt="image">
+              </div>
+
+              <div class="product-details">
+
+                <div class="flex">
+                  <span class="product-category"><%= result[i].gender %> - <%= result[i].category %></span>
+                  <span class="product-category"><%= result[i].sku %> </span>
+                </div>
+                
+
+                <div class="product-brand">
+                  <h4><%= result[i].brand %></h4>
+                </div>
+
+                <div style="padding-bottom: 20px;">
+                  <div class="product-description">
+                    <p><%= result[i].description %></p>
+                  </div>
+                </div>
+   
+                <div class="product-bottom-details">
+                  <% if(result[i].sale_price) { %>
+                    <div class="flex flex-start" style="width: fit-content;"></p>
+                      <div class="product-price discount">$<%= result[i].price %></div>
+                      <div class="product-price">$<%= result[i].sale_price %></div>
+                    </div>
+                  <% } else { %>
+                    <div class="product-price">$<%= result[i].price %></div>
+                  <% } %>
+                  <div class="product-links">
+                    <a href=""><i class="fa-solid fa-eye"></i></a>
+                    <a href="/ecommerce-management/ecommerce-views/edit-product/<%= result[i].id %>"><i class="fa-solid fa-pen-to-square"></i></a>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+           
+          <% } %>
+        </div>
+
+      </main>
+
+      <script src="/js/ecommerce-js/select-product-cards.js"></script>
+      <script src="/js/ecommerce-js/delete-product-modal.js"></script>
+
+    <% } else { %>
+      <main class="content">
+      
+        <div class="sidebar-hamburger">
+          <span class="sbar"></span>
+          <span class="sbar"></span>
+          <span class="sbar"></span>
+        </div>
+      
+        <div class="server-message error">
+          <%= message %>
+        </div>
+      
+      </main>
+    <% } %>
 
   </div>
 
