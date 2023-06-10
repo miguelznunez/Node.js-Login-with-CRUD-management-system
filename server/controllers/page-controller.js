@@ -64,7 +64,7 @@ exports.addToCartForm = (req, res) => {
     functions.calculateTotal(cart, req)
 
     // return to cart page
-    return res.redirect("/cart")
+    return res.status(200).redirect("/cart")
 }
 
 exports.removeProduct = (req, res) => {
@@ -79,7 +79,7 @@ exports.removeProduct = (req, res) => {
     }
     
     // re-calculate
-    functions.calculateTotal((cart, req))
+    functions.calculateTotal(cart, req)
     res.redirect("/cart")
 
 }

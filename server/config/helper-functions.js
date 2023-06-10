@@ -34,6 +34,7 @@ const isProductInCart = (cart, id) => {
 
 const calculateTotal = (cart, req) => {
   let total = 0
+
   for(let i = 0;i < cart.length;i++){
       if(cart[i].sale_price){
           total += cart[i].sale_price * cart[i].quantity
@@ -43,6 +44,7 @@ const calculateTotal = (cart, req) => {
   }
   req.session.total = total
   return total
+  
 }
 
 const saveProductInDB = (data, image, callback) => {
@@ -63,18 +65,32 @@ const saveProductInDB = (data, image, callback) => {
 
 const editProductInfoInDB = (data, callback) => {
   const {id, name, brand, description, price, sale_price, image, category, gender, sku, quantity, quantity_XS, quantity_S, quantity_M, quantity_L, quantity_XL, quantity_XXL} = data
-  db.query("UPDATE products SET name = ?, brand = ?, description = ?, price = ?, sale_price = ?, image = ?, category = ?, gender = ?, sku = ?, quantity = ?, quantity_XS = ?, quantity_S = ?, quantity_M = ?, quantity_L = ?, quantity_XL = ?, quantity_XXL = ? WHERE id = ?", [name, brand, description, price, sale_price, image, category, gender, sku, quantity, quantity_XS, quantity_S, quantity_M, quantity_L, quantity_XL, quantity_XXL, id], (err, result) => {
-    if(err) callback(err, null)
-    else callback(null, result)
-  })
+  if(sale_price == "" || sale_price == 0){
+    db.query("UPDATE products SET name = ?, brand = ?, description = ?, price = ?, sale_price = ?, image = ?, category = ?, gender = ?, sku = ?, quantity = ?, quantity_XS = ?, quantity_S = ?, quantity_M = ?, quantity_L = ?, quantity_XL = ?, quantity_XXL = ? WHERE id = ?", [name, brand, description, price, null, image, category, gender, sku, quantity, quantity_XS, quantity_S, quantity_M, quantity_L, quantity_XL, quantity_XXL, id], (err, result) => {
+      if(err) callback(err, null)
+      else callback(null, result)
+    })
+  } else {
+    db.query("UPDATE products SET name = ?, brand = ?, description = ?, price = ?, sale_price = ?, image = ?, category = ?, gender = ?, sku = ?, quantity = ?, quantity_XS = ?, quantity_S = ?, quantity_M = ?, quantity_L = ?, quantity_XL = ?, quantity_XXL = ? WHERE id = ?", [name, brand, description, price, sale_price, image, category, gender, sku, quantity, quantity_XS, quantity_S, quantity_M, quantity_L, quantity_XL, quantity_XXL, id], (err, result) => {
+      if(err) callback(err, null)
+      else callback(null, result)
+    })
+  } 
 }
 
 const editProductInfoImageInDB = (data, image, callback) => {
   const {id, name, brand, description, price, sale_price, category, gender, sku, quantity, quantity_XS, quantity_S, quantity_M, quantity_L, quantity_XL, quantity_XXL} = data
-  db.query("UPDATE products SET name = ?, brand = ?, description = ?, price = ?, sale_price = ?, image = ?, category = ?, gender = ?, sku = ?, quantity = ?, quantity_XS = ?, quantity_S = ?, quantity_M = ?, quantity_L = ?, quantity_XL = ?, quantity_XXL = ? WHERE id = ?", [name, brand, description, price, sale_price, image[0].key, category, gender, sku, quantity, quantity_XS, quantity_S, quantity_M, quantity_L, quantity_XL, quantity_XXL, id], (err, result) => {
-    if(err) callback(err, null)
-    else callback(null, result)
-  })
+  if(sale_price == "" || sale_price == 0){
+    db.query("UPDATE products SET name = ?, brand = ?, description = ?, price = ?, sale_price = ?, image = ?, category = ?, gender = ?, sku = ?, quantity = ?, quantity_XS = ?, quantity_S = ?, quantity_M = ?, quantity_L = ?, quantity_XL = ?, quantity_XXL = ? WHERE id = ?", [name, brand, description, price, null, image[0].key, category, gender, sku, quantity, quantity_XS, quantity_S, quantity_M, quantity_L, quantity_XL, quantity_XXL, id], (err, result) => {
+      if(err) callback(err, null)
+      else callback(null, result)
+    })
+  } else {
+    db.query("UPDATE products SET name = ?, brand = ?, description = ?, price = ?, sale_price = ?, image = ?, category = ?, gender = ?, sku = ?, quantity = ?, quantity_XS = ?, quantity_S = ?, quantity_M = ?, quantity_L = ?, quantity_XL = ?, quantity_XXL = ? WHERE id = ?", [name, brand, description, price, sale_price, image[0].key, category, gender, sku, quantity, quantity_XS, quantity_S, quantity_M, quantity_L, quantity_XL, quantity_XXL, id], (err, result) => {
+      if(err) callback(err, null)
+      else callback(null, result)
+    })
+  }
 }
 
 const deleteProductsFromDb = (images, callback) => {

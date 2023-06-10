@@ -24,8 +24,9 @@ router.get("/", authController.isLoggedIn,(req, res) => {
 })
 
 router.get("/cart", authController.isLoggedIn,(req, res) => {
-  const cart = req.session.cart
-  const total = req.session.total
+  console.log(req.session.cart)
+  var cart = req.session.cart
+  var total = req.session.total
   return res.render("cart", {title:"Cart", cart:cart, total:total})
 })
 
