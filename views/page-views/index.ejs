@@ -36,13 +36,17 @@
 
       <div class="cards">
         <% for(let i=0;i < result.length;i++) { %>
+  
           <div class="product-card">
 
             <div class="product-box-wrapper"><input type="checkbox" value="<%= result[i].image %>" class="product-box"></div>
 
-            <div class="product-thumb">
-              <img src="http://localhost:5000/ecommerce-management/<%= result[i].image %>" alt="image">
-            </div>
+            <a href="">
+              <div class="product-thumb">
+                <img src="http://localhost:5000/ecommerce-management/<%= result[i].image %>" alt="image">
+              </div>
+            </a>
+
 
             <div class="product-details">
 
@@ -65,18 +69,29 @@
               <div class="product-bottom-details">
 
                 <% if(result[i].sale_price) { %>
-                  <div class="flex flex-start" style="width: fit-content;"></p>
+                  <div class="flex flex-start"></p>
                     <div class="product-price discount">$<%= result[i].price %></div>
                     <div class="product-price">$<%= result[i].sale_price %></div>
                   </div>
                 <% } else { %>
                   <div class="product-price">$<%= result[i].price %></div>
                 <% } %>
-
                 <div class="product-links">
-                  <a href=""><i class="fa-solid fa-eye"></i></a>
-                  <a href="/ecommerce-management/ecommerce-views/edit-product/<%= result[i].id %>"><i class="fa-solid fa-cart-shopping"></i></a>
+                  <form action="/add-to-cart" method="POST">
+                    <input type="hidden" name="id" value="<%= result[i].id %>">
+                    <input type="hidden" name="name" value="<%= result[i].name %>">
+                    <input type="hidden" name="brand" value="<%= result[i].brand %>">
+                    <input type="hidden" name="category" value="<%= result[i].category %>">
+                    <input type="hidden" name="sku" value="<%= result[i].sku %>">
+                    <input type="hidden" name="price" value="<%= result[i].price %>">
+                    <input type="hidden" name="sale_price" value="<%= result[i].sale_price %>">
+                    <input type="hidden" name="quantity" value="1">
+                    <input type="hidden" name="image" value="<%= result[i].image %>">
+                    <!-- <input type="submit" value="Add to cart"> -->
+                    <button type="submit" style="background-color:transparent;padding: 0;border: none;width: none;"><i class="fa-solid fa-cart-shopping"></i></button>
+                  </form>
                 </div>
+                
               </div>
 
             </div>

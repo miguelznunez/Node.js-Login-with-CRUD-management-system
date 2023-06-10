@@ -37,7 +37,12 @@
   <meta name="twitter:image" content="https://www.modernwebdesigners.com/images/logos/mwd-twitter.png"/> -->
 
   <!-- Stylesheets -->
+  
+  <% if(title != "Cart") { %>
   <link rel="stylesheet" href="/css/admin-styles.css">
+  <%} else { %>
+    <link rel="stylesheet" href="/css/cart-styles.css">
+  <% } %>
 
   <!-- Google Font API -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -67,6 +72,9 @@
   
   <!-- Google reCaptcha -->
   <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+
+  <!-- JQUERY -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
   
   <!-- Schema Markup -->
   <!-- <script type="application/ld+json">

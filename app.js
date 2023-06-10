@@ -1,4 +1,5 @@
 const express = require("express"),
+// crypto = require("crypto"),
 path = require("path"),
 googlePassportSetup = require("./server/config/google-passport-setup"),
 facebookPassportSetup = require("./server/config/facebook-passport-setup"),
@@ -6,6 +7,9 @@ cookieParser = require("cookie-parser"),
 session = require('express-session'),
 flash = require('connect-flash')
 passport = require("passport");
+
+// const str = crypto.randomBytes(20).toString("hex")
+// console.log(str)
 
 require("dotenv").config()
 
@@ -18,10 +22,10 @@ app.use(express.json())
 
 app.use(cookieParser())
 app.use(session({ 
-  secret: 'keyboard cat',
+  secret: process.env.SESSION_SECRET,
   resave: false, // dont't save session if unmodified
   saveUninitialized: false, // don't create session until something stored
-  cookie: { maxAge: process.env.JWT_COOKIE_EXPIRES * 24 * 60 * 60 * 1000 }
+  cookie: { maxAge: 1000 * 60 * 60 * 24 }
 }))
 
 app.use(flash())

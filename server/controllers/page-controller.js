@@ -45,3 +45,41 @@ exports.newsletterForm = (req, res) => {
 
     })
 }
+
+exports.addToCartForm = (req, res) => {
+    const {id, name, brand, category, sku, price, sale_price, quantity, image} = req.body
+    const product = {id:id, name:name, brand:brand, category:category, sku:sku, price:price, sale_price:sale_price, quantity:quantity, image:image}
+
+    if(req.session.cart){
+        var cart = req.session.cart
+        if(!functions.isProductInCart(cart, id)){
+            cart.push(product)
+        }
+    } else {
+        req.session.cart = [product]
+        var cart = req.session.cart
+    }
+
+    // Calculate total
+    functions.calculateTotal(cart, req)
+
+    // return to cart page
+    return res.redirect("/cart")
+}
+
+exports.removeProduct = (req, res) => {
+
+    const id = req.body.id
+    let cart = req.session.cart
+
+    for(let i = 0;i < cart.length;i++){
+        if(cart[i].id == id){
+            cart.splice(cart.indexOf(i), 1)
+        }
+    }
+    
+    // re-calculate
+    functions.calculateTotal((cart, req))
+    res.redirect("/cart")
+
+}

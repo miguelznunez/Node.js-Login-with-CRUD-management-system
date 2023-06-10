@@ -13,14 +13,14 @@
           <% } %>
           <div class="dropdown-menu">
             <% if (typeof user !="undefined" && user.admin === "Yes" ) { %>
-              <a href="/my-account-management/my-account-views/my-account">
-                <div class="dropdown-links">
-                  <i class="fa-solid fa-user"></i><span>My Account</span>
-                </div>
-              </a>
               <a href="/">
                 <div class="dropdown-links">
                   <i class="fa-solid fa-house"></i><span>Home</span>
+                </div>
+              </a>
+              <a href="/my-account-management/my-account-views/my-account">
+                <div class="dropdown-links">
+                  <i class="fa-solid fa-user"></i><span>Account</span>
                 </div>
               </a>
               <a href="/user-management/user-views/active-users">
@@ -44,14 +44,14 @@
                 </div>
               </a>
             <% } else if(typeof user !="undefined" && user.admin === "No") { %>
-              <a href="/my-account-management/my-account-views/my-account">
-                <div class="dropdown-links">
-                  <i class="fa-solid fa-user"></i><span>My Account</span>
-                </div>
-              </a>
               <a href="/">
                 <div class="dropdown-links">
                   <i class="fa-solid fa-house"></i><span>Home</span>
+                </div>
+              </a>
+              <a href="/my-account-management/my-account-views/my-account">
+                <div class="dropdown-links">
+                  <i class="fa-solid fa-user"></i><span>Account</span>
                 </div>
               </a>
               <a href="/auth-management/auth-views/logout">

@@ -1,50 +1,14 @@
 const { PI } = require("aws-sdk"),
-mysql = require("mysql"),
-multer  = require("multer"),
-path = require("path"),
-multerS3 = require("multer-s3-v2"),
 S3 = require("../config/aws-s3-setup.js"),
-db = require("../config/mysql-db-setup.js");
-
-require("dotenv").config();
-
-const storage = multerS3({
-  s3: S3.s3,
-  bucket: process.env.AWS_BUCKET_NAME,
-  metadata: (req, file, callback) => {
-    callback(null, { originalname: file.originalname });
-  },
-  key: (req, file, callback) => {
-    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9)
-    callback(null, uniqueSuffix + path.extname(file.originalname))
-  }
-})
-
-function checkFileType(file, callback){
-  const filetypes = /jpeg|png|jpg|gif/
-  const extname = filetypes.test(path.extname(file.originalname).toLowerCase())
-  const mimetype = filetypes.test(file.mimetype)
-
-  if(mimetype && extname){
-    return callback(null,true)
-  } else {
-    return callback("Please upload images only")
-  }
-}
-
-const upload = multer({ 
-  storage: storage,
-  limits: { fileSize: 1000000 },
-  fileFilter: (req, file, callback) => {
-    checkFileType(file, callback)
-  }
-}).any()
+db = require("../config/mysql-db-setup.js"),
+multer = require("../config/multer-setup.js"),
+functions = require("../config/helper-functions.js");
 
 exports.addProduct = (req, res) => {
 
-  upload(req, res, (err) => {
+  multer.upload(req, res, (err) => {
     if(!err && req.files != "") {
-      saveProductInDB(req.body, req.files, (err, result) => {
+      functions.saveProductInDB(req.body, req.files, (err, result) => {
         if(!err){
           return res.status(200).json({statusMessage:"Product has been added successfully.", status:200})
         } else {
@@ -63,7 +27,7 @@ exports.addProduct = (req, res) => {
 }
 
 exports.editProductInfo = (req, res) => {
-  editProductInfoInDB(req.body, (err, result) => {
+  functions.editProductInfoInDB(req.body, (err, result) => {
     if(!err){
       return res.status(200).json({statusMessage:"Product has been edited successfully.", status:200})
     } else {
@@ -74,11 +38,11 @@ exports.editProductInfo = (req, res) => {
 
 exports.editProductInfoAndImage = (req, res) => {
 
-  upload(req, res, (err) => {
+  multer.upload(req, res, (err) => {
     if(!err && req.files != "") { 
       S3.deleteS3Image(req.body.savedImage, (err, result) => {
         if(!err){
-          editProductInfoImageInDB(req.body, req.files, (err, result) => {
+          functions.editProductInfoImageInDB(req.body, req.files, (err, result) => {
             if(!err){
               return res.status(200).json({statusMessage:"Product has been edited successfully.", status:200})
             } else {
@@ -131,7 +95,7 @@ exports.removeMenProducts = (req, res) => {
         products.forEach( p => {
           images.push(p.Key)
         })
-        deleteProductsFromDb(images, (err, result) => {
+        functions.deleteProductsFromDb(images, (err, result) => {
           if(!err){
               req.flash("message", `The ${images.length} selected product(s) have been successfully removed from your store.`)
               return res.redirect("/ecommerce-management/ecommerce-views/men/view-men-products")
@@ -188,44 +152,5 @@ exports.findDNAProductsByProductNumber = (req, res) => {
     } else { 
       return res.status(500).render("view-dna-products", {title:"User Management - View DNA products" , user:req.user, success:false, message:"Internal server error."})
     }
-  })
-}
-
-saveProductInDB = (data, image, callback) => {
-  const {name, brand, description, price, sale_price, category, gender, sku, quantity, quantity_XS, quantity_S, quantity_M, quantity_L, quantity_XL, quantity_XXL} = data
-
-  if(sale_price == "" || sale_price == 0){
-    db.query("INSERT INTO products (name, brand, description, price, sale_price, image, category, gender, sku, quantity, quantity_XS, quantity_S, quantity_M, quantity_L, quantity_XL, quantity_XXL) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", [name, brand, description, price, null, image[0].key, category, gender, sku, quantity, quantity_XS, quantity_S, quantity_M, quantity_L, quantity_XL, quantity_XXL], (err, result) => {
-      if(err) callback(err, null)
-      else callback(null, result)
-    })
-  } else {
-    db.query("INSERT INTO products (name, brand, description, price, sale_price, image, category, gender, sku, quantity, quantity_XS, quantity_S, quantity_M, quantity_L, quantity_XL, quantity_XXL) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", [name, brand, description, price, sale_price, image[0].key, category, gender, sku, quantity, quantity_XS, quantity_S, quantity_M, quantity_L, quantity_XL, quantity_XXL], (err, result) => {
-      if(err) callback(err, null)
-      else callback(null, result)
-    })
-  }
-}
-
-editProductInfoInDB = (data, callback) => {
-  const {id, name, brand, description, price, sale_price, image, category, gender, sku, quantity, quantity_XS, quantity_S, quantity_M, quantity_L, quantity_XL, quantity_XXL} = data
-  db.query("UPDATE products SET name = ?, brand = ?, description = ?, price = ?, sale_price = ?, image = ?, category = ?, gender = ?, sku = ?, quantity = ?, quantity_XS = ?, quantity_S = ?, quantity_M = ?, quantity_L = ?, quantity_XL = ?, quantity_XXL = ? WHERE id = ?", [name, brand, description, price, sale_price, image, category, gender, sku, quantity, quantity_XS, quantity_S, quantity_M, quantity_L, quantity_XL, quantity_XXL, id], (err, result) => {
-    if(err) callback(err, null)
-    else callback(null, result)
-  })
-}
-
-editProductInfoImageInDB = (data, image, callback) => {
-  const {id, name, brand, description, price, sale_price, category, gender, sku, quantity, quantity_XS, quantity_S, quantity_M, quantity_L, quantity_XL, quantity_XXL} = data
-  db.query("UPDATE products SET name = ?, brand = ?, description = ?, price = ?, sale_price = ?, image = ?, category = ?, gender = ?, sku = ?, quantity = ?, quantity_XS = ?, quantity_S = ?, quantity_M = ?, quantity_L = ?, quantity_XL = ?, quantity_XXL = ? WHERE id = ?", [name, brand, description, price, sale_price, image[0].key, category, gender, sku, quantity, quantity_XS, quantity_S, quantity_M, quantity_L, quantity_XL, quantity_XXL, id], (err, result) => {
-    if(err) callback(err, null)
-    else callback(null, result)
-  })
-}
-
-deleteProductsFromDb = (images, callback) => {
-  db.query("DELETE FROM products WHERE image IN (?)", [images], (err, result) => {
-    if(err) callback(err, null)
-    else callback(null, result)
   })
 }
