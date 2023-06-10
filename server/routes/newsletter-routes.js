@@ -10,10 +10,10 @@ router = express.Router();
 router.get("/newsletter-views/view-subscribers", authController.isLoggedIn,(req, res) => {
 
     if(req.user && req.user.admin === "Yes" && !functions.checkBrowser(req.headers)){
-        db.query("SELECT * FROM newsletter", (err, rows) => {
+        db.query("SELECT * FROM newsletter", (err, result) => {
           if(!err) {
             const flash = req.flash("message") 
-            return res.status(200).render("view-subscribers", {title:"Newsletter Management - Subscribers" , user:req.user, rows:rows, flash})
+            return res.status(200).render("view-subscribers", {title:"Newsletter Management - Subscribers" , user:req.user, result:result, flash})
           } else {
             return res.status(500).render("view-subscribers", {title:"Newsletter Management - Subscribers", user:req.user, message:"Internal server error."})
           }
@@ -26,9 +26,9 @@ router.get("/newsletter-views/view-subscribers", authController.isLoggedIn,(req,
 
 router.get("/newsletter-views/edit-subscriber/:nId", authController.isLoggedIn,(req, res) => {
     if(req.user && req.user.admin === "Yes" && !functions.checkBrowser(req.headers)){
-        db.query("SELECT * FROM newsletter WHERE nId = ?", [req.params.nId], (err, rows) => {
+        db.query("SELECT * FROM newsletter WHERE nId = ?", [req.params.nId], (err, result) => {
           if(!err) {
-            return res.status(200).render("edit-subscriber", {title:"Newsletter Management - Edit subscriber" , user:req.user, rows:rows})
+            return res.status(200).render("edit-subscriber", {title:"Newsletter Management - Edit subscriber" , user:req.user, result:result})
           } else {
             return res.status(500).render("edit-subscriber", {title:"Newsletter Management - Edit subscriber", user:req.user, message:"Internal server error."})
           }

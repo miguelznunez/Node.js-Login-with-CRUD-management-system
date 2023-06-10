@@ -10,7 +10,7 @@
       <div class="modal-overlay">
         <div class="modal">
           <i class="fa-solid fa-xmark" id="close-modal"></i>
-          <form action="/user-management/user-views/delete-user/<%= rows[0].status %>/<%= rows[0].id %>"
+          <form action="/user-management/user-views/delete-user/<%= result[0].status %>/<%= result[0].id %>"
             id="delete-user-form" method="GET">
             <h4>Delete this user?</h4>
             <button>Yes</button>
@@ -38,12 +38,12 @@
         <br>
         
         <form id="update-user-form">
-          <input type="hidden" id="id" value="<%= rows[0].id %>">
-          <input type="text" id="fName" maxlength="25" placeholder="First name" value="<%= rows[0].fName %>" required disabled>
-          <input type="text" id="lName" maxlength="25" placeholder="Last name" value="<%= rows[0].lName %>" required disabled>
-          <input type="email" id="email" maxlength="100" placeholder="Email" value="<%= rows[0].email %>" required disabled>
+          <input type="hidden" id="id" value="<%= result[0].id %>">
+          <input type="text" id="fName" maxlength="25" placeholder="First name" value="<%= result[0].fName %>" required disabled>
+          <input type="text" id="lName" maxlength="25" placeholder="Last name" value="<%= result[0].lName %>" required disabled>
+          <input type="email" id="email" maxlength="100" placeholder="Email" value="<%= result[0].email %>" required disabled>
           <div class="admin-user-radios">
-            <% if(rows[0].status != "Banned" ) { %>
+            <% if(result[0].status != "Banned" ) { %>
               <div>
                 <label>Ban this user?</label>
               </div>
@@ -69,7 +69,7 @@
             </div>
         
           <div class="admin-user-radios">
-            <% if(rows[0].admin == "No") { %>
+            <% if(result[0].admin == "No") { %>
               <div>
                 <label>Make this user an
                   admin?</label>

@@ -1,6 +1,7 @@
 const express = require("express")
 authController = require("../controllers/auth-controller"),
 pageController = require("../controllers/page-controller"),
+db = require("../config/mysql-db-setup.js"),
 functions = require("../config/helper-functions.js"),
 {check} = require("express-validator"),
 router = express.Router();
@@ -9,7 +10,14 @@ router = express.Router();
 
 router.get("/", authController.isLoggedIn,(req, res) => {
   if(!functions.checkBrowser(req.headers)) {
-    return res.status(200).render("index", {title: "Home", user:req.user})
+    db.query("SELECT * FROM products", (err, result) => {
+      if(!err){
+        return res.status(200).render("index", {title: "Home", user:req.user, result:result})
+      } else {
+        console.log(err.sqlMessage)
+        return res.status(200).render("index", {title: "Home", user:req.user, message:"Internal server error."})
+      }
+    })
   } else {
     return res.render("unsupported", {title:"Unsupported", user:req.user})
   }
@@ -35,7 +43,7 @@ router.post("/newsletter-form",
 // ROUTE DOES NOT EXIST  ========================================================
 
 router.get("*", authController.isLoggedIn, (req, res) => {
-  return res.render("404-error", {title: "Error 404 ", user:req.user})
+  return res.status(404).render("404-error", {title: "Error 404 ", user:req.user})
 })
 
 module.exports = router

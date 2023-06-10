@@ -60,8 +60,7 @@ passport.use(
             })
           // DB ERROR (LIKELY DUPLICATE ERROR) 
           } else {
-            console.log(err.sqlMessage)
-            return cb(null, false, { message:err.code })
+            return cb(null, false, { message:err.sqlMessage })
           }          
         })
       }

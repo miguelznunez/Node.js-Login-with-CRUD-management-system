@@ -17,10 +17,10 @@ exports.newsletterForm = (req, res) => {
     const email = req.body.email
 
     // CHECK IF THIS EMAIL EXISTS IN DB
-    db.query("SELECT * FROM newsletter WHERE email = ?", [email], (err, results) => {
+    db.query("SELECT * FROM newsletter WHERE email = ?", [email], (err, result) => {
         // IF IT DOESN'T: SAVE IT IN DB
-        if(!err && results[0] === undefined){
-            db.query("INSERT INTO newsletter (email, date_subscribed) VALUES (?,?)", [email, functions.getDate()], (err, results) => {
+        if(!err && result[0] === undefined){
+            db.query("INSERT INTO newsletter (email, date_subscribed) VALUES (?,?)", [email, functions.getDate()], (err, result) => {
                 if(!err){
                     // mail.newsletterWelcomeEmail(email, (err, info) => {
                     //     if(!err) {
@@ -36,7 +36,7 @@ exports.newsletterForm = (req, res) => {
                 }
             })
         // IF IT DOES: LET THE USER KNOW
-        } else if(!err && results != "") {
+        } else if(!err && result != "") {
             return res.status(400).json({statusMessage:`${email} is already subscribed.`, status:400})
         // DB ERROR
         } else {

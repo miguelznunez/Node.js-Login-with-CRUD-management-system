@@ -7,9 +7,9 @@ functions = require("../config/helper-functions.js"),
 exports.searchSubscribers = (req, res) => {
 
   const searchTerm = req.body.search
-  db.query("SELECT * FROM newsletter WHERE (email LIKE ?)", ["%" + searchTerm + "%"], (err, rows) => {
+  db.query("SELECT * FROM newsletter WHERE (email LIKE ?)", ["%" + searchTerm + "%"], (err, result) => {
     if(!err) { 
-      return res.status(200).render("subscribers", {title:"Newsletter - Subscribers" , user:req.user, rows:rows})
+      return res.status(200).render("subscribers", {title:"Newsletter - Subscribers" , user:req.user, result:result})
     } else { 
       return res.status(500).render("subscribers", {title:"Newsletter - Subscribers" , user:req.user, success:false, message:"Internal server error."})
     }
@@ -20,7 +20,7 @@ exports.searchSubscribers = (req, res) => {
 exports.removeSubscribers = (req, res) => {
 
   const emails = JSON.parse(req.body.removeEmails)
-  deleteEmailsFromDb(emails, (err, results) => {
+  deleteEmailsFromDb(emails, (err, result) => {
     if(!err){
       req.flash("message", `The ${emails.length} selected email(s) have been successfully removed from your newsletter.`)
       return res.redirect("/newsletter-management/newsletter-views/view-subscribers")
@@ -43,10 +43,10 @@ exports.addSubscriber = (req, res) => {
     const email = req.body.nEmail
 
      // CHECK IF THIS EMAIL EXISTS IN DB
-     db.query("SELECT * FROM newsletter WHERE email = ?", [email], (err, results) => {
+     db.query("SELECT * FROM newsletter WHERE email = ?", [email], (err, result) => {
         // IF IT DOESN'T: SAVE IT IN DB
-        if(!err && results[0] === undefined){
-            db.query("INSERT INTO newsletter (email, date_subscribed) VALUES (?,?)", [email, functions.getDate()], (err, results) => {
+        if(!err && result[0] === undefined){
+            db.query("INSERT INTO newsletter (email, date_subscribed) VALUES (?,?)", [email, functions.getDate()], (err, result) => {
               if(!err){
                 // mail.newsletterWelcomeEmail(email, (err, info) => {
                 //   if(!err) {
@@ -62,7 +62,7 @@ exports.addSubscriber = (req, res) => {
               }
             })
         // IF IT DOES: LET THE USER KNOW
-        } else if(!err && results != "") {
+        } else if(!err && result != "") {
             return res.status(400).json({statusMessage:`${email} is already subscribed.`, status:400})
         // DB ERROR
         } else {

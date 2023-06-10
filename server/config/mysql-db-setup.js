@@ -49,26 +49,25 @@ dbConnection.connect(function(err){
 
   let products = `
     CREATE TABLE products (
-    pId INT UNSIGNED AUTO_INCREMENT,
-    pCategory VARCHAR(255),
-    pGender VARCHAR(255),
-    pImage VARCHAR(255),
-    pBrand VARCHAR(255),
-    pSKU VARCHAR(7),
-    pName VARCHAR(255),
-    pPrice VARCHAR(255),
-    pDiscount VARCHAR(255),
-    pDescription TEXT,
-    pQuantity_OS VARCHAR(255),
-    pQuantity_XS VARCHAR(255),
-    pQuantity_S VARCHAR(255),
-    pQuantity_M VARCHAR(255),
-    pQuantity_L VARCHAR(255),
-    pQuantity_XL VARCHAR(255),
-    pQuantity_XXL VARCHAR(255),
-
-    PRIMARY KEY(pId),
-    UNIQUE INDEX pSKU_UNIQUE (pSKU) );`
+    id INT UNSIGNED AUTO_INCREMENT,
+    name VARCHAR(255),
+    brand VARCHAR(255),
+    description TEXT,
+    price FLOAT(8,2),
+    sale_price FLOAT(8,2),
+    image TEXT,
+    category VARCHAR(255),
+    gender VARCHAR(6),
+    sku VARCHAR(7),
+    quantity INT,
+    quantity_XS INT,
+    quantity_S INT,
+    quantity_M INT,
+    quantity_L INT,
+    quantity_XL INT,
+    quantity_XXL INT,
+    PRIMARY KEY(id),
+    UNIQUE INDEX sku_UNIQUE (sku) );`
 
   let newsletter = `
     CREATE TABLE newsletter (

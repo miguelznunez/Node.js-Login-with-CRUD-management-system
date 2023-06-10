@@ -3,10 +3,15 @@
 
   <main class="main">
     <div class="container">
+      
       <br>
+
       <div class="title">
-        <h2>Home</h2>
+        <h2>Welcome!</h2>
       </div>
+
+      <br>
+      <br>
 
       <% if (typeof user =="undefined") { %>
         <form id="newsletter-form">
@@ -19,6 +24,66 @@
           <div class="server-message"></div>
         </form>
       <% } %>
+
+      <br>
+      <br>
+
+      <div class="title">
+        <h2>Shop</h2>
+      </div>
+
+      <br>
+
+      <div class="cards">
+        <% for(let i=0;i < result.length;i++) { %>
+          <div class="product-card">
+
+            <div class="product-box-wrapper"><input type="checkbox" value="<%= result[i].image %>" class="product-box"></div>
+
+            <div class="product-thumb">
+              <img src="http://localhost:5000/ecommerce-management/<%= result[i].image %>" alt="image">
+            </div>
+
+            <div class="product-details">
+
+              <div class="flex">
+                <span class="product-category"><%= result[i].gender %> - <%= result[i].category %></span>
+                <span class="product-category"><%= result[i].sku %> </span>
+              </div>
+              
+
+              <div class="product-brand">
+                <h4><%= result[i].brand %></h4>
+              </div>
+
+              <div style="padding-bottom: 20px;">
+                <div class="product-description">
+                  <p><%= result[i].description %></p>
+                </div>
+              </div>
+ 
+              <div class="product-bottom-details">
+
+                <% if(result[i].sale_price) { %>
+                  <div class="flex flex-start" style="width: fit-content;"></p>
+                    <div class="product-price discount">$<%= result[i].price %></div>
+                    <div class="product-price">$<%= result[i].sale_price %></div>
+                  </div>
+                <% } else { %>
+                  <div class="product-price">$<%= result[i].price %></div>
+                <% } %>
+
+                <div class="product-links">
+                  <a href=""><i class="fa-solid fa-eye"></i></a>
+                  <a href="/ecommerce-management/ecommerce-views/edit-product/<%= result[i].id %>"><i class="fa-solid fa-cart-shopping"></i></a>
+                </div>
+              </div>
+
+            </div>
+          </div>
+         
+        <% } %>
+      </div>
 
     </div>
   </main>

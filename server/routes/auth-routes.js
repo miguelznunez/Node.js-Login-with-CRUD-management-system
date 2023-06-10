@@ -54,9 +54,9 @@ router.get("/auth-views/password-reset", authController.isLoggedIn, (req, res) =
 router.get("/auth-views/account-verification/:id/:token", authController.isLoggedIn, (req, res) => {
 
   if(!req.user && !functions.checkBrowser(req.headers)){
-    db.query("SELECT * FROM users WHERE id = ? && token = ?", [req.params.id, req.params.token], (err, results) => {
-      if((results != "")) {
-        db.query("UPDATE users SET token = ?, status = ? WHERE id = ?", [null, "Active", req.params.id], (err, results) => {
+    db.query("SELECT * FROM users WHERE id = ? && token = ?", [req.params.id, req.params.token], (err, result) => {
+      if((result != "")) {
+        db.query("UPDATE users SET token = ?, status = ? WHERE id = ?", [null, "Active", req.params.id], (err, result) => {
           if(!err) {
             return res.status(200).render("account-verification", {title:"Account Verification", success:true, message:"Your account has been verified, please use your credentials to login."})
           } else {
@@ -75,14 +75,14 @@ router.get("/auth-views/account-verification/:id/:token", authController.isLogge
 router.get("/auth-views/password-update/:id/:token", authController.isLoggedIn, (req, res) => {
 
   if(!req.user && !functions.checkBrowser(req.headers)){
-    db.query("SELECT * FROM users WHERE id = ? && token = ?", [req.params.id, req.params.token], (err, results) => {
+    db.query("SELECT * FROM users WHERE id = ? && token = ?", [req.params.id, req.params.token], (err, result) => {
       // DATABASE ERROR
       if(err){
          return res.status(500).render("password-update-error", {title:"Password Update Error", success:false, message:"Internal server error."})
       }
       // USER WAS FOUND AND CREDENTIALS MATCH
       if((results != "") && (results[0].token != null) && (results[0].token_expires > Date.now())) {
-        return res.status(200).render("password-update", {title:"Password Update", success:true, token:results[0].token, tExpires:results[0].token_expires, id:results[0].id  })
+        return res.status(200).render("password-update", {title:"Password Update", success:true, token:result[0].token, tExpires:result[0].token_expires, id:result[0].id  })
       } else{
         // USER WAS FOUND OR NOT BUT CREDENTIALS DO NOT MATCH
         return res.status(500).render("password-update-error", {title:"Password Update Error", success:false, message:"This link is no longer valid."})

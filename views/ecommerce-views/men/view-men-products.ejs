@@ -60,7 +60,7 @@
           <br>
           <form action="/ecommerce-management/search-men-products-by-brand-and-category" method="POST">
             <div class="user-management filter">
-              <input type="text" name="pBrand" placeholder="Brand..."><select name="pCategory" required>
+              <input type="text" name="brand" placeholder="Brand..."><select name="category" required>
                 <option selected value="">Category</option>
                 <option value="shirts">Shirts</option>
                 <option value="pants">Pants</option>
@@ -80,7 +80,7 @@
           <br>
           <form action="/ecommerce-management/search-men-products-by-product-number" method="POST">
               <div class="user-management">
-                <input type="text" name="pNumber" placeholder="Product number..."><button>Search</button>
+                <input type="text" name="number" placeholder="Product number..."><button>Search</button>
               </div>
           </form>
         </div>
@@ -107,45 +107,52 @@
 
         <br>
 
-        <h4>Men's Products (<%= rows.length %>)</h4>
+        <h4>Men's Products (<%= result.length %>)</h4>
         
         <br>
 
         <br>
         
         <div class="cards">
-          <% for(let i=0;i < rows.length;i++) { %>
+          <% for(let i=0;i < result.length;i++) { %>
             <div class="product-card">
 
-              <div class="product-box-wrapper"><input type="checkbox" value="<%= rows[i].pImage %>" class="product-box"></div>
+              <div class="product-box-wrapper"><input type="checkbox" value="<%= result[i].image %>" class="product-box"></div>
 
               <div class="product-thumb">
-                <img src="http://localhost:5000/ecommerce-management/<%= rows[i].pImage %>" alt="image">
+                <img src="http://localhost:5000/ecommerce-management/<%= result[i].image %>" alt="image">
               </div>
 
               <div class="product-details">
 
                 <div class="flex">
-                  <span class="product-category"><%= rows[i].pGender %> - <%= rows[i].pCategory %></span>
-                  <span class="product-category"><%= rows[i].pSKU %> </span>
+                  <span class="product-category"><%= result[i].gender %> - <%= result[i].category %></span>
+                  <span class="product-category"><%= result[i].sku %> </span>
                 </div>
                 
 
                 <div class="product-brand">
-                  <h4><%= rows[i].pBrand %></h4>
+                  <h4><%= result[i].brand %></h4>
                 </div>
 
                 <div style="padding-bottom: 20px;">
                   <div class="product-description">
-                    <p><%= rows[i].pDescription %></p>
+                    <p><%= result[i].description %></p>
                   </div>
                 </div>
    
                 <div class="product-bottom-details">
-                  <div class="product-price">$<%= rows[i].pPrice %></div>
+                  <% if(result[i].sale_price) { %>
+                    <div class="flex flex-start" style="width: fit-content;"></p>
+                      <div class="product-price discount">$<%= result[i].price %></div>
+                      <div class="product-price">$<%= result[i].sale_price %></div>
+                    </div>
+                  <% } else { %>
+                    <div class="product-price">$<%= result[i].price %></div>
+                  <% } %>
                   <div class="product-links">
                     <a href=""><i class="fa-solid fa-eye"></i></a>
-                    <a href="/ecommerce-management/ecommerce-views/edit-product/<%= rows[i].pId %>"><i class="fa-solid fa-pen-to-square"></i></a>
+                    <a href="/ecommerce-management/ecommerce-views/edit-product/<%= result[i].id %>"><i class="fa-solid fa-pen-to-square"></i></a>
                   </div>
                 </div>
 

@@ -17,17 +17,17 @@ router.get("/ecommerce-views/add-product", authController.isLoggedIn, (req, res)
   }
 })
 
-router.get("/ecommerce-views/edit-product/:pId", authController.isLoggedIn, (req, res) => {
+router.get("/ecommerce-views/edit-product/:id", authController.isLoggedIn, (req, res) => {
   if(req.user && req.user.admin === "Yes" && !functions.checkBrowser(req.headers)){
 
-    db.query("SELECT * FROM products WHERE pId = ?", [req.params.pId], (err, rows) => {
+    db.query("SELECT * FROM products WHERE id = ?", [req.params.id], (err, result) => {
       if(err) { // DATABASE ERROR
         return res.status(500).render("edit-product", {title:"eCommerce Management - Edit product", user:req.user, message:"Internal server error."})
       }
-      if(!err && rows.length){
-        return res.status(200).render("edit-product", {title:"eCommerce Management - Edit product" , user:req.user, rows:rows})
+      if(!err && result.length){
+        return res.status(200).render("edit-product", {title:"eCommerce Management - Edit product" , user:req.user, result:result})
       } else {
-        return res.status(200).render("edit-product", {title:"eCommerce Management - Edit product", user:req.user,message:"That product does not exist."});
+        return res.status(401).render("edit-product", {title:"eCommerce Management - Edit product", user:req.user,message:"That product does not exist."});
       }
     })
 
@@ -43,10 +43,10 @@ router.get("/:image_key", (req, res) => {
 
 router.get("/ecommerce-views/men/view-men-products", authController.isLoggedIn, (req, res) => {
   if(req.user && req.user.admin === "Yes" && !functions.checkBrowser(req.headers)){
-    db.query("SELECT * FROM products WHERE pGender = ?", ["men"], (err, rows) => {
+    db.query("SELECT * FROM products WHERE gender = ?", ["men"], (err, result) => {
       if(!err) { 
         const flash = req.flash("message")
-        return res.status(200).render("view-men-products", {title:"eCommerce Management - View men products" , user:req.user, rows:rows, flash})
+        return res.status(200).render("view-men-products", {title:"eCommerce Management - View men products" , user:req.user, result:result, flash})
       } else {
         return res.status(500).render("view-men-products", {title:"eCommerce Management - View men products", user:req.user, message:"Internal server error."})
       }
@@ -58,10 +58,10 @@ router.get("/ecommerce-views/men/view-men-products", authController.isLoggedIn, 
 
 router.get("/ecommerce-views/women/view-women-products", authController.isLoggedIn, (req, res) => {
   if(req.user && req.user.admin === "Yes" && !functions.checkBrowser(req.headers)){
-    db.query("SELECT * FROM products WHERE pGender = ?", ["women"], (err, rows) => {
+    db.query("SELECT * FROM products WHERE gender = ?", ["women"], (err, result) => {
       if(!err) {
         const flash = req.flash("message") 
-        return res.status(200).render("view-women-products", {title:"eCommerce Management - View women products" , user:req.user, rows:rows, flash})
+        return res.status(200).render("view-women-products", {title:"eCommerce Management - View women products" , user:req.user, result:result, flash})
       } else {
         return res.status(500).render("view-women-products", {title:"eCommerce Management - View women products", user:req.user, message:"Internal server error."})
       }
@@ -73,10 +73,10 @@ router.get("/ecommerce-views/women/view-women-products", authController.isLogged
 
 router.get("/ecommerce-views/dna/view-dna-products", authController.isLoggedIn, (req, res) => {
   if(req.user && req.user.admin === "Yes" && !functions.checkBrowser(req.headers)){
-    db.query("SELECT * FROM products WHERE pGender = ?", ["DNA"], (err, rows) => {
+    db.query("SELECT * FROM products WHERE gender = ?", ["DNA"], (err, result) => {
       if(!err) {
         const flash = req.flash("message") 
-        return res.status(200).render("view-dna-products", {title:"eCommerce Management - View dna products" , user:req.user, rows:rows, flash})
+        return res.status(200).render("view-dna-products", {title:"eCommerce Management - View dna products" , user:req.user, result:result, flash})
       } else {
         return res.status(500).render("view-dna-products", {title:"eCommerce Management - View dna products", user:req.user, message:"Internal server error."})
       }
@@ -86,12 +86,12 @@ router.get("/ecommerce-views/dna/view-dna-products", authController.isLoggedIn, 
   }
 })
 
-router.get("/ecommerce-views/delete-product/:pGender/:pId", authController.isLoggedIn, (req, res) => {
-  const {pGender, pId} = req.params
-  db.query("DELETE FROM products WHERE pId = ?", [pId], (err, rows) => {
+router.get("/ecommerce-views/delete-product/:gender/:id", authController.isLoggedIn, (req, res) => {
+  const {gender, id} = req.params
+  db.query("DELETE FROM products WHERE id = ?", [id], (err, result) => {
     if(!err) { 
       req.flash("message", `Product has been deleted successfully.`)
-      return res.redirect(`/ecommerce-management/ecommerce-views/${pGender}/view-${pGender}-products`)
+      return res.redirect(`/ecommerce-management/ecommerce-views/${gender}/view-${gender}-products`)
     } 
     console.log("wtf??")
   })

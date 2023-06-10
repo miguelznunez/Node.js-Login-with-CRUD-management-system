@@ -57,7 +57,7 @@
           <br>
         <% } %>
 
-        <h4>Subscribers (<%= rows.length %>)</h4>
+        <h4>Subscribers (<%= result.length %>)</h4>
 
         <br>
         
@@ -95,16 +95,16 @@
             <th>Email</th>
             <th>Subscribed</th>
           </tr>
-          <% for(let i=0;i < rows.length;i++) { %>
+          <% for(let i=0;i < result.length;i++) { %>
             <tr>
               <td>
-                <input value="<%= rows[i].email %>" type="checkbox" disabled>
+                <input value="<%= result[i].email %>" type="checkbox" disabled>
               </td>
               <td>
-                <%= rows[i].email %>
+                <%= result[i].email %>
               </td>
               <td>
-                <%= rows[i].date_subscribed %>
+                <%= result[i].date_subscribed %>
               </td>
             </tr>
           <% } %>

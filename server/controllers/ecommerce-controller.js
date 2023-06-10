@@ -44,11 +44,12 @@ exports.addProduct = (req, res) => {
 
   upload(req, res, (err) => {
     if(!err && req.files != "") {
-      saveProductInDB(req.files, req.body, (err, result) => {
+      saveProductInDB(req.body, req.files, (err, result) => {
         if(!err){
           return res.status(200).json({statusMessage:"Product has been added successfully.", status:200})
         } else {
-          return res.status(500).json({statusMessage:"Internal server error", status:500})
+          console.log(err)
+          return res.status(500).json({statusMessage:err.sqlMessage, status:500})
         }
       })
     } else if (!err && req.files == ""){
@@ -75,15 +76,15 @@ exports.editProductInfoAndImage = (req, res) => {
 
   upload(req, res, (err) => {
     if(!err && req.files != "") { 
-      S3.deleteS3Image(req.body.pSavedImage, (err, result) => {
+      S3.deleteS3Image(req.body.savedImage, (err, result) => {
         if(!err){
-            editProductInfoImageInDB(req.files, req.body, (err, result) => {
-              if(!err){
-                return res.status(200).json({statusMessage:"Product has been edited successfully.", status:200})
-              } else {
-                return res.status(200).json({statusMessage:"Internal server error", status:500})
-              }
-            })
+          editProductInfoImageInDB(req.body, req.files, (err, result) => {
+            if(!err){
+              return res.status(200).json({statusMessage:"Product has been edited successfully.", status:200})
+            } else {
+              return res.status(200).json({statusMessage:"Internal server error", status:500})
+            }
+          })
         } else {
           return res.status(200).json({statusMessage:"Internal server error", status:500})
         }
@@ -99,10 +100,10 @@ exports.editProductInfoAndImage = (req, res) => {
 }
 
 exports.findMenProductsByBrandCategory = (req, res) => {
-  const {pBrand, pCategory} = req.body
-  db.query("SELECT * FROM products WHERE pGender = ? && pBrand = ? && pCategory = ?", ["men", pBrand, pCategory], (err, rows) => {
+  const {brand, category} = req.body
+  db.query("SELECT * FROM products WHERE gender = ? && brand = ? && category = ?", ["men", brand, category], (err, result) => {
     if(!err) { 
-      return res.status(200).render("view-men-products", {title:"User Management - View men products" , user:req.user, rows:rows})
+      return res.status(200).render("view-men-products", {title:"User Management - View men products" , user:req.user, result:result})
     } else { 
       return res.status(500).render("view-men-products", {title:"User Management - View men products" , user:req.user, success:false, message:"Internal server error."})
     }
@@ -110,10 +111,10 @@ exports.findMenProductsByBrandCategory = (req, res) => {
 }
 
 exports.findMenProductsByProductNumber = (req, res) => {
-  const pSKU = req.body.pSKU
-  db.query("SELECT * FROM products WHERE pGender = ? && pSKU = ?", ["men", pSKU], (err, rows) => {
+  const sku = req.body.sku
+  db.query("SELECT * FROM products WHERE gender = ? && sku = ?", ["men", sku], (err, result) => {
     if(!err) { 
-      return res.status(200).render("view-men-products", {title:"User Management - View men products" , user:req.user, rows:rows})
+      return res.status(200).render("view-men-products", {title:"User Management - View men products" , user:req.user, result:result})
     } else { 
       return res.status(500).render("view-men-products", {title:"User Management - View men products" , user:req.user, success:false, message:"Internal server error."})
     }
@@ -147,10 +148,10 @@ exports.removeMenProducts = (req, res) => {
 }
 
 exports.findWomenProductsByBrandCategory = (req, res) => {
-  const {pBrand, pCategory} = req.body
-  db.query("SELECT * FROM products WHERE pGender = ? && pBrand = ? && pCategory = ?", ["women", pBrand, pCategory], (err, rows) => {
+  const {brand, category} = req.body
+  db.query("SELECT * FROM products WHERE gender = ? && brand = ? && category = ?", ["women", brand, category], (err, result) => {
     if(!err) { 
-      return res.status(200).render("view-women-products", {title:"User Management - View women products" , user:req.user, rows:rows})
+      return res.status(200).render("view-women-products", {title:"User Management - View women products" , user:req.user, result:result})
     } else { 
       return res.status(500).render("view-women-products", {title:"User Management - View women products" , user:req.user, success:false, message:"Internal server error."})
     }
@@ -158,10 +159,10 @@ exports.findWomenProductsByBrandCategory = (req, res) => {
 }
 
 exports.findWomenProductsByProductNumber = (req, res) => {
-  const pSKU = req.body.pSKU
-  db.query("SELECT * FROM products WHERE pGender = ? && pSKU = ?", ["women", pSKU], (err, rows) => {
+  const sku = req.body.sku
+  db.query("SELECT * FROM products WHERE gender = ? && sku = ?", ["women", sku], (err, result) => {
     if(!err) { 
-      return res.status(200).render("view-women-products", {title:"User Management - View women products" , user:req.user, rows:rows})
+      return res.status(200).render("view-women-products", {title:"User Management - View women products" , user:req.user, result:result})
     } else { 
       return res.status(500).render("view-women-products", {title:"User Management - View women products" , user:req.user, success:false, message:"Internal server error."})
     }
@@ -169,10 +170,10 @@ exports.findWomenProductsByProductNumber = (req, res) => {
 }
 
 exports.findDNAProductsByBrandCategory = (req, res) => {
-  const {pBrand, pCategory} = req.body
-  db.query("SELECT * FROM products WHERE pGender = ? && pBrand = ? && pCategory = ?", ["DNA", pBrand, pCategory], (err, rows) => {
+  const {brand, category} = req.body
+  db.query("SELECT * FROM products WHERE gender = ? && brand = ? && category = ?", ["DNA", brand, category], (err, result) => {
     if(!err) { 
-      return res.status(200).render("view-dna-products", {title:"User Management - View DNA products" , user:req.user, rows:rows})
+      return res.status(200).render("view-dna-products", {title:"User Management - View DNA products" , user:req.user, result:result})
     } else { 
       return res.status(500).render("view-dna-products", {title:"User Management - View DNA products" , user:req.user, success:false, message:"Internal server error."})
     }
@@ -180,42 +181,50 @@ exports.findDNAProductsByBrandCategory = (req, res) => {
 }
 
 exports.findDNAProductsByProductNumber = (req, res) => {
-  const pSKU = req.body.pSKU
-  db.query("SELECT * FROM products WHERE pGender = ? && pSKU = ?", ["DNA", pSKU], (err, rows) => {
+  const sku = req.body.sku
+  db.query("SELECT * FROM products WHERE gender = ? && sku = ?", ["DNA", sku], (err, result) => {
     if(!err) { 
-      return res.status(200).render("view-dna-products", {title:"User Management - View DNA products" , user:req.user, rows:rows})
+      return res.status(200).render("view-dna-products", {title:"User Management - View DNA products" , user:req.user, result:result})
     } else { 
       return res.status(500).render("view-dna-products", {title:"User Management - View DNA products" , user:req.user, success:false, message:"Internal server error."})
     }
   })
 }
 
-saveProductInDB = (pImage, pInfo, callback) => {
-  const {pCategory, pGender, pBrand, pSKU, pName, pPrice, pDescription, pQuantity_OS, pQuantity_XS, pQuantity_S, pQuantity_M, pQuantity_L, pQuantity_XL, pQuantity_XXL} = pInfo
-  db.query("INSERT INTO products (pCategory, pGender, pImage, pBrand, pSKU, pName, pPrice, pDescription, pQuantity_OS,pQuantity_XS, pQuantity_S, pQuantity_M, pQuantity_L, pQuantity_XL, pQuantity_XXL) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", [pCategory, pGender, pImage[0].key, pBrand, pSKU, pName, pPrice, pDescription, pQuantity_OS, pQuantity_XS, pQuantity_S, pQuantity_M, pQuantity_L, pQuantity_XL, pQuantity_XXL], (err, result) => {
+saveProductInDB = (data, image, callback) => {
+  const {name, brand, description, price, sale_price, category, gender, sku, quantity, quantity_XS, quantity_S, quantity_M, quantity_L, quantity_XL, quantity_XXL} = data
+
+  if(sale_price == "" || sale_price == 0){
+    db.query("INSERT INTO products (name, brand, description, price, sale_price, image, category, gender, sku, quantity, quantity_XS, quantity_S, quantity_M, quantity_L, quantity_XL, quantity_XXL) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", [name, brand, description, price, null, image[0].key, category, gender, sku, quantity, quantity_XS, quantity_S, quantity_M, quantity_L, quantity_XL, quantity_XXL], (err, result) => {
+      if(err) callback(err, null)
+      else callback(null, result)
+    })
+  } else {
+    db.query("INSERT INTO products (name, brand, description, price, sale_price, image, category, gender, sku, quantity, quantity_XS, quantity_S, quantity_M, quantity_L, quantity_XL, quantity_XXL) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", [name, brand, description, price, sale_price, image[0].key, category, gender, sku, quantity, quantity_XS, quantity_S, quantity_M, quantity_L, quantity_XL, quantity_XXL], (err, result) => {
+      if(err) callback(err, null)
+      else callback(null, result)
+    })
+  }
+}
+
+editProductInfoInDB = (data, callback) => {
+  const {id, name, brand, description, price, sale_price, image, category, gender, sku, quantity, quantity_XS, quantity_S, quantity_M, quantity_L, quantity_XL, quantity_XXL} = data
+  db.query("UPDATE products SET name = ?, brand = ?, description = ?, price = ?, sale_price = ?, image = ?, category = ?, gender = ?, sku = ?, quantity = ?, quantity_XS = ?, quantity_S = ?, quantity_M = ?, quantity_L = ?, quantity_XL = ?, quantity_XXL = ? WHERE id = ?", [name, brand, description, price, sale_price, image, category, gender, sku, quantity, quantity_XS, quantity_S, quantity_M, quantity_L, quantity_XL, quantity_XXL, id], (err, result) => {
     if(err) callback(err, null)
     else callback(null, result)
   })
 }
 
-editProductInfoInDB = (pInfo, callback) => {
-  const {pId, pCategory, pGender, pImage, pBrand, pSKU, pName, pPrice, pDescription, pQuantity_OS, pQuantity_XS, pQuantity_S, pQuantity_M, pQuantity_L, pQuantity_XL, pQuantity_XXL} = pInfo
-  db.query("UPDATE products SET pCategory = ?, pGender = ?, pImage = ?, pBrand = ?, pSKU = ?, pName = ?, pPrice = ?, pDescription = ?, pQuantity_OS = ?, pQuantity_XS = ?, pQuantity_S = ?, pQuantity_M = ?, pQuantity_L = ?, pQuantity_XL = ?, pQuantity_XXL = ? WHERE pId = ?", [pCategory, pGender, pImage, pBrand, pSKU, pName, pPrice, pDescription, pQuantity_OS, pQuantity_XS, pQuantity_S, pQuantity_M, pQuantity_L, pQuantity_XL, pQuantity_XXL, pId], (err, result) => {
-    if(err) callback(err, null)
-    else callback(null, result)
-  })
-}
-
-editProductInfoImageInDB = (pImage, pInfo, callback) => {
-  const {pId, pCategory, pGender, pBrand, pSKU, pName, pPrice, pDescription, pQuantity_OS, pQuantity_XS, pQuantity_S, pQuantity_M, pQuantity_L, pQuantity_XL, pQuantity_XXL} = pInfo
-  db.query("UPDATE products SET pCategory = ?, pGender = ?, pImage = ?, pBrand = ?, pSKU = ?, pName = ?, pPrice = ?, pDescription = ?, pQuantity_OS = ?, pQuantity_XS = ?, pQuantity_S = ?, pQuantity_M = ?, pQuantity_L = ?, pQuantity_XL = ?, pQuantity_XXL = ? WHERE pId = ?", [pCategory, pGender, pImage[0].key, pBrand, pSKU, pName, pPrice, pDescription, pQuantity_OS, pQuantity_XS, pQuantity_S, pQuantity_M, pQuantity_L, pQuantity_XL, pQuantity_XXL, pId], (err, result) => {
+editProductInfoImageInDB = (data, image, callback) => {
+  const {id, name, brand, description, price, sale_price, category, gender, sku, quantity, quantity_XS, quantity_S, quantity_M, quantity_L, quantity_XL, quantity_XXL} = data
+  db.query("UPDATE products SET name = ?, brand = ?, description = ?, price = ?, sale_price = ?, image = ?, category = ?, gender = ?, sku = ?, quantity = ?, quantity_XS = ?, quantity_S = ?, quantity_M = ?, quantity_L = ?, quantity_XL = ?, quantity_XXL = ? WHERE id = ?", [name, brand, description, price, sale_price, image[0].key, category, gender, sku, quantity, quantity_XS, quantity_S, quantity_M, quantity_L, quantity_XL, quantity_XXL, id], (err, result) => {
     if(err) callback(err, null)
     else callback(null, result)
   })
 }
 
 deleteProductsFromDb = (images, callback) => {
-  db.query("DELETE FROM products WHERE pImage IN (?)", [images], (err, result) => {
+  db.query("DELETE FROM products WHERE image IN (?)", [images], (err, result) => {
     if(err) callback(err, null)
     else callback(null, result)
   })

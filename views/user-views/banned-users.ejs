@@ -32,7 +32,7 @@
           <br>
         <% } %>
       
-        <h4>Banned users (<%= rows.length %>)</h4>
+        <h4>Banned users (<%= result.length %>)</h4>
       
         <br>
       
@@ -52,24 +52,24 @@
             <th>Status</th>
             <th class="text-end">Action</th>
           </tr>
-          <% for(let i=0;i < rows.length;i++) { %>
+          <% for(let i=0;i < result.length;i++) { %>
             <tr>
               <td>
-                <%= rows[i].id %>
+                <%= result[i].id %>
               </td>
               <td>
-                <%= rows[i].fName %>
+                <%= result[i].fName %>
               </td>
               <td>
-                <%= rows[i].email %>
+                <%= result[i].email %>
               </td>
               <td>
-                <%= rows[i].status %>
+                <%= result[i].status %>
               </td>
               <td class="text-end">
-                <a href="/user-management/user-views/view-user/<%= rows[i].id %>"><i class="fa-solid fa-eye"></i> View</a>
-                <% if(user.id !=rows[i].id) { %>
-                  <a href="/user-management/user-views/edit-user/<%= rows[i].id %>"><i class="fa-solid fa-pencil"></i> Edit</a>
+                <a href="/user-management/user-views/view-user/<%= result[i].id %>"><i class="fa-solid fa-eye"></i> View</a>
+                <% if(user.id !=result[i].id) { %>
+                  <a href="/user-management/user-views/edit-user/<%= result[i].id %>"><i class="fa-solid fa-pencil"></i> Edit</a>
                 <% } %>
               </td>
             </tr>

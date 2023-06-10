@@ -10,10 +10,10 @@ router = express.Router();
 
 router.get("/user-views/active-users", authController.isLoggedIn, (req, res) => {
   if(req.user && req.user.admin === "Yes" && !functions.checkBrowser(req.headers)) {
-    db.query("SELECT * FROM users WHERE status = 'Active'", (err, rows) => {
+    db.query("SELECT * FROM users WHERE status = 'Active'", (err, result) => {
       if(!err) { 
         const flash = req.flash("message")
-        return res.status(200).render("active-users", {title:"User Management - Active Users" , user:req.user, rows:rows, flash})
+        return res.status(200).render("active-users", {title:"User Management - Active Users" , user:req.user, result:result, flash})
       } else {
         return res.status(500).render("active-users", {title:"User Management - Active Users", user:req.user, message:"Internal server error"})
       }
@@ -25,10 +25,10 @@ router.get("/user-views/active-users", authController.isLoggedIn, (req, res) => 
 
 router.get("/user-views/banned-users", authController.isLoggedIn, (req, res) => {
   if(req.user && req.user.admin === "Yes" && !functions.checkBrowser(req.headers)) {
-    db.query("SELECT * FROM users WHERE status = 'Banned'", (err, rows) => {
+    db.query("SELECT * FROM users WHERE status = 'Banned'", (err, result) => {
       if(!err) { 
         const flash = req.flash("message")
-        return res.status(200).render("banned-users", {title:"User Management - Banned Users" , user:req.user, rows:rows, flash})
+        return res.status(200).render("banned-users", {title:"User Management - Banned Users" , user:req.user, result:result, flash})
       } else {
         return res.status(500).render("banned-users", {title:"User Management - Banned Users", user:req.user, message:"Internal server error."})
       }
@@ -40,9 +40,9 @@ router.get("/user-views/banned-users", authController.isLoggedIn, (req, res) => 
 
 router.get("/user-views/deleted-users", authController.isLoggedIn, (req, res) => {
   if(req.user && req.user.admin === "Yes" && !functions.checkBrowser(req.headers)) {
-    db.query("SELECT * FROM users WHERE status = 'Deleted'", (err, rows) => {
+    db.query("SELECT * FROM users WHERE status = 'Deleted'", (err, result) => {
       if(!err) { 
-        return res.status(200).render("deleted-users", {title:"User Management - Deleted Users" , user:req.user, rows:rows})
+        return res.status(200).render("deleted-users", {title:"User Management - Deleted Users" , user:req.user, result:result})
       } else {
         return res.status(500).render("deleted-users", {title:"User Management - Deleted Users", user:req.user, message:"Internal server error."})
       }
@@ -54,9 +54,9 @@ router.get("/user-views/deleted-users", authController.isLoggedIn, (req, res) =>
 
 router.get("/user-views/inactive-users", authController.isLoggedIn, (req, res) => {
   if(req.user && req.user.admin === "Yes" && !functions.checkBrowser(req.headers)) {
-    db.query("SELECT * FROM users WHERE status = 'Inactive'", (err, rows) => {
+    db.query("SELECT * FROM users WHERE status = 'Inactive'", (err, result) => {
       if(!err) { 
-        return res.status(200).render("inactive-users", {title:"User Management - Inactive Users" , user:req.user, rows:rows})
+        return res.status(200).render("inactive-users", {title:"User Management - Inactive Users" , user:req.user, result:result})
       } else {
         return res.status(500).render("inactive-users", {title:"User Management - Inactive Users", user:req.user, message:"Internal server error."})
       }
@@ -68,9 +68,9 @@ router.get("/user-views/inactive-users", authController.isLoggedIn, (req, res) =
 
 router.get("/user-views/admin-users", authController.isLoggedIn, (req, res) => {
   if(req.user && req.user.admin === "Yes" && !functions.checkBrowser(req.headers)) {
-    db.query("SELECT * FROM users WHERE admin = 'Yes' AND status != 'Deleted'", (err, rows) => {
+    db.query("SELECT * FROM users WHERE admin = 'Yes' AND status != 'Deleted'", (err, result) => {
       if(!err) { 
-        return res.status(200).render("admin-users", {title:"User Management - Admin Users" , user:req.user, rows:rows})
+        return res.status(200).render("admin-users", {title:"User Management - Admin Users" , user:req.user, result:result})
       } else {
         return res.status(500).render("admin-users", {title:"User Management - Admin Users", user:req.user, message:"Internal server error."})
       }
@@ -82,13 +82,13 @@ router.get("/user-views/admin-users", authController.isLoggedIn, (req, res) => {
 
 router.get("/user-views/view-user/:id", authController.isLoggedIn, (req, res) => {
   if(req.user && req.user.admin === "Yes" && !functions.checkBrowser(req.headers)){
-    db.query("SELECT * FROM users LEFT JOIN federated_credentials ON users.id = federated_credentials.user_id WHERE users.id = ?",[req.params.id], (err, rows) => {
+    db.query("SELECT * FROM users LEFT JOIN federated_credentials ON users.id = federated_credentials.user_id WHERE users.id = ?",[req.params.id], (err, result) => {
       if(err) { // DATABASE ERROR
         return res.status(500).render("view-user", {title:"View user", user:req.user, message:"Internal server error."})
       }
-      if(!err && rows.length == 1) { // USER EXISTS
+      if(!err && result.length == 1) { // USER EXISTS
         const userId = req.params.id
-        return res.status(200).render("view-user", {title:"View User" , user:req.user, rows:rows, userId:userId})
+        return res.status(200).render("view-user", {title:"View User" , user:req.user, result:result, userId:userId})
       } else { // USER DOES NOT EXIST
         return res.status(400).render("view-user", {title:"View user", user:req.user, message:"That user does not exist."})
       }

@@ -18,11 +18,11 @@
         <div class="flex">
           <h3><i class="fa-solid fa-users"></i><span>Users -> View User</span></h3>
           <div>
-            <% if(rows[0].status == "Active") { %>
+            <% if(result[0].status == "Active") { %>
               <button><a href="/user-management/user-views/active-users"><i class="fa-solid fa-eye"></i> All Active Users</a></button>
-            <% } else if(rows[0].status == "Banned") { %>
+            <% } else if(result[0].status == "Banned") { %>
               <button><a href="/user-management/user-views/banned-users"><i class="fa-solid fa-eye"></i> All Banned Users</a></button>
-            <% } else if(rows[0].status == "Inactive") { %>
+            <% } else if(result[0].status == "Inactive") { %>
               <button><a href="/user-management/user-views/inactive-users"><i class="fa-solid fa-eye"></i> All Inactive Users</a></button>
             <% } else { %>
               <button><a href="/user-management/user-views/deleted-users"><i class="fa-solid fa-eye"></i> All Deleted Users</a></button>
@@ -45,13 +45,13 @@
               <%= userId %>
             </td>
             <td>
-              <%= rows[0].fName %>
+              <%= result[0].fName %>
             </td>
             <td>
-              <%= rows[0].lName %>
+              <%= result[0].lName %>
             </td>
             <td>
-              <%= rows[0].email %>
+              <%= result[0].email %>
             </td>
           </tr>
         </table>
@@ -67,16 +67,16 @@
           </tr>
           <tr>
             <td>
-              <%= rows[0].status %>
+              <%= result[0].status %>
             </td>
             <td>
-              <%= rows[0].admin %>
+              <%= result[0].admin %>
             </td>
             <td>
-              <%= rows[0].created %>
+              <%= result[0].created %>
             </td>
             <td>
-              <%= rows[0].deleted %>
+              <%= result[0].deleted %>
             </td>
           </tr>
         </table>
@@ -89,7 +89,7 @@
           </tr>
           <tr>
             <td>
-              <%= rows[0].provider %>
+              <%= result[0].provider %>
             </td>
           </tr>
         </table>

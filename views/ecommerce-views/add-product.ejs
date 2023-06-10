@@ -33,7 +33,7 @@
           <br>
           <div class="queued-image"></div>
           <br>
-          <select id="pCategory" required>
+          <select id="category" required>
             <option selected value="">Category</option>
             <option value="t-shirts">T-Shirts</option>
             <option value="pants">Pants</option>
@@ -49,7 +49,7 @@
           </select>
           <br>
           <br>
-          <select id="pGender" required>
+          <select id="gender" required>
             <option selected value="">Gender</option>
             <option value="men">Men</option>
             <option value="women">Women</option>
@@ -57,22 +57,22 @@
           </select>
           <br>
           <br>
-          <input type="text" id="pBrand" maxlength="100" placeholder="Brand" value="" required>
+          <input type="text" id="brand" maxlength="100" placeholder="Brand" value="" required>
           <br>
           <br>
-          <input type="text" id="pSKU" maxlength="7" OnInput="add_hyphen()" placeholder="SKU" value="" required>
+          <input type="text" id="sku" maxlength="7" OnInput="add_hyphen()" placeholder="SKU" value="" required>
           <br>
           <br>
-          <input type="text" id="pName" maxlength="100" placeholder="Name" value="" required>
+          <input type="text" id="name" maxlength="100" placeholder="Name" value="" required>
           <br>
           <br>
-          <input type="number" id="pPrice" maxlength="100" placeholder="Price" step="any" value="" min="0" required>
+          <input type="number" id="price" maxlength="100" placeholder="Price" step="any" value="" min="0" required>
           <br>
           <br>
-          <input type="number" id="pDiscount" maxlength="100" placeholder="Discount (optional)" step="any" value="" min="0">
+          <input type="number" id="sale_price" maxlength="100" placeholder="Sale price (optional)" value="" min="0" step="any">
           <br>
           <br>
-          <textarea id="pDescription" placeholder="Description" required></textarea>
+          <textarea id="description" placeholder="Description" required></textarea>
           <br>
           <br>
           <button class="auth-btn button"><span class="button__text">Add</span></button>
@@ -83,27 +83,27 @@
           <br>
           <h5>One size</h5>
           <br>
-          <input type="number" id="pQuantity_OS" min="0" placeholder="Quantity">
+          <input type="number" id="quantity" min="0" placeholder="Quantity">
           <br>
           <br>
           <h5>General sizes</h5>
           <br>
-          <input type="number" id="pQuantity_XS" min="0" placeholder="XS">
+          <input type="number" id="quantity_XS" min="0" placeholder="XS">
           <br>
           <br>
-          <input type="number" id="pQuantity_S" min="0" placeholder="S">
+          <input type="number" id="quantity_S" min="0" placeholder="S">
           <br>
           <br>
-          <input type="number" id="pQuantity_M" min="0" placeholder="M">
+          <input type="number" id="quantity_M" min="0" placeholder="M">
           <br>
           <br>
-          <input type="number" id="pQuantity_L" min="0" placeholder="L">
+          <input type="number" id="quantity_L" min="0" placeholder="L">
           <br>
           <br>
-          <input type="number" id="pQuantity_XL" min="0" placeholder="XL">
+          <input type="number" id="quantity_XL" min="0" placeholder="XL">
           <br>
           <br>
-          <input type="number" id="pQuantity_XXL" min="0" placeholder="XXL">
+          <input type="number" id="quantity_XXL" min="0" placeholder="XXL">
           <!-- <br>
           <br>
           <h5>Hat sizes</h5>
@@ -163,13 +163,13 @@
     let queuedImageArray = []
 
     function add_hyphen() {
-      const pSKUInput = document.querySelector("#pSKU")
-      let str = pSKUInput.value;
+      const skuInput = document.querySelector("#sku")
+      let str = skuInput.value;
       str = str.replace("-","");
       if (str.length > 3) {
           str = str.substring(0,3) + "-" + str.substring(3)
       }
-      pSKUInput.value = str
+      skuInput.value = str
     }
 
     function displayQueuedImage() {
@@ -204,36 +204,38 @@
     function sendQueuedImageToServer() {
 
       const formData = new FormData(addProductForm),
-      pCategory = document.querySelector("#pCategory").value,
-      pGender = document.querySelector("#pGender").value,
-      pBrand = document.querySelector("#pBrand").value,
-      pSKU = document.querySelector("#pSKU").value,
-      pName = document.querySelector("#pName").value,
-      pPrice = document.querySelector("#pPrice").value,
-      pDescription = document.querySelector("#pDescription").value,
-      pQuantity_OS = document.querySelector("#pQuantity_OS").value,
-      pQuantity_XS = document.querySelector("#pQuantity_XS").value,
-      pQuantity_S = document.querySelector("#pQuantity_S").value,
-      pQuantity_M = document.querySelector("#pQuantity_M").value,
-      pQuantity_L = document.querySelector("#pQuantity_L").value,
-      pQuantity_XL = document.querySelector("#pQuantity_XL").value,
-      pQuantity_XXL = document.querySelector("#pQuantity_XXL").value;
+      name = document.querySelector("#name").value,
+      brand = document.querySelector("#brand").value,
+      description = document.querySelector("#description").value,
+      price = document.querySelector("#price").value,
+      sale_price = document.querySelector("#sale_price").value,
+      category = document.querySelector("#category").value,
+      gender = document.querySelector("#gender").value,
+      sku = document.querySelector("#sku").value,
+      quantity = document.querySelector("#quantity").value,
+      quantity_XS = document.querySelector("#quantity_XS").value,
+      quantity_S = document.querySelector("#quantity_S").value,
+      quantity_M = document.querySelector("#quantity_M").value,
+      quantity_L = document.querySelector("#quantity_L").value,
+      quantity_XL = document.querySelector("#quantity_XL").value,
+      quantity_XXL = document.querySelector("#quantity_XXL").value;
 
-      formData.append("pImage", queuedImageArray[0])
-      formData.append("pCategory", pCategory)
-      formData.append("pGender", pGender)
-      formData.append("pBrand", pBrand)
-      formData.append("pSKU", pSKU)
-      formData.append("pName", pName)
-      formData.append("pPrice", pPrice)
-      formData.append("pDescription", pDescription)
-      formData.append("pQuantity_OS", pQuantity_OS)
-      formData.append("pQuantity_XS", pQuantity_XS)
-      formData.append("pQuantity_S", pQuantity_S)
-      formData.append("pQuantity_M", pQuantity_M)
-      formData.append("pQuantity_L", pQuantity_L)
-      formData.append("pQuantity_XL", pQuantity_XL)
-      formData.append("pQuantity_XXL", pQuantity_XXL);
+      formData.append("image", queuedImageArray[0])
+      formData.append("name", name)
+      formData.append("brand", brand)
+      formData.append("description", description)
+      formData.append("price", price)
+      formData.append("sale_price", sale_price)
+      formData.append("category", category)
+      formData.append("gender", gender)
+      formData.append("sku", sku)
+      formData.append("quantity", quantity)
+      formData.append("quantity_XS", quantity_XS)
+      formData.append("quantity_S", quantity_S)
+      formData.append("quantity_M", quantity_M)
+      formData.append("quantity_L", quantity_L)
+      formData.append("quantity_XL", quantity_XL)
+      formData.append("quantity_XXL", quantity_XXL);
 
       btn.classList.add("button--loading");
       btn.disabled = true

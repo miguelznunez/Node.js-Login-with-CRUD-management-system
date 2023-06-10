@@ -4,8 +4,8 @@ googlePassportSetup = require("./server/config/google-passport-setup"),
 facebookPassportSetup = require("./server/config/facebook-passport-setup"),
 cookieParser = require("cookie-parser"),
 session = require('express-session'),
-passport = require("passport"),
-flash = require('connect-flash');
+flash = require('connect-flash')
+passport = require("passport");
 
 require("dotenv").config()
 
@@ -45,7 +45,6 @@ app.use("/auth-management", require("./server/routes/auth-routes"))
 app.use("/my-account-management", require("./server/routes/my-account-routes"))
 app.use("/newsletter-management", require("./server/routes/newsletter-routes"))
 app.use("/ecommerce-management", require("./server/routes/ecommerce-routes"))
-app.use("/store-management", require("./server/routes/store-routes"))
 app.use("/user-management", require("./server/routes/user-routes"))
 app.use("/", require("./server/routes/page-routes"))
 

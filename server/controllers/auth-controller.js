@@ -28,15 +28,15 @@ exports.signup = (req, res) => {
   const { fName, lName, email, password } = req.body;  
   const created = functions.getDate();
 
-  db.query("SELECT email FROM users WHERE email = ?", [email], (err, results) => {
-    if (!err && results != "") {
+  db.query("SELECT email FROM users WHERE email = ?", [email], (err, result) => {
+    if (!err && result != "") {
       return res.status(401).json({statusMessage:"An account with that email address already exists.", status:401})
-    } else if(!err && results[0] === undefined){
+    } else if(!err && result[0] === undefined){
         let token = randomstring.generate(255)
         bcrypt.hash(password, saltRounds, (err, hash) => {
-          db.query("INSERT INTO users (fName, lName, email, password, token, created) VALUES (?,?,?,?,?,?)", [fName, lName, email, hash, token, created], (err, results) => {
+          db.query("INSERT INTO users (fName, lName, email, password, token, created) VALUES (?,?,?,?,?,?)", [fName, lName, email, hash, token, created], (err, result) => {
               if (!err) {
-                mail.activateAccountEmail(email, results.insertId, token, (err, info) => {
+                mail.activateAccountEmail(email, result.insertId, token, (err, info) => {
                   if(!err) {
                     return res.status(200).json({statusMessage:`We sent an email to ${email}, please click the link included to verify your email address.`, status:200})
                   } else {
@@ -69,27 +69,27 @@ exports.login = (req, res) => {
 
   const {email, password} = req.body
 
-  db.query("SELECT * FROM users WHERE email = ?", [email], async (err, results) => {
+  db.query("SELECT * FROM users WHERE email = ?", [email], async (err, result) => {
     // IF EMAIL IS INVALID
-    if(!err && results == ""){
+    if(!err && result == ""){
       return res.status(401).json({statusMessage:"The email or password is incorrect.", status:401})
     }
 
     // IF EMAIL IS IN THE DATABASE BUT PASSWORD IS NULL
-    if(!err && (results[0].email != null && results[0].password == null)){
+    if(!err && (result[0].email != null && result[0].password == null)){
       return res.status(401).json({statusMessage:"A Google account with that email address exists, please login with Google.", status:401})
     // IF EMAIL IS NOT IN THE DATABASE OR PASSWORDS DO NOT MATCH
-    } else if(!err && (results[0].email == null || !(await bcrypt.compare(password, results[0].password.toString())))){
+    } else if(!err && (result[0].email == null || !(await bcrypt.compare(password, result[0].password.toString())))){
       return res.status(401).json({statusMessage:"The email or password is incorrect.", status:401})
     // ELSE IF ACCOUNT IS INACTIVE
-    } else if (!err && results[0].status === "Inactive") {
+    } else if (!err && result[0].status === "Inactive") {
       return res.status(400).json({statusMessage:"The email address associated with that account has not been verified.", status:400})
     // ELSE IF ACCOUNT IS BANNED
-    } else if (!err && results[0].status === "Banned") {
+    } else if (!err && result[0].status === "Banned") {
       return res.status(400).json({statusMessage:"The email address associated with those credentials has been banned.", status:400})
     // ELSE ALLOW USER TO LOGIN
-    } else if(!err && results[0].status === "Active") {
-      const id = results[0].id;
+    } else if(!err && result[0].status === "Active") {
+      const id = result[0].id;
       const token = jwt.sign({ id: id}, process.env.JWT_SECRET, {
         expiresIn: process.env.JWT_EXPIRES_IN
       })
@@ -175,15 +175,15 @@ exports.passwordReset = (req, res) => {
     const email = req.body.email
 
     // CHECK IF EMAIL EXISTS  
-    db.query("SELECT id, email FROM users WHERE email = ? && password != ?", [email, "null"] , (err, results) => {    
+    db.query("SELECT id, email FROM users WHERE email = ? && password != ?", [email, "null"] , (err, result) => {    
       // EMAIL FOUND
-      if(!err && results[0] != undefined) {
-        const id = results[0].id
+      if(!err && result[0] != undefined) {
+        const id = result[0].id
         const token = randomstring.generate(255)
         const token_expires = Date.now() + 3600000
         const data = { token: token, token_expires: token_expires}
 
-        db.query("UPDATE users SET ? WHERE email = ?", [data, email], (err, results) => {
+        db.query("UPDATE users SET ? WHERE email = ?", [data, email], (err, result) => {
           if(!err) {
             mail.resetPasswordEmail(email, id, token, (err, info) => {
               if(!err) {
