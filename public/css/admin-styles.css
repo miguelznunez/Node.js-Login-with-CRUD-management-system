@@ -3,7 +3,7 @@
   padding: 0;
   margin: 0;
   box-sizing: border-box;
-  font-family: 'Poppins', sans-serif;
+  font-family: "Nunito Sans", sans-serif;
 }
 
 :root {
@@ -91,6 +91,7 @@ button{
   font-size: 1rem;
   color: white;
   background-color: var(--soft-black);
+  box-shadow: 0px 3px 15px rgba(0,0,0,0.2);
 }
 
 form{
@@ -129,6 +130,48 @@ th{
   text-align: left;
   border: none;
 }
+
+/* CUSTOM CART BTN */
+
+.custom-cart-btn {
+  position: relative;
+}
+
+.custom-cart-btn a::before {
+  position: absolute;
+  content: attr(data-item);
+  width: 16px;
+  height: 16px;
+  background-color: #ff3300;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 8px;
+  font-weight: bold;
+  border-radius: 100%;
+  color: #fff;
+  right: 18%;
+  top: -2px;
+  z-index: -1;
+  transition: 0.2s all cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.custom-cart-btn a:hover:before {
+  transform: scale(1.2);
+  top: -1px;
+  z-index: 0;
+}
+
+.custom-cart-btn a svg {
+  width: 35px;
+  height: 35px;
+}
+
+.custom-cart-btn a svg path {
+  fill: #292929;
+}
+
+/* END CUSTOM CART BTN */
 
 .main{
   margin-top: 70px;
@@ -197,6 +240,8 @@ th{
   color: var(--soft-black);
   font-size: 2.5rem;
 }
+
+
 
 .margin {
   margin: 25px 0;
@@ -427,6 +472,7 @@ th{
   justify-content: center;
   align-items: center;
   gap: 10px;
+  box-shadow: none;
 }
 
 .link p {
@@ -463,7 +509,8 @@ th{
   flex-direction: column;
   border: 1px solid lightgray;
   transition: opacity 150ms ease-in-out;
-  box-shadow: 0 0 35px 0 rgba(49, 57, 66, 0.5);
+  box-shadow: 0px 3px 15px rgba(0,0,0,0.2);
+  /* box-shadow: 0 0 35px 0 rgba(49, 57, 66, 0.5); */
 }
 
 .dropdown-menu a {
@@ -556,6 +603,7 @@ th{
   outline: none;
   transition: 0.3s ease;
   font-size: 1rem;
+  box-shadow: none;
 }
 
 .sidenav a:hover, 
@@ -704,14 +752,23 @@ th{
   margin: 0 10px;
 }
 
+.fa-google{
+  background: conic-gradient(from -45deg, #ea4335 110deg, #4285f4 90deg 180deg, #34a853 180deg 270deg, #fbbc05 270deg) 73% 55%/150% 150% no-repeat;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+}
+
 .google{
-  background-color: #DB4437;
-  border: 1px solid #DB4437;
+  color: black;
+  background-color: white;
+  border: 1px solid white;
 }
 
 .facebook{
-  background-color: #4267B2;
-  border: 1px solid #4267B2;
+  background-color: #1778F2;
+  border: 1px solid #1778F2;
 }
 
 .twitter{

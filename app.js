@@ -23,8 +23,8 @@ app.use(express.json())
 app.use(cookieParser())
 app.use(session({ 
   secret: process.env.SESSION_SECRET,
-  // resave: false, // dont't save session if unmodified
-  // saveUninitialized: false, // don't create session until something stored
+  resave: false, // dont't save session if unmodified
+  saveUninitialized: false, // don't create session until something stored
   cookie: { maxAge: 1000 * 60 * 60 * 24 }
 }))
 

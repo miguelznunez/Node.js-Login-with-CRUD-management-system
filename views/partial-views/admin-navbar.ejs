@@ -1,11 +1,12 @@
 <header id="header">
   <div class="navbar">
     <div class="nav-branding">
-      <a href="/" >My Admin</a>
+      <a href="/" >Company</a>
     </div>
     <ul class="nav-menu">
       <li class="nav-item">
         <div class="dropdown" data-dropdown>
+          
           <% if (typeof user !="undefined") { %>
             <button class="link" data-dropdown-button>Hello, <%= user.fName %> <i class="fa-solid fa-angle-down" data-dropdown-button></i></button>
           <% } else { %>

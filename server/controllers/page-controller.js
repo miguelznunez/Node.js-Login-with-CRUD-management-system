@@ -46,16 +46,19 @@ exports.newsletterForm = (req, res) => {
     })
 }
 
-exports.addToCartForm = (req, res) => {
+exports.addToCart = (req, res) => {
     const {id, name, brand, category, sku, price, sale_price, quantity, image} = req.body
     const product = {id:id, name:name, brand:brand, category:category, sku:sku, price:price, sale_price:sale_price, quantity:quantity, image:image}
-
+    
     if(req.session.cart){
+        console.log("Error, this item is already in cart")
         var cart = req.session.cart
         if(!functions.isProductInCart(cart, id)){
+            console.log("Success, your item has been added")
             cart.push(product)
         }
     } else {
+        console.log("Cart session has been initialized")
         req.session.cart = [product]
         var cart = req.session.cart
     }
@@ -71,15 +74,47 @@ exports.removeProduct = (req, res) => {
 
     const id = req.body.id
     let cart = req.session.cart
-
+    
+    // remove product from cart where id is equal to id in cart 
     for(let i = 0;i < cart.length;i++){
         if(cart[i].id == id){
             cart.splice(cart.indexOf(i), 1)
         }
     }
-    
-    // re-calculate
+    // re-calculate total
     functions.calculateTotal(cart, req)
-    res.redirect("/cart")
+    return res.status(200).redirect("/cart")
+
+}
+
+exports.editProductQuantity = (req, res) => {
+    const id = req.body.id,
+    increaseBtn = req.body.increase_product_quantity,
+    decreaseBtn = req.body.decrease_product_quantity;
+
+    let cart = req.session.cart
+
+    if(increaseBtn){
+        for(let i = 0; i < cart.length;i++){
+            if(cart[i].id == id){
+                if(cart[i].quantity > 0){
+                    cart[i].quantity = parseInt(cart[i].quantity) + 1
+                }
+            }
+        }
+    }
+
+    if(decreaseBtn){
+        for(let i = 0; i < cart.length;i++){
+            if(cart[i].id == id){
+                if(cart[i].quantity > 1){
+                    cart[i].quantity = parseInt(cart[i].quantity) - 1
+                }
+            }
+        }
+    }
+
+    functions.calculateTotal(cart, req)
+    return res.redirect("/cart")
 
 }

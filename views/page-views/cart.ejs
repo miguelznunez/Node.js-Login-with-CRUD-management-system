@@ -1,5 +1,5 @@
-<%- include("partial-views/header.ejs") %>
-<%- include("partial-views/navbar.ejs") %>
+<%- include("partial-views/admin-header.ejs") %>
+<%- include("partial-views/admin-navbar.ejs") %>
 
 <main>
     <div class="basket">
@@ -38,7 +38,12 @@
                 <div class="price"><%= cart[i].price %></div>
             <% } %>
             <div class="quantity">
-            <input type="number" value="<%= cart[i].quantity %>" min="1" class="quantity-field">
+                <form action="/edit-product-quantity" method="POST" >
+                    <input type="hidden" value="<%= cart[i].id %>" name="id">
+                    <input type="submit" value="-" name="decrease_product_quantity">
+                    <input type="text" value="<%= cart[i].quantity %>" class="quantity-field" readonly>
+                    <input type="submit" value="+" name="increase_product_quantity">
+                </form>
             </div>
 
             <% if(cart[i].sale_price) { %>

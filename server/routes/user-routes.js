@@ -100,12 +100,12 @@ router.get("/user-views/view-user/:id", authController.isLoggedIn, (req, res) =>
 
 router.get("/user-views/edit-user/:id", authController.isLoggedIn, (req, res) => {
   if(req.user && req.user.admin === "Yes" && !functions.checkBrowser(req.headers)) {
-    db.query("SELECT * FROM users WHERE id = ?",[req.params.id], (err, rows) => {
+    db.query("SELECT * FROM users WHERE id = ?",[req.params.id], (err, result) => {
       if(err) { // DATABASE ERROR
         return res.status(500).render("edit-user", {title:"Edit user", user:req.user, message:"Internal server error."})
       }
-      if(!err && rows.length) { // USER EXISTS
-        return res.status(200).render("edit-user", {title:"Edit User" , user:req.user, rows:rows})
+      if(!err && result.length) { // USER EXISTS
+        return res.status(200).render("edit-user", {title:"Edit User" , user:req.user, result:result})
       } else { // USER DOES NOT EXIST
         return res.status(400).render("edit-user", {title:"Edit User" , user:req.user, message:"That user does not exist."})
       }
@@ -129,20 +129,20 @@ router.get("/user-views/delete-user/:status/:id", authController.isLoggedIn, (re
 
     const {status, id} = req.params
 
-    db.query("SELECT * FROM federated_credentials WHERE user_id = ?", [id], (err, row) => {
+    db.query("SELECT * FROM federated_credentials WHERE user_id = ?", [id], (err, result) => {
 
       if(err){
         return res.status(500).render(`${status.toLowerCase()}-users`, {title:`User Management - ${status} Users", user:req.user, message:"Internal server error.`})
       }
 
       // IF USER EXISTS IN FEDERATED CREDENTIALS
-      if(!err && row != ""){
+      if(!err && result != ""){
 
         console.log("Google user")
 
         db.query("UPDATE federated_credentials SET subject = ? WHERE user_id = ?", [null, id], (err, rows) => {
           if(!err) { 
-            db.query("UPDATE users SET email = ?, status = ?, deleted = ? WHERE id = ?", [null, "Deleted", functions.getDate(), id], (err, rows) => {
+            db.query("UPDATE users SET email = ?, status = ?, deleted = ? WHERE id = ?", [null, "Deleted", functions.getDate(), id], (err, result) => {
               if(!err) { 
                 req.flash("message", `The selected user was successfully deleted.`)
                 return res.redirect(`/user-management/user-views/${status.toLowerCase()}-users`)
@@ -156,7 +156,7 @@ router.get("/user-views/delete-user/:status/:id", authController.isLoggedIn, (re
         })
       } else {
         console.log("Email user")
-        db.query("UPDATE users SET email = ?, status = ?, deleted = ? WHERE id = ?", [null, "Deleted", functions.getDate(), id], (err, rows) => {
+        db.query("UPDATE users SET email = ?, status = ?, deleted = ? WHERE id = ?", [null, "Deleted", functions.getDate(), id], (err, result) => {
           if(!err) { 
             req.flash("message", `The selected user was successfully deleted.`)
             return res.redirect(`/user-management/user-views/${status.toLowerCase()}-users`)

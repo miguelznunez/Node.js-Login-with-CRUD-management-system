@@ -178,10 +178,10 @@ exports.passwordReset = (req, res) => {
     db.query("SELECT id, email FROM users WHERE email = ? && password != ?", [email, "null"] , (err, result) => {    
       // EMAIL FOUND
       if(!err && result[0] != undefined) {
-        const id = result[0].id
-        const token = randomstring.generate(255)
-        const token_expires = Date.now() + 3600000
-        const data = { token: token, token_expires: token_expires}
+        const id = result[0].id,
+        token = randomstring.generate(255)
+        token_expires = Date.now() + 3600000
+        data = { token:token, token_expires:token_expires};
 
         db.query("UPDATE users SET ? WHERE email = ?", [data, email], (err, result) => {
           if(!err) {
@@ -189,7 +189,7 @@ exports.passwordReset = (req, res) => {
               if(!err) {
                 return res.status(200).json({statusMessage:"If an account with that email exists, you will receive an email with instructions on how to reset your password.", status:200})
               } else { 
-                return res.status(err.status).json({statusMessage:err.message, status:err.status})
+                return res.status(err.status).json({statusMessage:"Internal server error", status:500})
               }
             });
           } else {
@@ -197,7 +197,7 @@ exports.passwordReset = (req, res) => {
           }
         }); 
       // EMAIL WAS NOT FOUND (USER DOES NOT EXIST)
-      } else if(!err && results[0] === undefined) {
+      } else if(!err && result[0] === undefined) {
         return res.status(200).json({statusMessage:"If an account with that email exists, you will receive an email with instructions on how to reset your password.", status:200})
       // DATABASE ERROR
       } else {

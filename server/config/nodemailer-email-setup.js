@@ -23,6 +23,7 @@ const activateAccountEmail = (email, id, token, callback) => {
     subject: "Modern Web Designers - Account Verification",
     html: `<p>Please click on the following link, or paste it into your browser to complete the account activation process:<br><br><a href="http://localhost:5000/auth-management/auth-views/account-verification/${id}/${token}">http://localhost:5000/auth-management/auth-views/account-verification/${id}/${token}</a><br><br>The Team</p>`
     }, (err, info) => {
+      console.log(err)
       if (err) callback(err, null)
       else callback(null, info)
     })
@@ -85,4 +86,4 @@ const newsletterEmail = (subject, message, emails, callback) => {
 
 }
 
-module.exports = {resetPasswordEmail, accountDeletedEmail, activateAccountEmail, newsletterWelcomeEmail, newsletterEmail};
+module.exports = {activateAccountEmail, accountDeletedEmail, resetPasswordEmail, newsletterWelcomeEmail, newsletterEmail};

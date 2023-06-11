@@ -24,9 +24,8 @@ router.get("/", authController.isLoggedIn,(req, res) => {
 })
 
 router.get("/cart", authController.isLoggedIn,(req, res) => {
-  console.log(req.session.cart)
-  var cart = req.session.cart
-  var total = req.session.total
+  const cart = req.session.cart
+  const total = req.session.total
   return res.render("cart", {title:"Cart", cart:cart, total:total})
 })
 
@@ -38,9 +37,11 @@ router.post("/newsletter-form",
   check("email", "Email address must be between 4-100 characters long, please try again.").isLength({min:4, max:100}).normalizeEmail()
 ], pageController.newsletterForm)
 
-router.post("/add-to-cart", pageController.addToCartForm)
+router.post("/add-to-cart", pageController.addToCart)
 
 router.post("/remove-product", pageController.removeProduct)
+
+router.post("/edit-product-quantity", pageController.editProductQuantity)
 
 
 // ROUTE DOES NOT EXIST  ========================================================
