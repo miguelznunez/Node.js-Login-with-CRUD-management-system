@@ -109,7 +109,7 @@ router.post("/search-men-products-by-brand-and-category", ecommerceManagementCon
 
 router.post("/search-men-products-by-product-number", ecommerceManagementController.findMenProductsByProductNumber)
 
-router.post("/remove-men-products", ecommerceManagementController.removeMenProducts)
+router.post("/remove-products", ecommerceManagementController.removeProducts)
 
 router.post("/search-women-products-by-brand-and-category", ecommerceManagementController.findWomenProductsByBrandCategory)
 

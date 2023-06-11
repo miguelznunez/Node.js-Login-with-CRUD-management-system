@@ -85,9 +85,10 @@ exports.findMenProductsByProductNumber = (req, res) => {
   })
 }
 
-exports.removeMenProducts = (req, res) => {
+exports.removeProducts = (req, res) => {
 
-  const products = JSON.parse(req.body.removeProducts)
+  const products = JSON.parse(req.body.removeProducts),
+  gender = req.body.gender
   let images = []
 
   S3.deleteS3Images(products, (err, result) => {
@@ -98,15 +99,15 @@ exports.removeMenProducts = (req, res) => {
         functions.deleteProductsFromDb(images, (err, result) => {
           if(!err){
               req.flash("message", `The ${images.length} selected product(s) have been successfully removed from your store.`)
-              return res.redirect("/ecommerce-management/ecommerce-views/men/view-men-products")
+              return res.redirect(`/ecommerce-management/ecommerce-views/${gender}/view-${gender}-products`)
           } else {
               req.flash("message", "Internal server error")
-              return res.redirect("/ecommerce-management/ecommerce-views/men/view-men-products")
+              return res.redirect(`/ecommerce-management/ecommerce-views/${gender}/view-${gender}-products`)
           }
         })
     } else {
         req.flash("message", "Internal server error")
-        return res.redirect("/ecommerce-management/ecommerce-views/men/view-men-products")
+        return res.redirect(`/ecommerce-management/ecommerce-views/${gender}/view-${gender}-products`)
     }
   })
 }

@@ -66,6 +66,7 @@ dbConnection.connect(function(err){
     quantity_L INT,
     quantity_XL INT,
     quantity_XXL INT,
+    created VARCHAR(10),
     PRIMARY KEY(id),
     UNIQUE INDEX sku_UNIQUE (sku) );`
 

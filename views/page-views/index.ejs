@@ -63,11 +63,6 @@
                                     <i class="fa-solid fa-user"></i><span>Account</span>
                                   </div>
                                 </a>
-                                <a href="/user-management/user-views/active-users">
-                                  <div class="dropdown-links">
-                                    <i class="fa-solid fa-users"></i><span>Users</span>
-                                  </div>
-                                </a>
                                 <a href="/ecommerce-management/ecommerce-views/men/view-men-products">
                                   <div class="dropdown-links">
                                     <i class="fa-solid fa-cart-shopping"></i><span>Ecommerce</span>
@@ -76,6 +71,11 @@
                                 <a href="/newsletter-management/newsletter-views/view-subscribers">
                                   <div class="dropdown-links">
                                     <i class="fa-sharp fa-solid fa-envelope"></i><span>Newsletter</span>
+                                  </div>
+                                </a>
+                                <a href="/user-management/user-views/active-users">
+                                  <div class="dropdown-links">
+                                    <i class="fa-solid fa-users"></i><span>Users</span>
                                   </div>
                                 </a>
                                 <a href="/auth-management/auth-views/logout">
@@ -248,16 +248,18 @@
       <div class="row">
           <div class="col-lg-12">
               <ul class="filter__controls">
-                  <li class="active" data-filter="*">Best Sellers</li>
-                  <li data-filter=".new-arrivals">New Arrivals</li>
-                  <li data-filter=".hot-sales">Hot Sales</li>
+                  <li class="active" data-filter="*">Featured</li>
+                  <li data-filter=".new-arrivals">Men</li>
+                  <li data-filter=".hot-sales">Women</li>
               </ul>
           </div>
       </div>
+
       <div class="row product__filter">
+        <% for(let i=0;i < result.length;i++) { %>
           <div class="col-lg-3 col-md-6 col-sm-6 col-md-6 col-sm-6 mix new-arrivals">
               <div class="product__item">
-                  <div class="product__item__pic set-bg" data-setbg="img/product/product-1.jpg">
+                  <div class="product__item__pic set-bg" data-setbg="http://localhost:5000/ecommerce-management/<%= result[i].image %>">
                       <span class="label">New</span>
                       <ul class="product__hover">
                           <li><a href="#"><img src="img/icon/heart.png" alt=""></a></li>
@@ -266,7 +268,7 @@
                       </ul>
                   </div>
                   <div class="product__item__text">
-                      <h6>Piqué Biker Jacket</h6>
+                      <h6><%= result[i].brand %> - <%= result[i].name %></h6>
                       <a href="#" class="add-cart">+ Add To Cart</a>
                       <div class="rating">
                           <i class="fa fa-star-o"></i>
@@ -275,7 +277,7 @@
                           <i class="fa fa-star-o"></i>
                           <i class="fa fa-star-o"></i>
                       </div>
-                      <h5>$67.24</h5>
+                      <h5>$<%= result[i].price %></h5>
                       <div class="product__color__select">
                           <label for="pc-1">
                               <input type="radio" id="pc-1">
@@ -290,7 +292,8 @@
                   </div>
               </div>
           </div>
-          <div class="col-lg-3 col-md-6 col-sm-6 col-md-6 col-sm-6 mix hot-sales">
+        <% } %>
+          <!-- <div class="col-lg-3 col-md-6 col-sm-6 col-md-6 col-sm-6 mix hot-sales">
               <div class="product__item">
                   <div class="product__item__pic set-bg" data-setbg="img/product/product-2.jpg">
                       <ul class="product__hover">
@@ -529,7 +532,7 @@
                       </div>
                   </div>
               </div>
-          </div>
+          </div> -->
       </div>
   </div>
 </section>
@@ -747,7 +750,7 @@
 <script src="js/page-js/owl.carousel.min.js"></script>
 <script src="js/page-js/main.js"></script>
 
-<!-- ADMIN SCRIPTS -->
+<!-- ADMIN -->
 
 <script src="js/navbar.js"></script>
   

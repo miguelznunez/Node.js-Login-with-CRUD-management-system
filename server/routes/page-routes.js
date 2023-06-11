@@ -12,9 +12,8 @@ router.get("/", authController.isLoggedIn,(req, res) => {
   if(!functions.checkBrowser(req.headers)) {
     db.query("SELECT * FROM products", (err, result) => {
       if(!err){
-        return res.status(200).render("index", {title: "Home", user:req.user, result:result})
+        return res.status(200).render("index", {title: "Home", user:req.user, result:functions.shuffleArray(result)})
       } else {
-        console.log(err.sqlMessage)
         return res.status(200).render("index", {title: "Home", user:req.user, message:"Internal server error."})
       }
     })

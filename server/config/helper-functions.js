@@ -51,12 +51,12 @@ const saveProductInDB = (data, image, callback) => {
   const {name, brand, description, price, sale_price, category, gender, sku, quantity, quantity_XS, quantity_S, quantity_M, quantity_L, quantity_XL, quantity_XXL} = data
 
   if(sale_price == "" || sale_price == 0){
-    db.query("INSERT INTO products (name, brand, description, price, sale_price, image, category, gender, sku, quantity, quantity_XS, quantity_S, quantity_M, quantity_L, quantity_XL, quantity_XXL) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", [name, brand, description, price, null, image[0].key, category, gender, sku, quantity, quantity_XS, quantity_S, quantity_M, quantity_L, quantity_XL, quantity_XXL], (err, result) => {
+    db.query("INSERT INTO products (name, brand, description, price, sale_price, image, category, gender, sku, quantity, quantity_XS, quantity_S, quantity_M, quantity_L, quantity_XL, quantity_XXL, created) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", [name, brand, description, price, null, image[0].key, category, gender, sku, quantity, quantity_XS, quantity_S, quantity_M, quantity_L, quantity_XL, quantity_XXL, getDate()], (err, result) => {
       if(err) callback(err, null)
       else callback(null, result)
     })
   } else {
-    db.query("INSERT INTO products (name, brand, description, price, sale_price, image, category, gender, sku, quantity, quantity_XS, quantity_S, quantity_M, quantity_L, quantity_XL, quantity_XXL) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", [name, brand, description, price, sale_price, image[0].key, category, gender, sku, quantity, quantity_XS, quantity_S, quantity_M, quantity_L, quantity_XL, quantity_XXL], (err, result) => {
+    db.query("INSERT INTO products (name, brand, description, price, sale_price, image, category, gender, sku, quantity, quantity_XS, quantity_S, quantity_M, quantity_L, quantity_XL, quantity_XXL, created) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", [name, brand, description, price, sale_price, image[0].key, category, gender, sku, quantity, quantity_XS, quantity_S, quantity_M, quantity_L, quantity_XL, quantity_XXL, getDate()], (err, result) => {
       if(err) callback(err, null)
       else callback(null, result)
     })
@@ -100,4 +100,14 @@ const deleteProductsFromDb = (images, callback) => {
   })
 }
 
-module.exports = { checkBrowser, getDate, isProductInCart, calculateTotal, saveProductInDB, editProductInfoInDB, editProductInfoImageInDB, deleteProductsFromDb }
+const shuffleArray = (array) => {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    const temp = array[i];
+    array[i] = array[j];
+    array[j] = temp;
+  }
+  return array
+}
+
+module.exports = { checkBrowser, getDate, isProductInCart, calculateTotal, saveProductInDB, editProductInfoInDB, editProductInfoImageInDB, deleteProductsFromDb, shuffleArray }

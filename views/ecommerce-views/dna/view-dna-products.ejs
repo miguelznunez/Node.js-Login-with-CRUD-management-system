@@ -10,8 +10,9 @@
       <div class="modal-overlay">
         <div class="modal">
           <i class="fa-solid fa-xmark" id="close-modal"></i>
-          <form action="/ecommerce-management/remove-dna-products" method="POST">
+          <form action="/ecommerce-management/remove-products" method="POST">
             <input type="hidden" name="removeProducts" value="[]">
+            <input type="hidden" name="gender" value="dna">
             <h4>Are you sure?</h4>
             <button class="auth-btn">Yes</button>
           </form>

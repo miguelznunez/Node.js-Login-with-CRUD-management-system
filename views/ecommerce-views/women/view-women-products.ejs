@@ -1,5 +1,5 @@
-<%- include("partial-views/header.ejs") %>
-<%- include("partial-views/navbar.ejs") %>
+<%- include("partial-views/admin-header.ejs") %>
+<%- include("partial-views/admin-navbar.ejs") %>
 
   <div class="app">
 
@@ -10,8 +10,9 @@
       <div class="modal-overlay">
         <div class="modal">
           <i class="fa-solid fa-xmark" id="close-modal"></i>
-          <form action="/ecommerce-management/remove-women-products" method="POST">
+          <form action="/ecommerce-management/remove-products" method="POST">
             <input type="hidden" name="removeProducts" value="[]">
+            <input type="hidden" name="gender" value="women">
             <h4>Are you sure?</h4>
             <button class="auth-btn">Yes</button>
           </form>
