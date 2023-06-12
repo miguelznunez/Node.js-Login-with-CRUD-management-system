@@ -128,15 +128,7 @@ router.get("/user-views/delete-user/:status/:id", authController.isLoggedIn, (re
 
 // USER MANAGEMENT POST ROUTES  ============================================================
 
-router.post("/user-views/search-active-users", authController.isLoggedIn, userManagementController.searchActiveUsers)
-
-router.post("/user-views/search-banned-users", authController.isLoggedIn, userManagementController.searchBannedUsers)
-
-router.post("/user-views/search-inactive-users", authController.isLoggedIn, userManagementController.searchInactiveUsers)
-
-router.post("/user-views/search-deleted-users", authController.isLoggedIn, userManagementController.searchDeletedUsers)
-
-router.post("/user-views/search-admin-users", authController.isLoggedIn, userManagementController.searchAdminUsers)
+router.post("/user-views/search-users/:status", authController.isLoggedIn, userManagementController.searchUsers)
 
 router.post("/user-views/add-user",
 [

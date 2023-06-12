@@ -7,59 +7,26 @@ functions = require("../config/helper-functions.js"),
 
 require("dotenv").config();
 
-exports.searchActiveUsers = (req, res) => {
-  const searchTerm = req.body.search
-  db.query("SELECT * FROM users WHERE (fName LIKE ? OR lName LIKE ? OR email LIKE ?) && status = 'Active'", ["%" + searchTerm + "%", "%" + searchTerm + "%", "%" + searchTerm + "%"], (err, result) => {
-    if(!err) { 
-      return res.status(200).render("active-users", {title:"User Management - Active Users" , user:req.user, result:result})
-    } else { 
-      return res.status(500).render("active-users", {title:"User Management - Active Users" , user:req.user, success:false, message:"Internal server error"})
-    }
-  })
-}
-
-exports.searchBannedUsers = (req, res) => {
-  const searchTerm = req.body.search
-  db.query("SELECT * FROM users WHERE (fName LIKE ? OR lName LIKE ? OR email LIKE ?) && status = 'Banned'", ["%" + searchTerm + "%", "%" + searchTerm + "%", "%" + searchTerm + "%"], (err, result) => {
-    if(!err) { 
-      return res.status(200).render("banned-users", {title:"User Management - Banned Users" , user:req.user, result:result})
-    } else { 
-      return res.status(500).render("banned-users", {title:"User Management - Banned Users" , user:req.user, success:false, message:"Internal server error"})
-    }
-  })
-}
-
-exports.searchInactiveUsers = (req, res) => {
-  const searchTerm = req.body.search
-  db.query("SELECT * FROM users WHERE (fName LIKE ? OR lName LIKE ? OR email LIKE ?) && status = 'Inactive'", ["%" + searchTerm + "%", "%" + searchTerm + "%", "%" + searchTerm + "%"], (err, result) => {
-    if(!err) { 
-      return res.status(200).render("inactive-users", {title:"User Management - Inactive Users" , user:req.user, result:result})
-    } else { 
-      return res.status(500).render("inactive-users", {title:"User Management - Inactive Users" , user:req.user, success:false, message:"Internal server error"})
-    }
-  })
-}
-
-exports.searchDeletedUsers = (req, res) => {
-  const searchTerm = req.body.search
-  db.query("SELECT * FROM users WHERE (fName LIKE ? OR lName LIKE ? OR email LIKE ?) && status = 'Deleted'", ["%" + searchTerm + "%", "%" + searchTerm + "%", "%" + searchTerm + "%"], (err, result) => {
-    if(!err) { 
-      return res.status(200).render("deleted-users", {title:"User Management - Deleted Users" , user:req.user, result:result})
-    } else { 
-      return res.status(500).render("deleted-users", {title:"User Management - Deleted Users" , user:req.user, success:false, message:"Internal server error"})
-    }
-  })
-}
-
-exports.searchAdminUsers = (req, res) => {
-  const searchTerm = req.body.search
-  db.query("SELECT * FROM users WHERE (fName LIKE ? OR lName LIKE ? OR email LIKE ?) && admin = 'Yes'", ["%" + searchTerm + "%", "%" + searchTerm + "%", "%" + searchTerm + "%"], (err, result) => {
-    if(!err) { 
-      return res.status(200).render("admin-users", {title:"User Management - Admin Users" , user:req.user, result:result})
-    } else { 
-      return res.status(500).render("admin-users", {title:"User Management - Admin Users" , user:req.user, success:false, message:"Internal server error"})
-    }
-  })
+exports.searchUsers = (req, res) => {
+  const searchTerm = req.body.search,
+  status = req.params.status;
+  if(status != "admin") {
+    db.query("SELECT * FROM users WHERE (fName LIKE ? OR lName LIKE ? OR email LIKE ?) && status = ?", ["%" + searchTerm + "%", "%" + searchTerm + "%", "%" + searchTerm + "%", status], (err, result) => {
+      if(!err) { 
+        return res.status(200).render(`${status}`, {title:`User Management - ${status} users`, user:req.user, result:result})
+      } else { 
+        return res.status(500).render(`${status}`, {title:`User Management - ${status} users`, user:req.user, success:false, message:"Internal server error"})
+      }
+    })
+  } else {
+    db.query("SELECT * FROM users WHERE (fName LIKE ? OR lName LIKE ? OR email LIKE ?) && admin = 'Yes'", ["%" + searchTerm + "%", "%" + searchTerm + "%", "%" + searchTerm + "%"], (err, result) => {
+      if(!err) { 
+        return res.status(200).render(`${status}`, {title:`User Management - ${status} users`, user:req.user, result:result})
+      } else { 
+        return res.status(500).render(`${status}`, {title:`User Management - ${status} users`, user:req.user, success:false, message:"Internal server error"})
+      }
+    })
+  }
 }
 
 exports.addUser = (req, res) => {
