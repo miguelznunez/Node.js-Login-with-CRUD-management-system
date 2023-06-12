@@ -8,21 +8,21 @@
     <% if (typeof message=="undefined" ) { %>
 
       <main class="content">
-      
+
         <div class="sidebar-hamburger">
           <span class="sbar"></span>
           <span class="sbar"></span>
           <span class="sbar"></span>
-        </div>   
+        </div>      
 
         <div class="flex">
-          <h3><i class="fa-solid fa-users"></i><span>Users -> View Deleted</span></h3>
+          <h3><i class="fa-solid fa-users"></i><span>Users -> View Inactive</span></h3>
           <div>
-            <button><a href="/user-management/user-views/deleted-users"><i class="fa-solid fa-eye"></i> All Deleted Users</a></button>
+            <button><a href="/user-management/user-views/inactive"><i class="fa-solid fa-eye"></i> All Inactive Users</a></button>
             <button><a href="/user-management/user-views/add-user"><i class="fa-solid fa-plus"></i> Add User</a></button>
           </div>
         </div>
-        
+
         <br>
 
         <% if(typeof flash !="undefined" && flash !="" ) { %>
@@ -31,24 +31,24 @@
           </div>
           <br>
         <% } %>
-      
-        <h4>Deleted users (<%= result.length %>)</h4>
-      
-        <br>
 
-        <form action="/user-management/user-views/search-deleted-users" method="POST">
+        <h4>Inactive users (<%= result.length %>)</h4>
+
+        <br>
+        
+        <form action="/user-management/user-views/search-inactive-users" method="POST">
           <div class="user-management">
-            <input type="text" name="search" placeholder="Search deleted users..."><button>Search</button>
+            <input type="text" name="search" placeholder="Search inactive users..."><button>Search</button>
           </div>
         </form>
-      
+
         <br>
-      
+        
         <table>
           <tr>
-            <th>id</th>
+            <th>Id</th>
             <th>First</th>
-            <th>Last</th>
+            <th>Email</th>
             <th>Status</th>
             <th class="text-end">Action</th>
           </tr>
@@ -61,13 +61,16 @@
                 <%= result[i].fName %>
               </td>
               <td>
-                <%= result[i].lName %>
+                <%= result[i].email %>
               </td>
               <td>
                 <%= result[i].status %>
               </td>
               <td class="text-end">
-                <a href="/user-management/user-views/view-user/<%= result[i].id %>"><i class="fa-solid fa-eye"></i> View</a>
+                <a href="/user-management/user-views/view-user/<%= result[i].id %>/inactive"><i class="fa-solid fa-eye"></i> View</a>
+                <% if(user.id !=result[i].id) { %>
+                <a href="/user-management/user-views/edit-user/<%= result[i].id %>/inactive"><i class="fa-solid fa-pencil"></i> Edit</a>
+                <% } %>
               </td>
             </tr>
           <% } %>
@@ -83,18 +86,18 @@
           <span class="sbar"></span>
           <span class="sbar"></span>
         </div>
-      
+
         <div class="server-message error">
           <%= message %>
         </div>
-      
+
       </main>
 
     <% } %>
 
-  </div>  
+  </div>
 
   <script src="/js/navbar.js"></script>
   <script src="/js/sidebar-menu.js"></script>
 
-  <%- include("partial-views/footer.ejs") %></br>
+<%- include("partial-views/footer.ejs") %>

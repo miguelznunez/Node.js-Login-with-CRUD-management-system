@@ -18,7 +18,7 @@
         <div class="flex">
           <h3><i class="fa-solid fa-users"></i><span>Users -> View Banned</span></h3>
           <div>
-            <button><a href="/user-management/user-views/banned-users"><i class="fa-solid fa-eye"></i> All Banned Users</a></button>
+            <button><a href="/user-management/user-views/banned"><i class="fa-solid fa-eye"></i> All Banned Users</a></button>
             <button><a href="/user-management/user-views/add-user"><i class="fa-solid fa-plus"></i> Add User</a></button>
           </div>
         </div>
@@ -67,9 +67,9 @@
                 <%= result[i].status %>
               </td>
               <td class="text-end">
-                <a href="/user-management/user-views/view-user/<%= result[i].id %>"><i class="fa-solid fa-eye"></i> View</a>
+                <a href="/user-management/user-views/view-user/<%= result[i].id %>/banned"><i class="fa-solid fa-eye"></i> View</a>
                 <% if(user.id !=result[i].id) { %>
-                  <a href="/user-management/user-views/edit-user/<%= result[i].id %>"><i class="fa-solid fa-pencil"></i> Edit</a>
+                  <a href="/user-management/user-views/edit-user/<%= result[i].id %>/banned"><i class="fa-solid fa-pencil"></i> Edit</a>
                 <% } %>
               </td>
             </tr>

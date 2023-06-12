@@ -8,89 +8,44 @@ router = express.Router();
 
 // USER MANAGEMENT GET ROUTES ==============================================================
 
-router.get("/user-views/active-users", authController.isLoggedIn, (req, res) => {
+router.get("/user-views/:status", authController.isLoggedIn, (req, res) => {
   if(req.user && req.user.admin === "Yes" && !functions.checkBrowser(req.headers)) {
-    db.query("SELECT * FROM users WHERE status = 'Active'", (err, result) => {
-      if(!err) { 
-        const flash = req.flash("message")
-        return res.status(200).render("active-users", {title:"User Management - Active Users" , user:req.user, result:result, flash})
-      } else {
-        return res.status(500).render("active-users", {title:"User Management - Active Users", user:req.user, message:"Internal server error"})
-      }
-    })
+    const status = req.params.status
+    if(status !== "admin") {
+      db.query("SELECT * FROM users WHERE status = ?", [status], (err, result) => {
+        if(!err) { 
+          const flash = req.flash("message")
+          return res.status(200).render(`${status}`, {title:`User Management - ${status} users` , user:req.user, result:result, flash})
+        } else {
+          return res.status(500).render(`${status}`, {title:`User Management - ${status} users`, user:req.user, message:"Internal server error"})
+        }
+      })
+    } else {
+      db.query("SELECT * FROM users WHERE admin = 'Yes' AND status != 'Deleted'", (err, result) => {
+        if(!err) { 
+          return res.status(200).render("admin", {title:"User Management - admin users" , user:req.user, result:result})
+        } else {
+          return res.status(500).render("admin", {title:"User Management - admin users", user:req.user, message:"Internal server error."})
+        }
+      })
+    }
   } else { 
     return res.redirect("/auth-management/auth-views/login")
   }
 })
 
-router.get("/user-views/banned-users", authController.isLoggedIn, (req, res) => {
-  if(req.user && req.user.admin === "Yes" && !functions.checkBrowser(req.headers)) {
-    db.query("SELECT * FROM users WHERE status = 'Banned'", (err, result) => {
-      if(!err) { 
-        const flash = req.flash("message")
-        return res.status(200).render("banned-users", {title:"User Management - Banned Users" , user:req.user, result:result, flash})
-      } else {
-        return res.status(500).render("banned-users", {title:"User Management - Banned Users", user:req.user, message:"Internal server error."})
-      }
-    })
-  } else { 
-    return res.redirect("/auth-management/auth-views/login")
-  }
-})
 
-router.get("/user-views/deleted-users", authController.isLoggedIn, (req, res) => {
-  if(req.user && req.user.admin === "Yes" && !functions.checkBrowser(req.headers)) {
-    db.query("SELECT * FROM users WHERE status = 'Deleted'", (err, result) => {
-      if(!err) { 
-        return res.status(200).render("deleted-users", {title:"User Management - Deleted Users" , user:req.user, result:result})
-      } else {
-        return res.status(500).render("deleted-users", {title:"User Management - Deleted Users", user:req.user, message:"Internal server error."})
-      }
-    })
-  } else { 
-    return res.redirect("/auth-management/auth-views/login")
-  }
-})
-
-router.get("/user-views/inactive-users", authController.isLoggedIn, (req, res) => {
-  if(req.user && req.user.admin === "Yes" && !functions.checkBrowser(req.headers)) {
-    db.query("SELECT * FROM users WHERE status = 'Inactive'", (err, result) => {
-      if(!err) { 
-        return res.status(200).render("inactive-users", {title:"User Management - Inactive Users" , user:req.user, result:result})
-      } else {
-        return res.status(500).render("inactive-users", {title:"User Management - Inactive Users", user:req.user, message:"Internal server error."})
-      }
-    })
-  } else { 
-    return res.redirect("/auth-management/auth-views/login")
-  }
-})
-
-router.get("/user-views/admin-users", authController.isLoggedIn, (req, res) => {
-  if(req.user && req.user.admin === "Yes" && !functions.checkBrowser(req.headers)) {
-    db.query("SELECT * FROM users WHERE admin = 'Yes' AND status != 'Deleted'", (err, result) => {
-      if(!err) { 
-        return res.status(200).render("admin-users", {title:"User Management - Admin Users" , user:req.user, result:result})
-      } else {
-        return res.status(500).render("admin-users", {title:"User Management - Admin Users", user:req.user, message:"Internal server error."})
-      }
-    })
-  } else { 
-    return res.redirect("/auth-management/auth-views/login")
-  }
-})
-
-router.get("/user-views/view-user/:id", authController.isLoggedIn, (req, res) => {
+router.get("/user-views/view-user/:id/:status", authController.isLoggedIn, (req, res) => {
   if(req.user && req.user.admin === "Yes" && !functions.checkBrowser(req.headers)){
     db.query("SELECT * FROM users LEFT JOIN federated_credentials ON users.id = federated_credentials.user_id WHERE users.id = ?",[req.params.id], (err, result) => {
       if(err) { // DATABASE ERROR
-        return res.status(500).render("view-user", {title:"View user", user:req.user, message:"Internal server error."})
+        return res.status(500).render("view-user", {title:"View user", user:req.user, message:"Internal server error.", status:req.params.status})
       }
       if(!err && result.length == 1) { // USER EXISTS
         const userId = req.params.id
-        return res.status(200).render("view-user", {title:"View User" , user:req.user, result:result, userId:userId})
+        return res.status(200).render("view-user", {title:"View User" , user:req.user, result:result, userId:userId, status:req.params.status})
       } else { // USER DOES NOT EXIST
-        return res.status(400).render("view-user", {title:"View user", user:req.user, message:"That user does not exist."})
+        return res.status(400).render("view-user", {title:"View user", user:req.user, message:"That user does not exist.", status:req.params.status})
       }
     })
   } else { 
@@ -98,16 +53,16 @@ router.get("/user-views/view-user/:id", authController.isLoggedIn, (req, res) =>
   }
 })
 
-router.get("/user-views/edit-user/:id", authController.isLoggedIn, (req, res) => {
+router.get("/user-views/edit-user/:id/:status", authController.isLoggedIn, (req, res) => {
   if(req.user && req.user.admin === "Yes" && !functions.checkBrowser(req.headers)) {
     db.query("SELECT * FROM users WHERE id = ?",[req.params.id], (err, result) => {
       if(err) { // DATABASE ERROR
-        return res.status(500).render("edit-user", {title:"Edit user", user:req.user, message:"Internal server error."})
+        return res.status(500).render("edit-user", {title:"Edit user", user:req.user, message:"Internal server error.", status:req.params.status})
       }
       if(!err && result.length) { // USER EXISTS
-        return res.status(200).render("edit-user", {title:"Edit User" , user:req.user, result:result})
+        return res.status(200).render("edit-user", {title:"Edit User" , user:req.user, result:result, status:req.params.status})
       } else { // USER DOES NOT EXIST
-        return res.status(400).render("edit-user", {title:"Edit User" , user:req.user, message:"That user does not exist."})
+        return res.status(400).render("edit-user", {title:"Edit User" , user:req.user, message:"That user does not exist.", status:req.params.status})
       }
     })
   }
