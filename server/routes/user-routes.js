@@ -71,9 +71,9 @@ router.get("/user-views/edit-user/:id/:status", authController.isLoggedIn, (req,
   }
 })
 
-router.get("/user-views/add-user", authController.isLoggedIn, (req, res) => {
+router.get("/user-views/add-user/:status", authController.isLoggedIn, (req, res) => {
   if(req.user && req.user.admin === "Yes" && !functions.checkBrowser(req.headers)) {
-    return res.render("add-user", {title:"Add User", user:req.user})
+    return res.render("add-user", {title:"Add User", user:req.user, status:req.params.status})
   } else { 
     return res.redirect("/auth-management/auth-views/login")
   }
