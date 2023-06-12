@@ -1,0 +1,146 @@
+<!-- Page Preloder -->
+<div id="preloder">
+    <div class="loader"></div>
+  </div>
+  
+<!-- Offcanvas Menu Begin -->
+<div class="offcanvas-menu-overlay"></div>
+<div class="offcanvas-menu-wrapper">
+<div class="offcanvas__option">
+    <div class="offcanvas__links">
+        <% if (typeof user !="undefined") { %>
+            <a>Hello, <%= user.fName %></a>
+        <% } else { %>
+            <a href="/auth-management/auth-views/login">Log in</a>
+        <% } %>
+    </div>
+</div>
+<div class="offcanvas__nav__option">
+    <a href="#" class="search-switch"><img src="/img/icon/search.png" alt=""></a>
+    <a href="#"><img src="/img/icon/heart.png" alt=""></a>
+    <a href="#"><img src="/img/icon/cart.png" alt=""> <span>0</span></a>
+    <div class="price">$0.00</div>
+</div>
+<div id="mobile-menu-wrap"></div>
+<div class="offcanvas__text">
+    <p>Free shipping, 30-day return or refund guarantee.</p>
+</div>
+</div>
+<!-- Offcanvas Menu End -->
+
+<!-- Header Section Begin -->
+<header class="header">
+    <div class="header__top">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6 col-md-7">
+                    <div class="header__top__left">
+                        <p>Free shipping, 30-day return or refund guarantee.</p>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-5">
+                    <div class="header__top__right">
+                        <div class="header__top__links">
+                            <% if (typeof user !="undefined") { %>
+                            <div class="dropdown" data-dropdown>
+                                <button class="link" data-dropdown-button>Hello, <%= user.fName %> <i class="fa-solid fa-angle-down" data-dropdown-button></i></button>
+                                <div class="dropdown-menu">
+                                <% if (typeof user !="undefined" && user.admin === "Yes" ) { %>
+                                    <a href="/">
+                                    <div class="dropdown-links">
+                                        <i class="fa-solid fa-house"></i><span>Home</span>
+                                    </div>
+                                    </a>
+                                    <a href="/my-account-management/my-account-views/my-account">
+                                    <div class="dropdown-links">
+                                        <i class="fa-solid fa-user"></i><span>Account</span>
+                                    </div>
+                                    </a>
+                                    <a href="/ecommerce-management/ecommerce-views/men/view-men-products">
+                                    <div class="dropdown-links">
+                                        <i class="fa-solid fa-cart-shopping"></i><span>Ecommerce</span>
+                                    </div>
+                                    </a>
+                                    <a href="/newsletter-management/newsletter-views/view-subscribers">
+                                    <div class="dropdown-links">
+                                        <i class="fa-sharp fa-solid fa-envelope"></i><span>Newsletter</span>
+                                    </div>
+                                    </a>
+                                    <a href="/user-management/user-views/active-users">
+                                    <div class="dropdown-links">
+                                        <i class="fa-solid fa-users"></i><span>Users</span>
+                                    </div>
+                                    </a>
+                                    <a href="/auth-management/auth-views/logout">
+                                    <div class="dropdown-links">
+                                        <i class="fa-solid fa-right-from-bracket"></i><span>Log out</span>
+                                    </div>
+                                    </a>
+                                <% } else { %>
+                                    <a href="/">
+                                    <div class="dropdown-links">
+                                        <i class="fa-solid fa-house"></i><span>Home</span>
+                                    </div>
+                                    </a>
+                                    <a href="/my-account-management/my-account-views/my-account">
+                                    <div class="dropdown-links">
+                                        <i class="fa-solid fa-user"></i><span>Account</span>
+                                    </div>
+                                    </a>
+                                    <a href="/auth-management/auth-views/logout">
+                                    <div class="dropdown-links">
+                                        <i class="fa-solid fa-right-from-bracket"></i><span>Log out</span>
+                                    </div>
+                                    </a>
+                                <% } %>
+                                </div>
+                            </div>
+                            <% } else { %>
+                            <a href="/auth-management/auth-views/login">Log in</a>
+                            <% } %>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-3 col-md-3">
+                <div class="header__logo">
+                    <a href="/"><img src="/img/logo.png" alt=""></a>
+                </div>
+            </div>
+            <div class="col-lg-6 col-md-6">
+                <nav class="header__menu mobile-menu">
+                    <ul>
+                        <li class="active"><a href="/">Home</a></li>
+                        <li><a href="./shop.html">Shop</a></li>
+                        <li><a href="#">Pages</a>
+                            <ul class="dropdown">
+                                <li><a href="./about.html">About Us</a></li>
+                                <li><a href="./shop-details.html">Shop Details</a></li>
+                                <li><a href="./shopping-cart.html">Shopping Cart</a></li>
+                                <li><a href="./checkout.html">Check Out</a></li>
+                                <li><a href="./blog-details.html">Blog Details</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="./blog.html">Blog</a></li>
+                        <li><a href="./contact.html">Contacts</a></li>
+                    </ul>
+                </nav>
+            </div>
+            <div class="col-lg-3 col-md-3">
+                <div class="header__nav__option">
+                    <a href="#" class="search-switch"><img src="/img/icon/search.png" alt=""></a>
+                    <a href="#"><img src="/img/icon/heart.png" alt=""></a>
+                    <a href="#"><img src="/img/icon/cart.png" alt=""> <span>0</span></a>
+                    <div class="price">$0.00</div>
+                </div>
+            </div>
+        </div>
+        <div class="canvas__open"><i class="fa fa-bars"></i></div>
+    </div>
+</header>
+<!-- Header Section End -->

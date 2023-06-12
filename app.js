@@ -15,7 +15,7 @@ require("dotenv").config()
 
 const app = express()
 
-app.use(express.static('public'))
+app.use(express.static("public"))
 
 app.use(express.urlencoded({ extended: false }))
 app.use(express.json())
@@ -32,7 +32,7 @@ app.use(flash())
 
 app.set("view engine", "ejs")
 app.set('views', [path.join(__dirname, 'views'),
-                  path.join(__dirname, 'views/page-views/'),
+                  path.join(__dirname, 'views/shop-views/'),
                   path.join(__dirname, 'views/auth-views/'),
                   path.join(__dirname, 'views/user-views/'),
                   path.join(__dirname, 'views/my-account-views/'),
@@ -45,12 +45,13 @@ app.set('views', [path.join(__dirname, 'views'),
 app.use(passport.initialize())
 app.use(passport.session())
 
+// WHENEVER URL SEES X - MANAGEMENT, IT WILL AUTOMATICALLY LOOK IN THE RESPECTIVE X-ROUTES
 app.use("/auth-management", require("./server/routes/auth-routes"))
 app.use("/my-account-management", require("./server/routes/my-account-routes"))
 app.use("/newsletter-management", require("./server/routes/newsletter-routes"))
 app.use("/ecommerce-management", require("./server/routes/ecommerce-routes"))
 app.use("/user-management", require("./server/routes/user-routes"))
-app.use("/", require("./server/routes/page-routes"))
+app.use("/", require("./server/routes/shop-routes"))
 
 const PORT = process.env.PORT || 5000
 
