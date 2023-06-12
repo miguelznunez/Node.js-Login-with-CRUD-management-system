@@ -114,13 +114,7 @@
                       <ul class="product__hover">
                           <li><a href="#"><img src="img/icon/heart.png" alt=""></a></li>
                           <li><a href="#"><img src="img/icon/compare.png" alt=""> <span>Compare</span></a></li>
-                          <li><a href="/shop-details/<%= result[i].id %>"><img src="img/icon/search.png" alt=""></a></li>
-                          <li>
-                            <form action="/shop-views/shop-details" method="POST">
-                              <input type="hidden" name="id" value="<%= result[i].id %>">
-                              <input type="submit">
-                            </form>
-                        </li>
+                          <li><a href="/shop-views/product/<%= result[i].gender %>/<%= result[i].category%>/<%= result[i].id %>/<%= result[i].name%>"><img src="img/icon/search.png" alt=""></a></li>
                       </ul>
                   </div>
 

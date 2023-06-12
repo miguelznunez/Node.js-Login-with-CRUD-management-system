@@ -152,7 +152,7 @@
                     <div class="product-price">$<%= result[i].price %></div>
                   <% } %>
                   <div class="product-links">
-                    <a href=""><i class="fa-solid fa-eye"></i></a>
+                    <a href="/shop-views/product/<%= result[i].gender %>/<%= result[i].category%>/<%= result[i].id %>/<%= result[i].name%>"><i class="fa-solid fa-magnifying-glass"></i></a>
                     <a href="/ecommerce-management/ecommerce-views/edit-product/<%= result[i].id %>"><i class="fa-solid fa-pen-to-square"></i></a>
                   </div>
                 </div>

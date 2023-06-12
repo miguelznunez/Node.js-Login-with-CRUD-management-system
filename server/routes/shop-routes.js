@@ -8,11 +8,31 @@ router = express.Router();
 
 router.get("/", authController.isLoggedIn, (req, res) => {
   if(!functions.checkBrowser(req.headers)) {
-    db.query("SELECT * FROM products", (err, result) => {
+    db.query("SELECT * FROM products ORDER BY RAND() LIMIT 8", (err, result) => {
       if(!err){
-        return res.status(200).render("index", {title: "Home", user:req.user, result:functions.shuffleArray(result)})
+        return res.status(200).render("index", {title: "Home", user:req.user, result:result})
       } else {
         return res.status(200).render("index", {title: "Home", user:req.user, message:"Internal server error."})
+      }
+    })
+  } else {
+    return res.render("unsupported", {title:"Unsupported", user:req.user})
+  }
+})
+
+router.get("/shop-views/product/:gender/:category/:id/:name", (req, res) => {
+  if(!functions.checkBrowser(req.headers)) {
+    db.query("SELECT * FROM products WHERE id = ?", [req.params.id],(err, product) => {
+      if(!err){
+        db.query("SELECT * FROM products WHERE gender = ? && category = ? && id != ? ORDER BY RAND() LIMIT 4", [req.params.gender, req.params.category, req.params.id], (err, products) => {
+          if(!err){
+            return res.status(200).render("product-details", {title: "product-details", user:req.user, product:product, products:products})
+          } else {
+            return res.status(200).render("product-details", {title: "product-details", user:req.user, message:"Internal server error."})
+          }
+        })
+      } else {
+        return res.status(200).render("product-details", {title: "product-details", user:req.user, message:"Internal server error."})
       }
     })
   } else {
@@ -27,8 +47,6 @@ router.get("/", authController.isLoggedIn, (req, res) => {
 // })
 
 // PAGE POST ROUTES  ============================================================
-
-router.post("/shop-views/shop-details", authController.isLoggedIn, shopController.shopDetails)
 
 // router.post("/add-to-cart", pageController.addToCart)
 

@@ -118,14 +118,3 @@ exports.editProductQuantity = (req, res) => {
     return res.redirect("/cart")
 
 }
-
-exports.shopDetails = (req, res) => {
-    db.query("SELECT * FROM products WHERE id = ?", [req.body.id],(err, result) => {
-        if(!err){
-            return res.status(200).render("shop-details", {title: "Shop Details", user:req.user})
-        } else {
-            return res.status(500).render("shop-details", {title: "Shop Details", user:req.user, message:"Internal server error."})
-        }
-    })
-
-}
