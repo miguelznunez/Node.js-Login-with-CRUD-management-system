@@ -30,8 +30,8 @@
         <div class="flex">
           <h3><i class="fa-solid fa-cart-shopping"></i><span>Ecommerce -> View Women</span></h3>
           <div>
-            <button><a href="/ecommerce-management/ecommerce-views/women/view-women-products"><i class="fa-solid fa-eye"></i> All Women's Products</a></button>
-            <button><a href="/ecommerce-management/ecommerce-views/add-product"><i class="fa-solid fa-plus"></i> Add Product</a></button>
+            <button><a href="/ecommerce-management/ecommerce-views/women/view-products"><i class="fa-solid fa-eye"></i> All Women's Products</a></button>
+            <button><a href="/ecommerce-management/ecommerce-views/add-product/women"><i class="fa-solid fa-plus"></i> Add Product</a></button>
           </div>
         </div>
 
@@ -120,9 +120,10 @@
 
               <div class="product-box-wrapper"><input type="checkbox" value="<%= result[i].image %>" class="product-box"></div>
 
-              <div class="product-thumb">
-                <img src="http://localhost:5000/ecommerce-management/<%= result[i].image %>" alt="image">
-              </div>
+              <a href="/shop-views/product/<%= result[i].gender %>/<%= result[i].category%>/<%= result[i].id %>/<%= result[i].name%>">
+                <div class="product-thumb set-bg" style="background-image: url('http://localhost:5000/ecommerce-management/<%= result[i].image %>')">
+                </div>
+              </a>
 
               <div class="product-details">
 
@@ -151,9 +152,9 @@
                   <% } else { %>
                     <div class="product-price">$<%= result[i].price %></div>
                   <% } %>
-                  <div class="product-links">
-                    <a href=""><i class="fa-solid fa-eye"></i></a>
-                    <a href="/ecommerce-management/ecommerce-views/edit-product/<%= result[i].id %>"><i class="fa-solid fa-pen-to-square"></i></a>
+
+                  <div class="flex flex-end" style="margin-top: 15px;">
+                    <button><a href="/ecommerce-management/ecommerce-views/edit-product/<%= result[i].id %>/<%= result[i].gender %>"><i class="fa-solid fa-pen-to-square"></i> Edit</a> </button>                   
                   </div>
                 </div>
 

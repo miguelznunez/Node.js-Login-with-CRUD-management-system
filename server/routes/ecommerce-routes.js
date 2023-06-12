@@ -9,25 +9,25 @@ router = express.Router();
 
 // USER MANAGEMENT GET ROUTES ==============================================================
 
-router.get("/ecommerce-views/add-product", authController.isLoggedIn, (req, res) => {
+router.get("/ecommerce-views/add-product/:gender", authController.isLoggedIn, (req, res) => {
   if(req.user && req.user.admin === "Yes" && !functions.checkBrowser(req.headers)){
-    return res.status(200).render("add-product", {title:"eCommerce Management - Add product", user:req.user});
+    return res.status(200).render("add-product", {title:"eCommerce Management - Add product", user:req.user, gender:req.params.gender});
   } else {
     return res.redirect("/auth-management/auth-views/login")
   }
 })
 
-router.get("/ecommerce-views/edit-product/:id", authController.isLoggedIn, (req, res) => {
+router.get("/ecommerce-views/edit-product/:id/:gender", authController.isLoggedIn, (req, res) => {
   if(req.user && req.user.admin === "Yes" && !functions.checkBrowser(req.headers)){
 
     db.query("SELECT * FROM products WHERE id = ?", [req.params.id], (err, result) => {
       if(err) { // DATABASE ERROR
-        return res.status(500).render("edit-product", {title:"eCommerce Management - Edit product", user:req.user, message:"Internal server error."})
+        return res.status(500).render("edit-product", {title:"eCommerce Management - Edit product", user:req.user, message:"Internal server error.", gender:req.params.gender})
       }
       if(!err && result.length){
-        return res.status(200).render("edit-product", {title:"eCommerce Management - Edit product" , user:req.user, result:result})
+        return res.status(200).render("edit-product", {title:"eCommerce Management - Edit product" , user:req.user, result:result, gender:req.params.gender})
       } else {
-        return res.status(401).render("edit-product", {title:"eCommerce Management - Edit product", user:req.user,message:"That product does not exist."});
+        return res.status(401).render("edit-product", {title:"eCommerce Management - Edit product", user:req.user,message:"That product does not exist.", gender:req.params.gender});
       }
     })
 
@@ -41,44 +41,14 @@ router.get("/:image_key", (req, res) => {
   readStream.pipe(res)
 })
 
-router.get("/ecommerce-views/men/view-men-products", authController.isLoggedIn, (req, res) => {
+router.get("/ecommerce-views/:gender/view-products", authController.isLoggedIn, (req, res) => {
   if(req.user && req.user.admin === "Yes" && !functions.checkBrowser(req.headers)){
-    db.query("SELECT * FROM products WHERE gender = ?", ["men"], (err, result) => {
+    db.query("SELECT * FROM products WHERE gender = ?", [req.params.gender], (err, result) => {
       if(!err) { 
         const flash = req.flash("message")
-        return res.status(200).render("view-men-products", {title:"eCommerce Management - View men products" , user:req.user, result:result, flash})
+        return res.status(200).render(`view-${req.params.gender}-products`, {title:`eCommerce Management - View ${req.params.gender} products` , user:req.user, result:result, flash})
       } else {
-        return res.status(500).render("view-men-products", {title:"eCommerce Management - View men products", user:req.user, message:"Internal server error."})
-      }
-    })
-  } else {
-    return res.redirect("/auth-management/auth-views/login")
-  }
-})
-
-router.get("/ecommerce-views/women/view-women-products", authController.isLoggedIn, (req, res) => {
-  if(req.user && req.user.admin === "Yes" && !functions.checkBrowser(req.headers)){
-    db.query("SELECT * FROM products WHERE gender = ?", ["women"], (err, result) => {
-      if(!err) {
-        const flash = req.flash("message") 
-        return res.status(200).render("view-women-products", {title:"eCommerce Management - View women products" , user:req.user, result:result, flash})
-      } else {
-        return res.status(500).render("view-women-products", {title:"eCommerce Management - View women products", user:req.user, message:"Internal server error."})
-      }
-    })
-  } else {
-    return res.redirect("/auth-management/auth-views/login")
-  }
-})
-
-router.get("/ecommerce-views/dna/view-dna-products", authController.isLoggedIn, (req, res) => {
-  if(req.user && req.user.admin === "Yes" && !functions.checkBrowser(req.headers)){
-    db.query("SELECT * FROM products WHERE gender = ?", ["DNA"], (err, result) => {
-      if(!err) {
-        const flash = req.flash("message") 
-        return res.status(200).render("view-dna-products", {title:"eCommerce Management - View dna products" , user:req.user, result:result, flash})
-      } else {
-        return res.status(500).render("view-dna-products", {title:"eCommerce Management - View dna products", user:req.user, message:"Internal server error."})
+        return res.status(500).render(`view-${req.params.gender}-products`, {title:`eCommerce Management - View ${req.params.gender} products`, user:req.user, message:"Internal server error."})
       }
     })
   } else {

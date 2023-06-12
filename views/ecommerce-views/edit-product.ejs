@@ -26,13 +26,7 @@
         </div>
 
         <div class="flex">
-          <% if( result[0].gender == "men" ) { %>
-            <a href="/ecommerce-management/ecommerce-views/men/view-men-products"><i class="fa-solid fa-arrow-left"></i></a>
-          <% } else if(result[0].gender == "women") { %>
-            <a href="/ecommerce-management/ecommerce-views/women/view-women-products"><i class="fa-solid fa-arrow-left"></i></a>
-          <% } else { %>
-          <a href="/ecommerce-management/ecommerce-views/dna/view-dna-products"><i class="fa-solid fa-arrow-left"></i></a>
-          <% } %>
+          <a href="/ecommerce-management/ecommerce-views/<%= gender %>/view-<%= gender %>-products"><i class="fa-solid fa-arrow-left"></i></a>          
           <button id="show-modal">Delete product</button>
         </div>
 
@@ -310,6 +304,13 @@
           <span class="sbar"></span>
           <span class="sbar"></span>
         </div>
+
+        <div class="flex">
+          <a href="/ecommerce-management/ecommerce-views/<%= gender %>/view-products"><i class="fa-solid fa-arrow-left"></i></a>          
+          <button id="show-modal">Delete product</button>
+        </div>
+
+        <br>
       
         <div class="server-message error">
           <%= message %>
