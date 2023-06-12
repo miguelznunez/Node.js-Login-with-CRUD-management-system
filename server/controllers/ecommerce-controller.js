@@ -63,24 +63,26 @@ exports.editProductInfoAndImage = (req, res) => {
 
 }
 
-exports.findMenProductsByBrandCategory = (req, res) => {
-  const {brand, category} = req.body
-  db.query("SELECT * FROM products WHERE gender = ? && brand = ? && category = ?", ["men", brand, category], (err, result) => {
+exports.searchProductsByBrandCategory = (req, res) => {
+  const {brand, category} = req.body,
+  gender = req.params.gender;
+  db.query("SELECT * FROM products WHERE gender = ? && brand = ? && category = ?", [gender, brand, category], (err, result) => {
     if(!err) { 
-      return res.status(200).render("view-men-products", {title:"User Management - View men products" , user:req.user, result:result})
+      return res.status(200).render(`view-${gender}-products`, {title:`User Management - View ${gender} products` , user:req.user, result:result})
     } else { 
-      return res.status(500).render("view-men-products", {title:"User Management - View men products" , user:req.user, success:false, message:"Internal server error."})
+      return res.status(500).render(`view-${gender}-products`, {title:`User Management - View ${gender} products` , user:req.user, success:false, message:"Internal server error."})
     }
   })
 }
 
-exports.findMenProductsByProductNumber = (req, res) => {
-  const sku = req.body.sku
-  db.query("SELECT * FROM products WHERE gender = ? && sku = ?", ["men", sku], (err, result) => {
+exports.searchProductsBySkuNumber = (req, res) => {
+  const sku = req.body.sku,
+  gender = req.params.gender;
+  db.query("SELECT * FROM products WHERE gender = ? && sku = ?", [gender, sku], (err, result) => {
     if(!err) { 
-      return res.status(200).render("view-men-products", {title:"User Management - View men products" , user:req.user, result:result})
+      return res.status(200).render(`view-${gender}-products`, {title:`User Management - View ${gender} products` , user:req.user, result:result})
     } else { 
-      return res.status(500).render("view-men-products", {title:"User Management - View men products" , user:req.user, success:false, message:"Internal server error."})
+      return res.status(500).render(`view-${gender}-products`, {title:`User Management - View ${gender} products` , user:req.user, success:false, message:"Internal server error."})
     }
   })
 }
@@ -108,50 +110,6 @@ exports.removeProducts = (req, res) => {
     } else {
         req.flash("message", "Internal server error")
         return res.redirect(`/ecommerce-management/ecommerce-views/${gender}/view-${gender}-products`)
-    }
-  })
-}
-
-exports.findWomenProductsByBrandCategory = (req, res) => {
-  const {brand, category} = req.body
-  db.query("SELECT * FROM products WHERE gender = ? && brand = ? && category = ?", ["women", brand, category], (err, result) => {
-    if(!err) { 
-      return res.status(200).render("view-women-products", {title:"User Management - View women products" , user:req.user, result:result})
-    } else { 
-      return res.status(500).render("view-women-products", {title:"User Management - View women products" , user:req.user, success:false, message:"Internal server error."})
-    }
-  })
-}
-
-exports.findWomenProductsByProductNumber = (req, res) => {
-  const sku = req.body.sku
-  db.query("SELECT * FROM products WHERE gender = ? && sku = ?", ["women", sku], (err, result) => {
-    if(!err) { 
-      return res.status(200).render("view-women-products", {title:"User Management - View women products" , user:req.user, result:result})
-    } else { 
-      return res.status(500).render("view-women-products", {title:"User Management - View women products" , user:req.user, success:false, message:"Internal server error."})
-    }
-  })
-}
-
-exports.findDNAProductsByBrandCategory = (req, res) => {
-  const {brand, category} = req.body
-  db.query("SELECT * FROM products WHERE gender = ? && brand = ? && category = ?", ["DNA", brand, category], (err, result) => {
-    if(!err) { 
-      return res.status(200).render("view-dna-products", {title:"User Management - View DNA products" , user:req.user, result:result})
-    } else { 
-      return res.status(500).render("view-dna-products", {title:"User Management - View DNA products" , user:req.user, success:false, message:"Internal server error."})
-    }
-  })
-}
-
-exports.findDNAProductsByProductNumber = (req, res) => {
-  const sku = req.body.sku
-  db.query("SELECT * FROM products WHERE gender = ? && sku = ?", ["DNA", sku], (err, result) => {
-    if(!err) { 
-      return res.status(200).render("view-dna-products", {title:"User Management - View DNA products" , user:req.user, result:result})
-    } else { 
-      return res.status(500).render("view-dna-products", {title:"User Management - View DNA products" , user:req.user, success:false, message:"Internal server error."})
     }
   })
 }

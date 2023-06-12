@@ -41,7 +41,7 @@ router.get("/:image_key", (req, res) => {
   readStream.pipe(res)
 })
 
-router.get("/ecommerce-views/:gender/view-products", authController.isLoggedIn, (req, res) => {
+router.get("/ecommerce-views/view-products/:gender", authController.isLoggedIn, (req, res) => {
   if(req.user && req.user.admin === "Yes" && !functions.checkBrowser(req.headers)){
     db.query("SELECT * FROM products WHERE gender = ?", [req.params.gender], (err, result) => {
       if(!err) { 
@@ -75,18 +75,10 @@ router.put("/edit-product-info", ecommerceManagementController.editProductInfo)
 
 router.put("/edit-product-info-and-image", ecommerceManagementController.editProductInfoAndImage)
 
-router.post("/search-men-products-by-brand-and-category", ecommerceManagementController.findMenProductsByBrandCategory)
+router.post("/search-products-by-brand-and-category/:gender", ecommerceManagementController.searchProductsByBrandCategory)
 
-router.post("/search-men-products-by-product-number", ecommerceManagementController.findMenProductsByProductNumber)
+router.post("/search-products-by-sku-number/:gender", ecommerceManagementController.searchProductsBySkuNumber)
 
 router.post("/remove-products", ecommerceManagementController.removeProducts)
-
-router.post("/search-women-products-by-brand-and-category", ecommerceManagementController.findWomenProductsByBrandCategory)
-
-router.post("/search-women-products-by-product-number", ecommerceManagementController.findWomenProductsByProductNumber)
-
-router.post("/search-dna-products-by-brand-and-category", ecommerceManagementController.findDNAProductsByBrandCategory)
-
-router.post("/search-dna-products-by-product-number", ecommerceManagementController.findDNAProductsByProductNumber)
 
 module.exports = router;

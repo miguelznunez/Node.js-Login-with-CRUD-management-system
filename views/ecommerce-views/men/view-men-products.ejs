@@ -30,7 +30,7 @@
         <div class="flex">
           <h3><i class="fa-solid fa-cart-shopping"></i><span>Ecommerce -> View Men</span></h3>
           <div>
-            <button><a href="/ecommerce-management/ecommerce-views/men/view-products"><i class="fa-solid fa-eye"></i> All Men's Products</a></button>
+            <button><a href="/ecommerce-management/ecommerce-views/view-products/men"><i class="fa-solid fa-eye"></i> All Men's Products</a></button>
             <button><a href="/ecommerce-management/ecommerce-views/add-product/men"><i class="fa-solid fa-plus"></i> Add Product</a></button>
           </div>
         </div>
@@ -57,13 +57,13 @@
         <% } %>
 
         <div>
-          <h4>Search by brand and category</h4>
+          <h4>Search by Brand and Category</h4>
           <br>
-          <form action="/ecommerce-management/search-men-products-by-brand-and-category" method="POST">
+          <form action="/ecommerce-management/search-products-by-brand-and-category/men" method="POST">
             <div class="user-management filter">
               <input type="text" name="brand" placeholder="Brand..."><select name="category" required>
                 <option selected value="">Category</option>
-                <option value="shirts">Shirts</option>
+                <option value="t-shirts">T-shirts</option>
                 <option value="pants">Pants</option>
                 <option value="sweaters">Jackets</option>
                 <option value="jackets">Sweaters</option>
@@ -77,11 +77,11 @@
             </div>
           </form>
           <br>
-          <h4>Search by product number</h4>
+          <h4>Search by SKU number</h4>
           <br>
-          <form action="/ecommerce-management/search-men-products-by-product-number" method="POST">
+          <form action="/ecommerce-management/search-products-by-sku-number/men" method="POST">
               <div class="user-management">
-                <input type="text" name="number" placeholder="Product number..."><button>Search</button>
+                <input type="text" name="sku" placeholder="SKU number..."><button>Search</button>
               </div>
           </form>
         </div>
