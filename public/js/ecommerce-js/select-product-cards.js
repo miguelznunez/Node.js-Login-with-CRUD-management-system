@@ -79,16 +79,16 @@ cancelProductBtn.addEventListener("click", () => {
     deleteController.style.display = "none";
 
     productCard.forEach((pc, i) => {
-    pc.style.opacity = 1
-    pc.style.cursor = "auto"
-    pc.style.boxShadow = "0 2px 7px #dfdfdf"
-    pc.removeEventListener("click", pcHandlers[i])
+        pc.style.opacity = 1
+        pc.style.cursor = "auto"
+        pc.style.boxShadow = "0 2px 7px #dfdfdf"
+        pc.removeEventListener("click", pcHandlers[i])
     })
 
     checkBox.forEach((cb, i) => {
-    cb.checked = false
-    cb.style.visibility = "hidden"
-    cb.removeEventListener("click", cbHandlers[i])
+        cb.checked = false
+        cb.style.visibility = "hidden"
+        cb.removeEventListener("click", cbHandlers[i])
     })
 
     deselectProductsBtn.style.display = "none"

@@ -20,7 +20,7 @@ router.get("/", authController.isLoggedIn, (req, res) => {
   }
 })
 
-router.get("/shop-views/product/:gender/:category/:id/:name", (req, res) => {
+router.get("/shop-views/product/:gender/:category/:id/:name", authController.isLoggedIn, (req, res) => {
   if(!functions.checkBrowser(req.headers)) {
     db.query("SELECT * FROM products WHERE id = ?", [req.params.id],(err, product) => {
       if(!err){

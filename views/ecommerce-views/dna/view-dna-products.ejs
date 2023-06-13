@@ -10,9 +10,8 @@
       <div class="modal-overlay">
         <div class="modal">
           <i class="fa-solid fa-xmark" id="close-modal"></i>
-          <form action="/ecommerce-management/remove-products" method="POST">
+          <form action="/ecommerce-management/delete-products/dna" method="POST">
             <input type="hidden" name="removeProducts" value="[]">
-            <input type="hidden" name="gender" value="dna">
             <h4>Are you sure?</h4>
             <button class="auth-btn">Yes</button>
           </form>
@@ -120,10 +119,10 @@
 
               <div class="product-box-wrapper"><input type="checkbox" value="<%= result[i].image %>" class="product-box"></div>
 
-              <a href="/shop-views/product/<%= result[i].gender %>/<%= result[i].category%>/<%= result[i].id %>/<%= result[i].name%>">
-                <div class="product-thumb set-bg" style="background-image: url('http://localhost:5000/ecommerce-management/<%= result[i].image %>')">
-                </div>
-              </a>
+  
+              <div class="product-thumb set-bg" style="background-image: url('http://localhost:5000/ecommerce-management/<%= result[i].image %>')">
+              </div>
+         
 
               <div class="product-details">
 
@@ -152,13 +151,13 @@
                   <% } else { %>
                     <div class="product-price">$<%= result[i].price %></div>
                   <% } %>
-
-                  <div class="flex flex-end" style="margin-top: 15px;">
-                    <button><a href="/ecommerce-management/ecommerce-views/edit-product/<%= result[i].id %>/<%= result[i].gender %>"><i class="fa-solid fa-pen-to-square"></i> Edit</a> </button>                   
-                  </div>
-                  
                 </div>
 
+                <div class="flex flex-end" style="gap: 10px;margin-top: 15px;">
+                  <a href="/ecommerce-management/ecommerce-views/edit-product/<%= result[i].id %>/<%= result[i].gender %>"><button><i class="fa-solid fa-pen-to-square"></i></button></a>                   
+                  <a href="/shop-views/product/<%= result[i].gender %>/<%= result[i].category%>/<%= result[i].id %>/<%= result[i].name%>"><button><i class="fa-solid fa-magnifying-glass"></i></button></a>                   
+                </div>
+                
               </div>
             </div>
            

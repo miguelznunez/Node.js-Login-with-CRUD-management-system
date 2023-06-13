@@ -56,17 +56,6 @@ router.get("/ecommerce-views/view-products/:gender", authController.isLoggedIn, 
   }
 })
 
-router.get("/ecommerce-views/delete-product/:gender/:id", authController.isLoggedIn, (req, res) => {
-  const {gender, id} = req.params
-  db.query("DELETE FROM products WHERE id = ?", [id], (err, result) => {
-    if(!err) { 
-      req.flash("message", `Product has been deleted successfully.`)
-      return res.redirect(`/ecommerce-management/ecommerce-views/${gender}/view-${gender}-products`)
-    } 
-    console.log("wtf??")
-  })
-})
-
 // USER MANAGEMENT POST ROUTES  ============================================================
 
 router.post("/add-product", ecommerceManagementController.addProduct)
@@ -79,6 +68,8 @@ router.post("/search-products-by-brand-and-category/:gender", ecommerceManagemen
 
 router.post("/search-products-by-sku-number/:gender", ecommerceManagementController.searchProductsBySkuNumber)
 
-router.post("/remove-products", ecommerceManagementController.removeProducts)
+router.post("/delete-product/:gender/:id/:image", ecommerceManagementController.deleteProduct)
+
+router.post("/delete-products/:gender", ecommerceManagementController.deleteProducts)
 
 module.exports = router;

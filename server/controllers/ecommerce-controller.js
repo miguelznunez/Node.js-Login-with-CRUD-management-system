@@ -87,10 +87,30 @@ exports.searchProductsBySkuNumber = (req, res) => {
   })
 }
 
-exports.removeProducts = (req, res) => {
+exports.deleteProduct = (req, res) => {
 
-  const products = JSON.parse(req.body.removeProducts),
-  gender = req.body.gender
+    S3.deleteS3Image(req.params.image, (err, result) => {
+      if(!err){
+        db.query("DELETE FROM products WHERE id = ?", [req.params.id], (err, result) => {
+          if(!err) { 
+            req.flash("message", `The selected product has been deleted successfully from your store.`)
+            return res.redirect(`/ecommerce-management/ecommerce-views/view-products/${req.params.gender}`)
+          } else {
+            req.flash("message", "Internal server error")
+            return res.redirect(`/ecommerce-management/ecommerce-views/view-products/${req.params.gender}`)
+          }
+        })
+      } else {
+        req.flash("message", "Internal server error")
+        return res.redirect(`/ecommerce-management/ecommerce-views/view-products/${req.params.gender}`)
+      }
+    })    
+  
+}
+
+exports.deleteProducts = (req, res) => {
+
+  const products = JSON.parse(req.body.removeProducts)
   let images = []
 
   S3.deleteS3Images(products, (err, result) => {
@@ -100,16 +120,16 @@ exports.removeProducts = (req, res) => {
         })
         functions.deleteProductsFromDb(images, (err, result) => {
           if(!err){
-              req.flash("message", `The ${images.length} selected product(s) have been successfully removed from your store.`)
-              return res.redirect(`/ecommerce-management/ecommerce-views/${gender}/view-${gender}-products`)
+              req.flash("message", `The ${images.length} selected product(s) have been successfully deleted from your store.`)
+              return res.redirect(`/ecommerce-management/ecommerce-views/view-products/${req.params.gender}`)
           } else {
               req.flash("message", "Internal server error")
-              return res.redirect(`/ecommerce-management/ecommerce-views/${gender}/view-${gender}-products`)
+              return res.redirect(`/ecommerce-management/ecommerce-views/view-products/${req.params.gender}`)
           }
         })
     } else {
         req.flash("message", "Internal server error")
-        return res.redirect(`/ecommerce-management/ecommerce-views/${gender}/view-${gender}-products`)
+        return res.redirect(`/ecommerce-management/ecommerce-views/view-products/${req.params.gender}`)
     }
   })
 }
