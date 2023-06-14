@@ -20,7 +20,7 @@
       <br>
 
       <div class="flex">
-        <h3><i class="fa-solid fa-cart-shopping"></i><span>Ecommerce -> Add Product</span></h3>
+        <h3><i class="fa-solid fa-store"></i><span>Ecommerce / Add Product</span></h3>
       </div>
 
       <br>  
@@ -39,7 +39,7 @@
           <br>
           <div class="queued-image"></div>
           <br>
-          <select id="category">
+          <select id="category" required>
             <option selected value="">Category</option>
             <option value="t-shirts">T-shirts</option>
             <option value="pants">Pants</option>
@@ -55,7 +55,7 @@
           </select>
           <br>
           <br>
-          <select id="gender">
+          <select id="gender" required>
             <option selected value="">Gender</option>
             <option value="men">Men</option>
             <option value="women">Women</option>
@@ -63,22 +63,22 @@
           </select>
           <br>
           <br>
-          <input type="text" id="brand" maxlength="100" placeholder="Brand" value="">
+          <input type="text" id="brand" maxlength="100" placeholder="Brand" value="" required>
           <br>
           <br>
-          <input type="text" id="sku" maxlength="7" OnInput="add_hyphen()" placeholder="SKU" value="">
+          <input type="text" id="sku" maxlength="7" OnInput="add_hyphen()" placeholder="SKU" value="" required>
           <br>
           <br>
-          <input type="text" id="name" maxlength="100" placeholder="Name" value="">
+          <input type="text" id="name" maxlength="100" placeholder="Name" value="" required>
           <br>
           <br>
-          <input type="number" id="price" maxlength="100" placeholder="Price" step="any" value="" min="0">
+          <input type="number" id="price" maxlength="100" placeholder="Price" step="any" value="" min="0" required>
           <br>
           <br>
-          <input type="number" id="sale_price" maxlength="100" placeholder="Sale price (optional)" value="" min="0" step="any">
+          <input type="number" id="sale_price" maxlength="100" placeholder="Sale price (optional)" value="" min="0" step="any" >
           <br>
           <br>
-          <textarea id="description" placeholder="Description"></textarea>
+          <textarea id="description" placeholder="Description" required></textarea>
           <br>
           <br>
           <button class="auth-btn button"><span class="button__text">Add</span></button>
@@ -89,7 +89,7 @@
           <br>
           <h5>One size</h5>
           <br>
-          <input type="number" id="quantity" min="0" placeholder="Quantity">
+          <input type="number" id="quantity" min="0" placeholder="Quantity" required>
           <br>
           <br>
           <h5>General sizes</h5>

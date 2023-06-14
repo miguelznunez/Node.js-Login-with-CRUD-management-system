@@ -122,7 +122,18 @@
 
                   <div class="product__item__text">
                       <h6><%= result[i].name %></h6>
-                      <a href="#" class="add-cart">+ Add To Cart</a>
+                      <form action="/add-to-cart" method="POST">
+                        <input type="hidden" name="id" value="<%= result[i].id %>">
+                        <input type="hidden" name="name" value="<%= result[i].name %>">
+                        <input type="hidden" name="brand" value="<%= result[i].brand %>">
+                        <input type="hidden" name="category" value="<%= result[i].category %>">
+                        <input type="hidden" name="sku" value="<%= result[i].sku %>">
+                        <input type="hidden" name="price" value="<%= result[i].price %>">
+                        <input type="hidden" name="sale_price" value="<%= result[i].sale_price %>">
+                        <input type="hidden" name="quantity" value="1">
+                        <input type="hidden" name="image" value="<%= result[i].image %>">
+                        <a href="#" class="add-cart"><button type="submit" style="background-color:transparent;padding: 0;border: none;width: none;color: red;">+ Add To Cart</button></a>
+                      </form>
                       <div class="rating">
                           <i class="fa fa-star-o"></i>
                           <i class="fa fa-star-o"></i>
@@ -130,7 +141,11 @@
                           <i class="fa fa-star-o"></i>
                           <i class="fa fa-star-o"></i>
                       </div>
-                      <h5>$<%= result[i].price %></h5>
+                      <% if(result[i].sale_price) { %>
+                         <h5><%= result[i].sale_price %></h5> <h5 style="text-decoration: line-through;color: lightgray;"><%= result[i].price %></h5>
+                      <% } else { %>
+                         <h5><%= result[i].price %></h5>
+                      <% } %>
                       <div class="product__color__select">
                           <label for="pc-1">
                               <input type="radio" id="pc-1">

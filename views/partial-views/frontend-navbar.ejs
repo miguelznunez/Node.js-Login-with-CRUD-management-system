@@ -47,50 +47,50 @@
                                 <div class="dropdown-menu">
                                 <% if (typeof user !="undefined" && user.admin === "Yes" ) { %>
                                     <a href="/">
-                                    <div class="dropdown-links">
-                                        <i class="fa-solid fa-house"></i><span>Home</span>
-                                    </div>
+                                        <div class="dropdown-links">
+                                            <i class="fa-solid fa-house"></i><span>Home</span>
+                                        </div>
                                     </a>
                                     <a href="/my-account-management/my-account-views/my-account">
-                                    <div class="dropdown-links">
-                                        <i class="fa-solid fa-user"></i><span>Account</span>
-                                    </div>
+                                        <div class="dropdown-links">
+                                            <i class="fa-solid fa-user"></i><span>Account</span>
+                                        </div>
                                     </a>
                                     <a href="/ecommerce-management/ecommerce-views/view-products/men">
-                                    <div class="dropdown-links">
-                                        <i class="fa-solid fa-cart-shopping"></i><span>Ecommerce</span>
-                                    </div>
+                                        <div class="dropdown-links">
+                                            <i class="fa-solid fa-store"></i><span>Ecommerce</span>
+                                        </div>
                                     </a>
                                     <a href="/newsletter-management/newsletter-views/view-subscribers">
-                                    <div class="dropdown-links">
-                                        <i class="fa-sharp fa-solid fa-envelope"></i><span>Newsletter</span>
-                                    </div>
+                                        <div class="dropdown-links">
+                                            <i class="fa-sharp fa-solid fa-envelope"></i><span>Newsletter</span>
+                                        </div>
                                     </a>
                                     <a href="/user-management/user-views/active">
-                                    <div class="dropdown-links">
-                                        <i class="fa-solid fa-users"></i><span>Users</span>
-                                    </div>
+                                        <div class="dropdown-links">
+                                            <i class="fa-solid fa-users"></i><span>Users</span>
+                                        </div>
                                     </a>
                                     <a href="/auth-management/auth-views/logout">
-                                    <div class="dropdown-links">
-                                        <i class="fa-solid fa-right-from-bracket"></i><span>Log out</span>
-                                    </div>
+                                        <div class="dropdown-links">
+                                            <i class="fa-solid fa-right-from-bracket"></i><span>Log out</span>
+                                        </div>
                                     </a>
                                 <% } else { %>
                                     <a href="/">
-                                    <div class="dropdown-links">
-                                        <i class="fa-solid fa-house"></i><span>Home</span>
-                                    </div>
+                                        <div class="dropdown-links">
+                                            <i class="fa-solid fa-house"></i><span>Home</span>
+                                        </div>
                                     </a>
                                     <a href="/my-account-management/my-account-views/my-account">
-                                    <div class="dropdown-links">
-                                        <i class="fa-solid fa-user"></i><span>Account</span>
-                                    </div>
+                                        <div class="dropdown-links">
+                                            <i class="fa-solid fa-user"></i><span>Account</span>
+                                        </div>
                                     </a>
                                     <a href="/auth-management/auth-views/logout">
-                                    <div class="dropdown-links">
-                                        <i class="fa-solid fa-right-from-bracket"></i><span>Log out</span>
-                                    </div>
+                                        <div class="dropdown-links">
+                                            <i class="fa-solid fa-right-from-bracket"></i><span>Log out</span>
+                                        </div>
                                     </a>
                                 <% } %>
                                 </div>
@@ -109,7 +109,8 @@
         <div class="row">
             <div class="col-lg-3 col-md-3">
                 <div class="header__logo">
-                    <a href="/"><img src="/img/logo.png" alt=""></a>
+                    <!-- <a href="/"><img src="/img/logo.png" alt=""></a> -->
+                    <a href="/">Company</a>
                 </div>
             </div>
             <div class="col-lg-6 col-md-6">
@@ -121,7 +122,7 @@
                             <ul class="dropdown">
                                 <li><a href="./about.html">About Us</a></li>
                                 <li><a href="./shop-details.html">Shop Details</a></li>
-                                <li><a href="./shopping-cart.html">Shopping Cart</a></li>
+                                <li><a href="./shop-views/shopping-cart">Shopping Cart</a></li>
                                 <li><a href="./checkout.html">Check Out</a></li>
                                 <li><a href="./blog-details.html">Blog Details</a></li>
                             </ul>
@@ -135,7 +136,7 @@
                 <div class="header__nav__option">
                     <a href="#" class="search-switch"><img src="/img/icon/search.png" alt=""></a>
                     <a href="#"><img src="/img/icon/heart.png" alt=""></a>
-                    <a href="#"><img src="/img/icon/cart.png" alt=""> <span>0</span></a>
+                    <a href="/shop-views/shopping-cart"><img src="/img/icon/cart.png" alt=""> <span>0</span></a>
                     <div class="price">$0.00</div>
                 </div>
             </div>

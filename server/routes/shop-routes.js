@@ -26,13 +26,13 @@ router.get("/shop-views/product/:gender/:category/:id/:name", authController.isL
       if(!err){
         db.query("SELECT * FROM products WHERE gender = ? && category = ? && id != ? ORDER BY RAND() LIMIT 4", [req.params.gender, req.params.category, req.params.id], (err, products) => {
           if(!err){
-            return res.status(200).render("product-details", {title: "product-details", user:req.user, product:product, products:products})
+            return res.status(200).render("product-details", {title: "Product details", user:req.user, product:product, products:products})
           } else {
-            return res.status(200).render("product-details", {title: "product-details", user:req.user, message:"Internal server error."})
+            return res.status(200).render("product-details", {title: "Product details", user:req.user, message:"Internal server error."})
           }
         })
       } else {
-        return res.status(200).render("product-details", {title: "product-details", user:req.user, message:"Internal server error."})
+        return res.status(200).render("product-details", {title: "Product details", user:req.user, message:"Internal server error."})
       }
     })
   } else {
@@ -40,15 +40,15 @@ router.get("/shop-views/product/:gender/:category/:id/:name", authController.isL
   }
 })
 
-// router.get("/store-views/cart", authController.isLoggedIn, (req, res) => {
-//     const cart = req.session.cart
-//     const total = req.session.total
-//     return res.render("cart", {title:"Cart", cart:cart, total:total})
-// })
+router.get("/shop-views/shopping-cart", authController.isLoggedIn, (req, res) => {
+    const cart = req.session.cart
+    const total = req.session.total
+    return res.render("shopping-cart", {title:"Shopping Cart", user:req.user, cart:cart, total:total})
+})
 
 // PAGE POST ROUTES  ============================================================
 
-// router.post("/add-to-cart", pageController.addToCart)
+router.post("/add-to-cart", shopController.addToCart)
 
 // router.post("/remove-product", pageController.removeProduct)
 

@@ -67,7 +67,9 @@ exports.addToCart = (req, res) => {
     functions.calculateTotal(cart, req)
 
     // return to cart page
-    return res.status(200).redirect("/cart")
+    // return res.status(200).redirect("/")
+    return res.status(200).redirect("/shop-views/shopping-cart")
+    // return res.status(200).render("index", {title: "Home", user:req.user, result:result})
 }
 
 exports.removeProduct = (req, res) => {
