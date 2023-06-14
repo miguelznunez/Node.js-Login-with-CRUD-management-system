@@ -1,5 +1,4 @@
 const express = require("express"),
-// crypto = require("crypto"),
 path = require("path"),
 googlePassportSetup = require("./server/config/google-passport-setup"),
 facebookPassportSetup = require("./server/config/facebook-passport-setup"),
@@ -7,9 +6,6 @@ cookieParser = require("cookie-parser"),
 session = require('express-session'),
 flash = require('connect-flash')
 passport = require("passport");
-
-// const str = crypto.randomBytes(20).toString("hex")
-// console.log(str)
 
 require("dotenv").config()
 
@@ -23,8 +19,8 @@ app.use(express.json())
 app.use(cookieParser())
 app.use(session({ 
   secret: process.env.SESSION_SECRET,
-  resave: false, // dont't save session if unmodified
-  saveUninitialized: false, // don't create session until something stored
+  resave: false,
+  saveUninitialized: false,
   cookie: { maxAge: 1000 * 60 * 60 * 24 }
 }))
 

@@ -39,7 +39,7 @@
           <br>
           <div class="queued-image"></div>
           <br>
-          <select id="category" required>
+          <select id="category">
             <option selected value="">Category</option>
             <option value="t-shirts">T-shirts</option>
             <option value="pants">Pants</option>
@@ -55,7 +55,7 @@
           </select>
           <br>
           <br>
-          <select id="gender" required>
+          <select id="gender">
             <option selected value="">Gender</option>
             <option value="men">Men</option>
             <option value="women">Women</option>
@@ -63,22 +63,22 @@
           </select>
           <br>
           <br>
-          <input type="text" id="brand" maxlength="100" placeholder="Brand" value="" required>
+          <input type="text" id="brand" maxlength="100" placeholder="Brand" value="">
           <br>
           <br>
-          <input type="text" id="sku" maxlength="7" OnInput="add_hyphen()" placeholder="SKU" value="" required>
+          <input type="text" id="sku" maxlength="7" OnInput="add_hyphen()" placeholder="SKU" value="">
           <br>
           <br>
-          <input type="text" id="name" maxlength="100" placeholder="Name" value="" required>
+          <input type="text" id="name" maxlength="100" placeholder="Name" value="">
           <br>
           <br>
-          <input type="number" id="price" maxlength="100" placeholder="Price" step="any" value="" min="0" required>
+          <input type="number" id="price" maxlength="100" placeholder="Price" step="any" value="" min="0">
           <br>
           <br>
           <input type="number" id="sale_price" maxlength="100" placeholder="Sale price (optional)" value="" min="0" step="any">
           <br>
           <br>
-          <textarea id="description" placeholder="Description" required></textarea>
+          <textarea id="description" placeholder="Description"></textarea>
           <br>
           <br>
           <button class="auth-btn button"><span class="button__text">Add</span></button>
@@ -264,7 +264,7 @@
       })
 
       .catch(error => {
-        serverMessage.innerHTML = error
+        serverMessage.innerHTML = error.toString().split(": ")[1]
         serverMessage.style.cssText = "background-color: #f8d7da; color:#b71c1c; padding: 16px;"
         btn.classList.remove("button--loading")
         btn.disabled = false

@@ -36,6 +36,7 @@
     "randomstring": "^1.2.2",
     "req-flash": "^0.0.3",
     "request": "^2.88.2",
+    "sharp": "^0.32.1",
     "sib-api-v3-sdk": "^8.5.0"
   },
   "devDependencies": {
