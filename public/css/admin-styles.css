@@ -40,7 +40,7 @@ i {
 
 input{
   width: 400px;
-  padding: 12px;
+  padding: 10px;
   border: none;
   border-radius: 5px;
   outline: none;
@@ -84,13 +84,13 @@ input[type="checkbox"]{ width: 12px;}
 }
 
 button{
-  border: 1px solid var(--soft-black);
+  border: 2px solid var(--soft-black);
   padding: 12px;
   border-radius: 5px;
   cursor: pointer;
   font-size: 1rem;
-  color: white;
-  background-color: var(--soft-black);
+  color: var(--soft-black);
+  background-color: transparent;
   box-shadow: 0px 3px 15px rgba(0,0,0,0.2);
 }
 
@@ -169,12 +169,14 @@ th{
 }
 
 .flex button{
-  padding: 8px 10px;
+  border: 2px solid var(--soft-black);
+  background-color: transparent;
+  padding: 5px 10px;
 }
 
 .flex a,
 .flex i{
-  color: white;
+  color: var(--soft-black);
 }
 
 .flex-start{
@@ -297,7 +299,7 @@ th{
 }
 
 .button__text {
-  color: #ffffff;
+  color: var(--soft-black);
   transition: all 0.2s;
 }
 
@@ -317,7 +319,7 @@ th{
   bottom: 0;
   margin: auto;
   border: 4px solid transparent;
-  border-top-color: #ffffff;
+  border-top-color: var(--soft-black);
   border-radius: 50%;
   animation: button-loading-spinner 1s ease infinite;
 }
@@ -570,13 +572,12 @@ th{
 
 .sidenav a:hover, 
 .sidenav .dropdown-btn:hover {
-  background-color: whitesmoke;
+  background-color: white;
 }
 
 .dropdown-container {
   max-height: 0;
   overflow: hidden;
-  padding-left: 10px;
   transition: all 0.35s ease-in-out;
 }
 
@@ -706,7 +707,8 @@ th{
 .auth-btn{
   width: 400px;
   color: white;
-  background-color: var(--soft-black);
+  background-color: transparent;
+  border: 2px solid var(--soft-black);
 }
 
 .auth-btn i{
@@ -758,8 +760,8 @@ th{
 .user-management input,
 .add-user input,
 .view-users input {
-  width: 95%;
-  padding: 10px;
+  width: 100%;
+  /* padding: 10px; */
   font-size: inherit;
   border-top-right-radius: 0px;
   border-bottom-right-radius: 0px;
@@ -772,7 +774,7 @@ th{
 .user-management button,
 .add-user button,
 .view-users button {
-  padding: 10px;
+  padding: 0 12px;
   font-size: inherit;
   border-top-left-radius: 0px;
   border-bottom-left-radius: 0px;
