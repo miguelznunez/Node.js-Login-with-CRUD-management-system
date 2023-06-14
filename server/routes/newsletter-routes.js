@@ -58,7 +58,7 @@ router.get("/newsletter-views/compose-email", authController.isLoggedIn,(req, re
 
 router.post("/newsletter-views/search-subscribers", authController.isLoggedIn, newsletterController.searchSubscribers)
 
-router.post("/newsletter-views/remove-subscribers", authController.isLoggedIn, newsletterController.removeSubscribers)
+router.post("/newsletter-views/delete-subscribers", authController.isLoggedIn, newsletterController.deleteSubscribers)
 
 router.post("/newsletter-views/add-subscriber",
 [

@@ -9,18 +9,18 @@ exports.searchSubscribers = (req, res) => {
   const searchTerm = req.body.search
   db.query("SELECT * FROM newsletter WHERE (email LIKE ?)", ["%" + searchTerm + "%"], (err, result) => {
     if(!err) { 
-      return res.status(200).render("subscribers", {title:"Newsletter - Subscribers" , user:req.user, result:result})
+      return res.status(200).render("view-subscribers", {title:"Newsletter - View Subscribers" , user:req.user, result:result})
     } else { 
-      return res.status(500).render("subscribers", {title:"Newsletter - Subscribers" , user:req.user, success:false, message:"Internal server error."})
+      return res.status(500).render("view-subscribers", {title:"Newsletter - View Subscribers" , user:req.user, success:false, message:"Internal server error."})
     }
   })
 
 }
 
-exports.removeSubscribers = (req, res) => {
+exports.deleteSubscribers = (req, res) => {
 
   const emails = JSON.parse(req.body.removeEmails)
-  deleteEmailsFromDb(emails, (err, result) => {
+  functions.deleteEmailsFromDb(emails, (err, result) => {
     if(!err){
       req.flash("message", `The ${emails.length} selected email(s) have been successfully removed from your newsletter.`)
       return res.redirect("/newsletter-management/newsletter-views/view-subscribers")
@@ -95,11 +95,4 @@ exports.sendNewsletterEmail = (req, res) => {
     })
   
   }
-
-function deleteEmailsFromDb(emails, callback){
-  db.query("DELETE FROM newsletter WHERE email IN (?)", [emails], (err, result) => {
-    if(err) callback(err, null)
-    else callback(null, result)
-  })
-}
 

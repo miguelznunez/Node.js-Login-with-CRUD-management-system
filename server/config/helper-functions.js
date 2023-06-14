@@ -100,6 +100,13 @@ const deleteProductsFromDb = (images, callback) => {
   })
 }
 
+const deleteEmailsFromDb = (emails, callback) => {
+  db.query("DELETE FROM newsletter WHERE email IN (?)", [emails], (err, result) => {
+    if(err) callback(err, null)
+    else callback(null, result)
+  })
+}
+
 const shuffleArray = (array) => {
   for (let i = array.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
@@ -110,4 +117,4 @@ const shuffleArray = (array) => {
   return array
 }
 
-module.exports = { checkBrowser, getDate, isProductInCart, calculateTotal, saveProductInDB, editProductInfoInDB, editProductInfoImageInDB, deleteProductsFromDb, shuffleArray }
+module.exports = { checkBrowser, getDate, isProductInCart, calculateTotal, saveProductInDB, editProductInfoInDB, editProductInfoImageInDB, deleteProductsFromDb, deleteEmailsFromDb, shuffleArray }

@@ -10,7 +10,7 @@
       <div class="modal-overlay">
         <div class="modal">
           <i class="fa-solid fa-xmark" id="close-modal"></i>
-          <form action="/newsletter-management/newsletter-views/remove-subscribers" method="POST">
+          <form action="/newsletter-management/newsletter-views/delete-subscribers" method="POST">
             <input type="hidden" name="removeEmails" value="[]">
             <h4>Are you sure?</h4>
             <button>Yes</button>
@@ -61,7 +61,7 @@
 
         <br>
         
-        <form action="/newsletter-management/newsletter-views/search-subscribers" method="POST">
+        <form action="/newsletter-management/newsletter-views/search-subscribers" method="GET">
           <div class="user-management">
             <input type="text" name="search" placeholder="Search subscribers..."><button>Search</button>
           </div>
